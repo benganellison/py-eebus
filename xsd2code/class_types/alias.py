@@ -11,7 +11,7 @@ class AliasType(xsd2code.DataType):
     @classmethod
     def can_create(cls, xsd_type: XsdType):
         if isinstance(xsd_type, XsdAtomicRestriction) and not xsd_type.enumeration:
-            return xsd_type.display_name
+            return xsd_type.display_name or f"ns_p:Anonymous_{id(xsd_type)}"
 
         return None
 
@@ -19,7 +19,7 @@ class AliasType(xsd2code.DataType):
     def create_from_xsd(cls, xsd_type: XsdAtomicRestriction) -> xsd2code.AliasType:
 
         return xsd2code.AliasType(
-            type_name=xsd_type.display_name,
+            type_name=xsd_type.display_name or f"ns_p:Anonymous_{id(xsd_type)}",
             source_file=xsd_type.schema.name,
             base_type=xsd2code.ALL_TYPES.get_or_create(xsd2code.create_type_from_xsd(xsd_type.base_type))
         )
@@ -48,3 +48,7 @@ class AliasType(xsd2code.DataType):
     @property
     def return_type(self):
         return "value"
+
+    @property
+    def data_access_method(self):
+        return ""

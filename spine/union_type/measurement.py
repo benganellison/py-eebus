@@ -1,171 +1,39 @@
 # Jinja Template message_type.py.jinja2
-from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
 
 
-class MeasurementValueStateType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementValueStateType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
 
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
+@spine_type('ns_p:MeasurementValueStateType', is_value_type=False, no_attrib_name=False)
+class MeasurementValueStateType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementValueStateType -> UnionType
+    _MEMBER_INFO = [
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:MeasurementValueTendencyType', is_value_type=False, no_attrib_name=False)
+class MeasurementValueTendencyType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementValueTendencyType -> UnionType
+    _MEMBER_INFO = [
+    ]
 
 
-class MeasurementValueTendencyType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementValueTendencyType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
+@spine_type('ns_p:MeasurementValueSourceType', is_value_type=False, no_attrib_name=False)
+class MeasurementValueSourceType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementValueSourceType -> UnionType
+    _MEMBER_INFO = [
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:MeasurementValueTypeType', is_value_type=False, no_attrib_name=False)
+class MeasurementValueTypeType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementValueTypeType -> UnionType
+    _MEMBER_INFO = [
+    ]
 
 
-class MeasurementValueSourceType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementValueSourceType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementValueTypeType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementValueTypeType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementTypeType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementTypeType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+@spine_type('ns_p:MeasurementTypeType', is_value_type=False, no_attrib_name=False)
+class MeasurementTypeType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementTypeType -> UnionType
+    _MEMBER_INFO = [
+    ]
 

@@ -17,8 +17,7 @@ class SpineMessage:
             datagram: DatagramType
     ):
         self._root_tag = "datagram"
-        
-        self._msg: datagram
+        self._msg = datagram
 
     def get_msg_bytes(self):
         json_data = self.get_data()
@@ -48,4 +47,6 @@ class SpineMessage:
         return self._msg
 
 
-ROOT_TAG_2_TYPE = {}
+ROOT_TAG_2_TYPE = {
+    "datagram": DatagramType
+}

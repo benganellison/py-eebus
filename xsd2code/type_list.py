@@ -153,7 +153,6 @@ class TypeList:
 
             with open(write_dest, "w") as text_file:
                 depend_on_types = list(set(write_destinations[write_dest]["depend_on_types"]))
-
                 imports = list(set(
                     [imp.get_import() for imp in depend_on_types if imp.get_import() and imp.get_full_path() != write_dest]
                 ))

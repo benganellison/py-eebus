@@ -1,3462 +1,2277 @@
 # Jinja Template message_type.py.jinja2
-from spine.base_type.commondatatypes import ElementTagType
-from spine.base_type.commondatatypes import ScaledNumberElementsType
-from spine.base_type.commondatatypes import ScaledNumberType
-from spine.base_type.commondatatypes import TimePeriodElementsType
-from spine.base_type.commondatatypes import TimePeriodType
-from spine.base_type.commondatatypes import TimestampIntervalType
-from spine.simple_type.commondatatypes import DescriptionType
-from spine.simple_type.commondatatypes import LabelType
-from spine.simple_type.measurement import MeasurementIdType
-from spine.simple_type.tariffinformation import CommodityIdType
-from spine.simple_type.tariffinformation import IncentiveCountType
-from spine.simple_type.tariffinformation import IncentiveIdType
-from spine.simple_type.tariffinformation import IncentivePriorityType
-from spine.simple_type.tariffinformation import TariffCountType
-from spine.simple_type.tariffinformation import TariffIdType
-from spine.simple_type.tariffinformation import TierBoundaryCountType
-from spine.simple_type.tariffinformation import TierBoundaryIdType
-from spine.simple_type.tariffinformation import TierCountType
-from spine.simple_type.tariffinformation import TierIdType
-from spine.simple_type.timetable import TimeTableIdType
-from spine.union_type.commondatatypes import AbsoluteOrRelativeTimeType
-from spine.union_type.commondatatypes import CommodityTypeType
-from spine.union_type.commondatatypes import CurrencyType
-from spine.union_type.commondatatypes import EnergyDirectionType
-from spine.union_type.commondatatypes import ScopeTypeType
-from spine.union_type.commondatatypes import UnitOfMeasurementType
-from spine.union_type.tariffinformation import IncentiveTypeType
-from spine.union_type.tariffinformation import IncentiveValueTypeType
-from spine.union_type.tariffinformation import TierBoundaryTypeType
-from spine.union_type.tariffinformation import TierTypeType
-from types import NoneType
-from spine import array_2_dict
-
-
-class TierDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDataType -> ComplexType
-    def __init__(
-            self,
-            tier_id: TierIdType = None,
-            time_period: TimePeriodType = None,
-            time_table_id: TimeTableIdType = None,
-            active_incentive_id: list[IncentiveIdType] = None,
-    ):
-        super().__init__()
-        
-        self.tier_id = tier_id
-        self.time_period = time_period
-        self.time_table_id = time_table_id
-        self.active_incentive_id = active_incentive_id
-
-        if not isinstance(self.tier_id, TierIdType | NoneType):
-            raise TypeError("tier_id is not of type TierIdType")
-        
-        if not isinstance(self.time_period, TimePeriodType | NoneType):
-            raise TypeError("time_period is not of type TimePeriodType")
-        
-        if not isinstance(self.time_table_id, TimeTableIdType | NoneType):
-            raise TypeError("time_table_id is not of type TimeTableIdType")
-        
-        if not isinstance(self.active_incentive_id, list | NoneType):
-            raise TypeError("active_incentive_id is not of type list[IncentiveIdType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        if self.time_period is not None:
-            msg_data.append({"timePeriod": self.time_period.get_data()})
-        if self.time_table_id is not None:
-            msg_data.append({"timeTableId": self.time_table_id.get_data()})
-        if self.active_incentive_id is not None:
-            msg_data.append({"activeIncentiveId": [d.get_data() for d in self.active_incentive_id]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-            sep = ", "
-        if self.time_period is not None:
-            result_str += f"{sep}timePeriod: {self.time_period}"
-            sep = ", "
-        if self.time_table_id is not None:
-            result_str += f"{sep}timeTableId: {self.time_table_id}"
-            sep = ", "
-        if self.active_incentive_id is not None:
-            result_str += f"{sep}activeIncentiveId: {self.active_incentive_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_id=data_dict.get('tierId'),
-                time_period=data_dict.get('timePeriod'),
-                time_table_id=data_dict.get('timeTableId'),
-                active_incentive_id=data_dict.get('activeIncentiveId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierIncentiveRelationDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIncentiveRelationDataType -> ComplexType
-    def __init__(
-            self,
-            tier_id: TierIdType = None,
-            incentive_id: list[IncentiveIdType] = None,
-    ):
-        super().__init__()
-        
-        self.tier_id = tier_id
-        self.incentive_id = incentive_id
-
-        if not isinstance(self.tier_id, TierIdType | NoneType):
-            raise TypeError("tier_id is not of type TierIdType")
-        
-        if not isinstance(self.incentive_id, list | NoneType):
-            raise TypeError("incentive_id is not of type list[IncentiveIdType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        if self.incentive_id is not None:
-            msg_data.append({"incentiveId": [d.get_data() for d in self.incentive_id]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-            sep = ", "
-        if self.incentive_id is not None:
-            result_str += f"{sep}incentiveId: {self.incentive_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_id=data_dict.get('tierId'),
-                incentive_id=data_dict.get('incentiveId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierDescriptionDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDescriptionDataType -> ComplexType
-    def __init__(
-            self,
-            tier_id: TierIdType = None,
-            tier_type: TierTypeType = None,
-            label: LabelType = None,
-            description: DescriptionType = None,
-    ):
-        super().__init__()
-        
-        self.tier_id = tier_id
-        self.tier_type = tier_type
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.tier_id, TierIdType | NoneType):
-            raise TypeError("tier_id is not of type TierIdType")
-        
-        if not isinstance(self.tier_type, TierTypeType | NoneType):
-            raise TypeError("tier_type is not of type TierTypeType")
-        
-        if not isinstance(self.label, LabelType | NoneType):
-            raise TypeError("label is not of type LabelType")
-        
-        if not isinstance(self.description, DescriptionType | NoneType):
-            raise TypeError("description is not of type DescriptionType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        if self.tier_type is not None:
-            msg_data.append({"tierType": self.tier_type.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-            sep = ", "
-        if self.tier_type is not None:
-            result_str += f"{sep}tierType: {self.tier_type}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_id=data_dict.get('tierId'),
-                tier_type=data_dict.get('tierType'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDataType -> ComplexType
-    def __init__(
-            self,
-            boundary_id: TierBoundaryIdType = None,
-            time_period: TimePeriodType = None,
-            time_table_id: TimeTableIdType = None,
-            lower_boundary_value: ScaledNumberType = None,
-            upper_boundary_value: ScaledNumberType = None,
-    ):
-        super().__init__()
-        
-        self.boundary_id = boundary_id
-        self.time_period = time_period
-        self.time_table_id = time_table_id
-        self.lower_boundary_value = lower_boundary_value
-        self.upper_boundary_value = upper_boundary_value
-
-        if not isinstance(self.boundary_id, TierBoundaryIdType | NoneType):
-            raise TypeError("boundary_id is not of type TierBoundaryIdType")
-        
-        if not isinstance(self.time_period, TimePeriodType | NoneType):
-            raise TypeError("time_period is not of type TimePeriodType")
-        
-        if not isinstance(self.time_table_id, TimeTableIdType | NoneType):
-            raise TypeError("time_table_id is not of type TimeTableIdType")
-        
-        if not isinstance(self.lower_boundary_value, ScaledNumberType | NoneType):
-            raise TypeError("lower_boundary_value is not of type ScaledNumberType")
-        
-        if not isinstance(self.upper_boundary_value, ScaledNumberType | NoneType):
-            raise TypeError("upper_boundary_value is not of type ScaledNumberType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.boundary_id is not None:
-            msg_data.append({"boundaryId": self.boundary_id.get_data()})
-        if self.time_period is not None:
-            msg_data.append({"timePeriod": self.time_period.get_data()})
-        if self.time_table_id is not None:
-            msg_data.append({"timeTableId": self.time_table_id.get_data()})
-        if self.lower_boundary_value is not None:
-            msg_data.append({"lowerBoundaryValue": self.lower_boundary_value.get_data()})
-        if self.upper_boundary_value is not None:
-            msg_data.append({"upperBoundaryValue": self.upper_boundary_value.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.boundary_id is not None:
-            result_str += f"{sep}boundaryId: {self.boundary_id}"
-            sep = ", "
-        if self.time_period is not None:
-            result_str += f"{sep}timePeriod: {self.time_period}"
-            sep = ", "
-        if self.time_table_id is not None:
-            result_str += f"{sep}timeTableId: {self.time_table_id}"
-            sep = ", "
-        if self.lower_boundary_value is not None:
-            result_str += f"{sep}lowerBoundaryValue: {self.lower_boundary_value}"
-            sep = ", "
-        if self.upper_boundary_value is not None:
-            result_str += f"{sep}upperBoundaryValue: {self.upper_boundary_value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                boundary_id=data_dict.get('boundaryId'),
-                time_period=data_dict.get('timePeriod'),
-                time_table_id=data_dict.get('timeTableId'),
-                lower_boundary_value=data_dict.get('lowerBoundaryValue'),
-                upper_boundary_value=data_dict.get('upperBoundaryValue'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryDescriptionDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDescriptionDataType -> ComplexType
-    def __init__(
-            self,
-            boundary_id: TierBoundaryIdType = None,
-            boundary_type: TierBoundaryTypeType = None,
-            valid_for_tier_id: TierIdType = None,
-            switch_to_tier_id_when_lower: TierIdType = None,
-            switch_to_tier_id_when_higher: TierIdType = None,
-            boundary_unit: UnitOfMeasurementType = None,
-            label: LabelType = None,
-            description: DescriptionType = None,
-    ):
-        super().__init__()
-        
-        self.boundary_id = boundary_id
-        self.boundary_type = boundary_type
-        self.valid_for_tier_id = valid_for_tier_id
-        self.switch_to_tier_id_when_lower = switch_to_tier_id_when_lower
-        self.switch_to_tier_id_when_higher = switch_to_tier_id_when_higher
-        self.boundary_unit = boundary_unit
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.boundary_id, TierBoundaryIdType | NoneType):
-            raise TypeError("boundary_id is not of type TierBoundaryIdType")
-        
-        if not isinstance(self.boundary_type, TierBoundaryTypeType | NoneType):
-            raise TypeError("boundary_type is not of type TierBoundaryTypeType")
-        
-        if not isinstance(self.valid_for_tier_id, TierIdType | NoneType):
-            raise TypeError("valid_for_tier_id is not of type TierIdType")
-        
-        if not isinstance(self.switch_to_tier_id_when_lower, TierIdType | NoneType):
-            raise TypeError("switch_to_tier_id_when_lower is not of type TierIdType")
-        
-        if not isinstance(self.switch_to_tier_id_when_higher, TierIdType | NoneType):
-            raise TypeError("switch_to_tier_id_when_higher is not of type TierIdType")
-        
-        if not isinstance(self.boundary_unit, UnitOfMeasurementType | NoneType):
-            raise TypeError("boundary_unit is not of type UnitOfMeasurementType")
-        
-        if not isinstance(self.label, LabelType | NoneType):
-            raise TypeError("label is not of type LabelType")
-        
-        if not isinstance(self.description, DescriptionType | NoneType):
-            raise TypeError("description is not of type DescriptionType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.boundary_id is not None:
-            msg_data.append({"boundaryId": self.boundary_id.get_data()})
-        if self.boundary_type is not None:
-            msg_data.append({"boundaryType": self.boundary_type.get_data()})
-        if self.valid_for_tier_id is not None:
-            msg_data.append({"validForTierId": self.valid_for_tier_id.get_data()})
-        if self.switch_to_tier_id_when_lower is not None:
-            msg_data.append({"switchToTierIdWhenLower": self.switch_to_tier_id_when_lower.get_data()})
-        if self.switch_to_tier_id_when_higher is not None:
-            msg_data.append({"switchToTierIdWhenHigher": self.switch_to_tier_id_when_higher.get_data()})
-        if self.boundary_unit is not None:
-            msg_data.append({"boundaryUnit": self.boundary_unit.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.boundary_id is not None:
-            result_str += f"{sep}boundaryId: {self.boundary_id}"
-            sep = ", "
-        if self.boundary_type is not None:
-            result_str += f"{sep}boundaryType: {self.boundary_type}"
-            sep = ", "
-        if self.valid_for_tier_id is not None:
-            result_str += f"{sep}validForTierId: {self.valid_for_tier_id}"
-            sep = ", "
-        if self.switch_to_tier_id_when_lower is not None:
-            result_str += f"{sep}switchToTierIdWhenLower: {self.switch_to_tier_id_when_lower}"
-            sep = ", "
-        if self.switch_to_tier_id_when_higher is not None:
-            result_str += f"{sep}switchToTierIdWhenHigher: {self.switch_to_tier_id_when_higher}"
-            sep = ", "
-        if self.boundary_unit is not None:
-            result_str += f"{sep}boundaryUnit: {self.boundary_unit}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                boundary_id=data_dict.get('boundaryId'),
-                boundary_type=data_dict.get('boundaryType'),
-                valid_for_tier_id=data_dict.get('validForTierId'),
-                switch_to_tier_id_when_lower=data_dict.get('switchToTierIdWhenLower'),
-                switch_to_tier_id_when_higher=data_dict.get('switchToTierIdWhenHigher'),
-                boundary_unit=data_dict.get('boundaryUnit'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffTierRelationDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffTierRelationDataType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: TariffIdType = None,
-            tier_id: list[TierIdType] = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.tier_id = tier_id
-
-        if not isinstance(self.tariff_id, TariffIdType | NoneType):
-            raise TypeError("tariff_id is not of type TariffIdType")
-        
-        if not isinstance(self.tier_id, list | NoneType):
-            raise TypeError("tier_id is not of type list[TierIdType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.tier_id is not None:
-            msg_data.append({"tierId": [d.get_data() for d in self.tier_id]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                tier_id=data_dict.get('tierId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDataType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: TariffIdType = None,
-            active_tier_id: list[TierIdType] = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.active_tier_id = active_tier_id
-
-        if not isinstance(self.tariff_id, TariffIdType | NoneType):
-            raise TypeError("tariff_id is not of type TariffIdType")
-        
-        if not isinstance(self.active_tier_id, list | NoneType):
-            raise TypeError("active_tier_id is not of type list[TierIdType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.active_tier_id is not None:
-            msg_data.append({"activeTierId": [d.get_data() for d in self.active_tier_id]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.active_tier_id is not None:
-            result_str += f"{sep}activeTierId: {self.active_tier_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                active_tier_id=data_dict.get('activeTierId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffDescriptionDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDescriptionDataType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: TariffIdType = None,
-            commodity_id: CommodityIdType = None,
-            measurement_id: MeasurementIdType = None,
-            tariff_writeable: bool = None,
-            update_required: bool = None,
-            scope_type: ScopeTypeType = None,
-            label: LabelType = None,
-            description: DescriptionType = None,
-            slot_id_support: bool = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.commodity_id = commodity_id
-        self.measurement_id = measurement_id
-        self.tariff_writeable = tariff_writeable
-        self.update_required = update_required
-        self.scope_type = scope_type
-        self.label = label
-        self.description = description
-        self.slot_id_support = slot_id_support
-
-        if not isinstance(self.tariff_id, TariffIdType | NoneType):
-            raise TypeError("tariff_id is not of type TariffIdType")
-        
-        if not isinstance(self.commodity_id, CommodityIdType | NoneType):
-            raise TypeError("commodity_id is not of type CommodityIdType")
-        
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.tariff_writeable, bool | NoneType):
-            raise TypeError("tariff_writeable is not of type bool")
-        
-        if not isinstance(self.update_required, bool | NoneType):
-            raise TypeError("update_required is not of type bool")
-        
-        if not isinstance(self.scope_type, ScopeTypeType | NoneType):
-            raise TypeError("scope_type is not of type ScopeTypeType")
-        
-        if not isinstance(self.label, LabelType | NoneType):
-            raise TypeError("label is not of type LabelType")
-        
-        if not isinstance(self.description, DescriptionType | NoneType):
-            raise TypeError("description is not of type DescriptionType")
-        
-        if not isinstance(self.slot_id_support, bool | NoneType):
-            raise TypeError("slot_id_support is not of type bool")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.commodity_id is not None:
-            msg_data.append({"commodityId": self.commodity_id.get_data()})
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.tariff_writeable is not None:
-            msg_data.append({"tariffWriteable": self.tariff_writeable})
-        if self.update_required is not None:
-            msg_data.append({"updateRequired": self.update_required})
-        if self.scope_type is not None:
-            msg_data.append({"scopeType": self.scope_type.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        if self.slot_id_support is not None:
-            msg_data.append({"slotIdSupport": self.slot_id_support})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.commodity_id is not None:
-            result_str += f"{sep}commodityId: {self.commodity_id}"
-            sep = ", "
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.tariff_writeable is not None:
-            result_str += f"{sep}tariffWriteable: {self.tariff_writeable}"
-            sep = ", "
-        if self.update_required is not None:
-            result_str += f"{sep}updateRequired: {self.update_required}"
-            sep = ", "
-        if self.scope_type is not None:
-            result_str += f"{sep}scopeType: {self.scope_type}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-            sep = ", "
-        if self.slot_id_support is not None:
-            result_str += f"{sep}slotIdSupport: {self.slot_id_support}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                commodity_id=data_dict.get('commodityId'),
-                measurement_id=data_dict.get('measurementId'),
-                tariff_writeable=data_dict.get('tariffWriteable'),
-                update_required=data_dict.get('updateRequired'),
-                scope_type=data_dict.get('scopeType'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-                slot_id_support=data_dict.get('slotIdSupport'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffBoundaryRelationDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffBoundaryRelationDataType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: TariffIdType = None,
-            boundary_id: list[TierBoundaryIdType] = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.boundary_id = boundary_id
-
-        if not isinstance(self.tariff_id, TariffIdType | NoneType):
-            raise TypeError("tariff_id is not of type TariffIdType")
-        
-        if not isinstance(self.boundary_id, list | NoneType):
-            raise TypeError("boundary_id is not of type list[TierBoundaryIdType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.boundary_id is not None:
-            msg_data.append({"boundaryId": [d.get_data() for d in self.boundary_id]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.boundary_id is not None:
-            result_str += f"{sep}boundaryId: {self.boundary_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                boundary_id=data_dict.get('boundaryId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentiveDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDataType -> ComplexType
-    def __init__(
-            self,
-            incentive_id: IncentiveIdType = None,
-            value_type: IncentiveValueTypeType = None,
-            timestamp: AbsoluteOrRelativeTimeType = None,
-            time_period: TimePeriodType = None,
-            time_table_id: TimeTableIdType = None,
-            value: ScaledNumberType = None,
-    ):
-        super().__init__()
-        
-        self.incentive_id = incentive_id
-        self.value_type = value_type
-        self.timestamp = timestamp
-        self.time_period = time_period
-        self.time_table_id = time_table_id
-        self.value = value
-
-        if not isinstance(self.incentive_id, IncentiveIdType | NoneType):
-            raise TypeError("incentive_id is not of type IncentiveIdType")
-        
-        if not isinstance(self.value_type, IncentiveValueTypeType | NoneType):
-            raise TypeError("value_type is not of type IncentiveValueTypeType")
-        
-        if not isinstance(self.timestamp, AbsoluteOrRelativeTimeType | NoneType):
-            raise TypeError("timestamp is not of type AbsoluteOrRelativeTimeType")
-        
-        if not isinstance(self.time_period, TimePeriodType | NoneType):
-            raise TypeError("time_period is not of type TimePeriodType")
-        
-        if not isinstance(self.time_table_id, TimeTableIdType | NoneType):
-            raise TypeError("time_table_id is not of type TimeTableIdType")
-        
-        if not isinstance(self.value, ScaledNumberType | NoneType):
-            raise TypeError("value is not of type ScaledNumberType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.incentive_id is not None:
-            msg_data.append({"incentiveId": self.incentive_id.get_data()})
-        if self.value_type is not None:
-            msg_data.append({"valueType": self.value_type.get_data()})
-        if self.timestamp is not None:
-            msg_data.append({"timestamp": self.timestamp.get_data()})
-        if self.time_period is not None:
-            msg_data.append({"timePeriod": self.time_period.get_data()})
-        if self.time_table_id is not None:
-            msg_data.append({"timeTableId": self.time_table_id.get_data()})
-        if self.value is not None:
-            msg_data.append({"value": self.value.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.incentive_id is not None:
-            result_str += f"{sep}incentiveId: {self.incentive_id}"
-            sep = ", "
-        if self.value_type is not None:
-            result_str += f"{sep}valueType: {self.value_type}"
-            sep = ", "
-        if self.timestamp is not None:
-            result_str += f"{sep}timestamp: {self.timestamp}"
-            sep = ", "
-        if self.time_period is not None:
-            result_str += f"{sep}timePeriod: {self.time_period}"
-            sep = ", "
-        if self.time_table_id is not None:
-            result_str += f"{sep}timeTableId: {self.time_table_id}"
-            sep = ", "
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                incentive_id=data_dict.get('incentiveId'),
-                value_type=data_dict.get('valueType'),
-                timestamp=data_dict.get('timestamp'),
-                time_period=data_dict.get('timePeriod'),
-                time_table_id=data_dict.get('timeTableId'),
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentiveDescriptionDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDescriptionDataType -> ComplexType
-    def __init__(
-            self,
-            incentive_id: IncentiveIdType = None,
-            incentive_type: IncentiveTypeType = None,
-            incentive_priority: IncentivePriorityType = None,
-            currency: CurrencyType = None,
-            unit: UnitOfMeasurementType = None,
-            label: LabelType = None,
-            description: DescriptionType = None,
-    ):
-        super().__init__()
-        
-        self.incentive_id = incentive_id
-        self.incentive_type = incentive_type
-        self.incentive_priority = incentive_priority
-        self.currency = currency
-        self.unit = unit
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.incentive_id, IncentiveIdType | NoneType):
-            raise TypeError("incentive_id is not of type IncentiveIdType")
-        
-        if not isinstance(self.incentive_type, IncentiveTypeType | NoneType):
-            raise TypeError("incentive_type is not of type IncentiveTypeType")
-        
-        if not isinstance(self.incentive_priority, IncentivePriorityType | NoneType):
-            raise TypeError("incentive_priority is not of type IncentivePriorityType")
-        
-        if not isinstance(self.currency, CurrencyType | NoneType):
-            raise TypeError("currency is not of type CurrencyType")
-        
-        if not isinstance(self.unit, UnitOfMeasurementType | NoneType):
-            raise TypeError("unit is not of type UnitOfMeasurementType")
-        
-        if not isinstance(self.label, LabelType | NoneType):
-            raise TypeError("label is not of type LabelType")
-        
-        if not isinstance(self.description, DescriptionType | NoneType):
-            raise TypeError("description is not of type DescriptionType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.incentive_id is not None:
-            msg_data.append({"incentiveId": self.incentive_id.get_data()})
-        if self.incentive_type is not None:
-            msg_data.append({"incentiveType": self.incentive_type.get_data()})
-        if self.incentive_priority is not None:
-            msg_data.append({"incentivePriority": self.incentive_priority.get_data()})
-        if self.currency is not None:
-            msg_data.append({"currency": self.currency.get_data()})
-        if self.unit is not None:
-            msg_data.append({"unit": self.unit.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.incentive_id is not None:
-            result_str += f"{sep}incentiveId: {self.incentive_id}"
-            sep = ", "
-        if self.incentive_type is not None:
-            result_str += f"{sep}incentiveType: {self.incentive_type}"
-            sep = ", "
-        if self.incentive_priority is not None:
-            result_str += f"{sep}incentivePriority: {self.incentive_priority}"
-            sep = ", "
-        if self.currency is not None:
-            result_str += f"{sep}currency: {self.currency}"
-            sep = ", "
-        if self.unit is not None:
-            result_str += f"{sep}unit: {self.unit}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                incentive_id=data_dict.get('incentiveId'),
-                incentive_type=data_dict.get('incentiveType'),
-                incentive_priority=data_dict.get('incentivePriority'),
-                currency=data_dict.get('currency'),
-                unit=data_dict.get('unit'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class CommodityDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityDataType -> ComplexType
-    def __init__(
-            self,
-            commodity_id: CommodityIdType = None,
-            commodity_type: CommodityTypeType = None,
-            positive_energy_direction: EnergyDirectionType = None,
-            label: LabelType = None,
-            description: DescriptionType = None,
-    ):
-        super().__init__()
-        
-        self.commodity_id = commodity_id
-        self.commodity_type = commodity_type
-        self.positive_energy_direction = positive_energy_direction
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.commodity_id, CommodityIdType | NoneType):
-            raise TypeError("commodity_id is not of type CommodityIdType")
-        
-        if not isinstance(self.commodity_type, CommodityTypeType | NoneType):
-            raise TypeError("commodity_type is not of type CommodityTypeType")
-        
-        if not isinstance(self.positive_energy_direction, EnergyDirectionType | NoneType):
-            raise TypeError("positive_energy_direction is not of type EnergyDirectionType")
-        
-        if not isinstance(self.label, LabelType | NoneType):
-            raise TypeError("label is not of type LabelType")
-        
-        if not isinstance(self.description, DescriptionType | NoneType):
-            raise TypeError("description is not of type DescriptionType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.commodity_id is not None:
-            msg_data.append({"commodityId": self.commodity_id.get_data()})
-        if self.commodity_type is not None:
-            msg_data.append({"commodityType": self.commodity_type.get_data()})
-        if self.positive_energy_direction is not None:
-            msg_data.append({"positiveEnergyDirection": self.positive_energy_direction.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.commodity_id is not None:
-            result_str += f"{sep}commodityId: {self.commodity_id}"
-            sep = ", "
-        if self.commodity_type is not None:
-            result_str += f"{sep}commodityType: {self.commodity_type}"
-            sep = ", "
-        if self.positive_energy_direction is not None:
-            result_str += f"{sep}positiveEnergyDirection: {self.positive_energy_direction}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                commodity_id=data_dict.get('commodityId'),
-                commodity_type=data_dict.get('commodityType'),
-                positive_energy_direction=data_dict.get('positiveEnergyDirection'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierListDataType -> ComplexType
-    def __init__(
-            self,
-            tier_data: list[TierDataType] = None,
-    ):
-        super().__init__()
-        
-        self.tier_data = tier_data
-
-        if not isinstance(self.tier_data, list | NoneType):
-            raise TypeError("tier_data is not of type list[TierDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_data is not None:
-            msg_data.append({"tierData": [d.get_data() for d in self.tier_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_data is not None:
-            result_str += f"{sep}tierData: {self.tier_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_data=data_dict.get('tierData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierIncentiveRelationListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIncentiveRelationListDataType -> ComplexType
-    def __init__(
-            self,
-            tier_incentive_relation_data: list[TierIncentiveRelationDataType] = None,
-    ):
-        super().__init__()
-        
-        self.tier_incentive_relation_data = tier_incentive_relation_data
-
-        if not isinstance(self.tier_incentive_relation_data, list | NoneType):
-            raise TypeError("tier_incentive_relation_data is not of type list[TierIncentiveRelationDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_incentive_relation_data is not None:
-            msg_data.append({"tierIncentiveRelationData": [d.get_data() for d in self.tier_incentive_relation_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_incentive_relation_data is not None:
-            result_str += f"{sep}tierIncentiveRelationData: {self.tier_incentive_relation_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_incentive_relation_data=data_dict.get('tierIncentiveRelationData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierDescriptionListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDescriptionListDataType -> ComplexType
-    def __init__(
-            self,
-            tier_description_data: list[TierDescriptionDataType] = None,
-    ):
-        super().__init__()
-        
-        self.tier_description_data = tier_description_data
-
-        if not isinstance(self.tier_description_data, list | NoneType):
-            raise TypeError("tier_description_data is not of type list[TierDescriptionDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_description_data is not None:
-            msg_data.append({"tierDescriptionData": [d.get_data() for d in self.tier_description_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_description_data is not None:
-            result_str += f"{sep}tierDescriptionData: {self.tier_description_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_description_data=data_dict.get('tierDescriptionData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryListDataType -> ComplexType
-    def __init__(
-            self,
-            tier_boundary_data: list[TierBoundaryDataType] = None,
-    ):
-        super().__init__()
-        
-        self.tier_boundary_data = tier_boundary_data
-
-        if not isinstance(self.tier_boundary_data, list | NoneType):
-            raise TypeError("tier_boundary_data is not of type list[TierBoundaryDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_boundary_data is not None:
-            msg_data.append({"tierBoundaryData": [d.get_data() for d in self.tier_boundary_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_boundary_data is not None:
-            result_str += f"{sep}tierBoundaryData: {self.tier_boundary_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_boundary_data=data_dict.get('tierBoundaryData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryDescriptionListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDescriptionListDataType -> ComplexType
-    def __init__(
-            self,
-            tier_boundary_description_data: list[TierBoundaryDescriptionDataType] = None,
-    ):
-        super().__init__()
-        
-        self.tier_boundary_description_data = tier_boundary_description_data
-
-        if not isinstance(self.tier_boundary_description_data, list | NoneType):
-            raise TypeError("tier_boundary_description_data is not of type list[TierBoundaryDescriptionDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_boundary_description_data is not None:
-            msg_data.append({"tierBoundaryDescriptionData": [d.get_data() for d in self.tier_boundary_description_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_boundary_description_data is not None:
-            result_str += f"{sep}tierBoundaryDescriptionData: {self.tier_boundary_description_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_boundary_description_data=data_dict.get('tierBoundaryDescriptionData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffTierRelationListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffTierRelationListDataType -> ComplexType
-    def __init__(
-            self,
-            tariff_tier_relation_data: list[TariffTierRelationDataType] = None,
-    ):
-        super().__init__()
-        
-        self.tariff_tier_relation_data = tariff_tier_relation_data
-
-        if not isinstance(self.tariff_tier_relation_data, list | NoneType):
-            raise TypeError("tariff_tier_relation_data is not of type list[TariffTierRelationDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_tier_relation_data is not None:
-            msg_data.append({"tariffTierRelationData": [d.get_data() for d in self.tariff_tier_relation_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_tier_relation_data is not None:
-            result_str += f"{sep}tariffTierRelationData: {self.tariff_tier_relation_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_tier_relation_data=data_dict.get('tariffTierRelationData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffOverallConstraintsDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffOverallConstraintsDataType -> ComplexType
-    def __init__(
-            self,
-            max_tariff_count: TariffCountType = None,
-            max_boundary_count: TierBoundaryCountType = None,
-            max_tier_count: TierCountType = None,
-            max_incentive_count: IncentiveCountType = None,
-            max_boundaries_per_tariff: TierBoundaryCountType = None,
-            max_tiers_per_tariff: TierCountType = None,
-            max_boundaries_per_tier: TierBoundaryCountType = None,
-            max_incentives_per_tier: IncentiveCountType = None,
-    ):
-        super().__init__()
-        
-        self.max_tariff_count = max_tariff_count
-        self.max_boundary_count = max_boundary_count
-        self.max_tier_count = max_tier_count
-        self.max_incentive_count = max_incentive_count
-        self.max_boundaries_per_tariff = max_boundaries_per_tariff
-        self.max_tiers_per_tariff = max_tiers_per_tariff
-        self.max_boundaries_per_tier = max_boundaries_per_tier
-        self.max_incentives_per_tier = max_incentives_per_tier
-
-        if not isinstance(self.max_tariff_count, TariffCountType | NoneType):
-            raise TypeError("max_tariff_count is not of type TariffCountType")
-        
-        if not isinstance(self.max_boundary_count, TierBoundaryCountType | NoneType):
-            raise TypeError("max_boundary_count is not of type TierBoundaryCountType")
-        
-        if not isinstance(self.max_tier_count, TierCountType | NoneType):
-            raise TypeError("max_tier_count is not of type TierCountType")
-        
-        if not isinstance(self.max_incentive_count, IncentiveCountType | NoneType):
-            raise TypeError("max_incentive_count is not of type IncentiveCountType")
-        
-        if not isinstance(self.max_boundaries_per_tariff, TierBoundaryCountType | NoneType):
-            raise TypeError("max_boundaries_per_tariff is not of type TierBoundaryCountType")
-        
-        if not isinstance(self.max_tiers_per_tariff, TierCountType | NoneType):
-            raise TypeError("max_tiers_per_tariff is not of type TierCountType")
-        
-        if not isinstance(self.max_boundaries_per_tier, TierBoundaryCountType | NoneType):
-            raise TypeError("max_boundaries_per_tier is not of type TierBoundaryCountType")
-        
-        if not isinstance(self.max_incentives_per_tier, IncentiveCountType | NoneType):
-            raise TypeError("max_incentives_per_tier is not of type IncentiveCountType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.max_tariff_count is not None:
-            msg_data.append({"maxTariffCount": self.max_tariff_count.get_data()})
-        if self.max_boundary_count is not None:
-            msg_data.append({"maxBoundaryCount": self.max_boundary_count.get_data()})
-        if self.max_tier_count is not None:
-            msg_data.append({"maxTierCount": self.max_tier_count.get_data()})
-        if self.max_incentive_count is not None:
-            msg_data.append({"maxIncentiveCount": self.max_incentive_count.get_data()})
-        if self.max_boundaries_per_tariff is not None:
-            msg_data.append({"maxBoundariesPerTariff": self.max_boundaries_per_tariff.get_data()})
-        if self.max_tiers_per_tariff is not None:
-            msg_data.append({"maxTiersPerTariff": self.max_tiers_per_tariff.get_data()})
-        if self.max_boundaries_per_tier is not None:
-            msg_data.append({"maxBoundariesPerTier": self.max_boundaries_per_tier.get_data()})
-        if self.max_incentives_per_tier is not None:
-            msg_data.append({"maxIncentivesPerTier": self.max_incentives_per_tier.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.max_tariff_count is not None:
-            result_str += f"{sep}maxTariffCount: {self.max_tariff_count}"
-            sep = ", "
-        if self.max_boundary_count is not None:
-            result_str += f"{sep}maxBoundaryCount: {self.max_boundary_count}"
-            sep = ", "
-        if self.max_tier_count is not None:
-            result_str += f"{sep}maxTierCount: {self.max_tier_count}"
-            sep = ", "
-        if self.max_incentive_count is not None:
-            result_str += f"{sep}maxIncentiveCount: {self.max_incentive_count}"
-            sep = ", "
-        if self.max_boundaries_per_tariff is not None:
-            result_str += f"{sep}maxBoundariesPerTariff: {self.max_boundaries_per_tariff}"
-            sep = ", "
-        if self.max_tiers_per_tariff is not None:
-            result_str += f"{sep}maxTiersPerTariff: {self.max_tiers_per_tariff}"
-            sep = ", "
-        if self.max_boundaries_per_tier is not None:
-            result_str += f"{sep}maxBoundariesPerTier: {self.max_boundaries_per_tier}"
-            sep = ", "
-        if self.max_incentives_per_tier is not None:
-            result_str += f"{sep}maxIncentivesPerTier: {self.max_incentives_per_tier}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                max_tariff_count=data_dict.get('maxTariffCount'),
-                max_boundary_count=data_dict.get('maxBoundaryCount'),
-                max_tier_count=data_dict.get('maxTierCount'),
-                max_incentive_count=data_dict.get('maxIncentiveCount'),
-                max_boundaries_per_tariff=data_dict.get('maxBoundariesPerTariff'),
-                max_tiers_per_tariff=data_dict.get('maxTiersPerTariff'),
-                max_boundaries_per_tier=data_dict.get('maxBoundariesPerTier'),
-                max_incentives_per_tier=data_dict.get('maxIncentivesPerTier'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffListDataType -> ComplexType
-    def __init__(
-            self,
-            tariff_data: list[TariffDataType] = None,
-    ):
-        super().__init__()
-        
-        self.tariff_data = tariff_data
-
-        if not isinstance(self.tariff_data, list | NoneType):
-            raise TypeError("tariff_data is not of type list[TariffDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_data is not None:
-            msg_data.append({"tariffData": [d.get_data() for d in self.tariff_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_data is not None:
-            result_str += f"{sep}tariffData: {self.tariff_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_data=data_dict.get('tariffData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffDescriptionListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDescriptionListDataType -> ComplexType
-    def __init__(
-            self,
-            tariff_description_data: list[TariffDescriptionDataType] = None,
-    ):
-        super().__init__()
-        
-        self.tariff_description_data = tariff_description_data
-
-        if not isinstance(self.tariff_description_data, list | NoneType):
-            raise TypeError("tariff_description_data is not of type list[TariffDescriptionDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_description_data is not None:
-            msg_data.append({"tariffDescriptionData": [d.get_data() for d in self.tariff_description_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_description_data is not None:
-            result_str += f"{sep}tariffDescriptionData: {self.tariff_description_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_description_data=data_dict.get('tariffDescriptionData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffBoundaryRelationListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffBoundaryRelationListDataType -> ComplexType
-    def __init__(
-            self,
-            tariff_boundary_relation_data: list[TariffBoundaryRelationDataType] = None,
-    ):
-        super().__init__()
-        
-        self.tariff_boundary_relation_data = tariff_boundary_relation_data
-
-        if not isinstance(self.tariff_boundary_relation_data, list | NoneType):
-            raise TypeError("tariff_boundary_relation_data is not of type list[TariffBoundaryRelationDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_boundary_relation_data is not None:
-            msg_data.append({"tariffBoundaryRelationData": [d.get_data() for d in self.tariff_boundary_relation_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_boundary_relation_data is not None:
-            result_str += f"{sep}tariffBoundaryRelationData: {self.tariff_boundary_relation_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_boundary_relation_data=data_dict.get('tariffBoundaryRelationData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentiveListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveListDataType -> ComplexType
-    def __init__(
-            self,
-            incentive_data: list[IncentiveDataType] = None,
-    ):
-        super().__init__()
-        
-        self.incentive_data = incentive_data
-
-        if not isinstance(self.incentive_data, list | NoneType):
-            raise TypeError("incentive_data is not of type list[IncentiveDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.incentive_data is not None:
-            msg_data.append({"incentiveData": [d.get_data() for d in self.incentive_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.incentive_data is not None:
-            result_str += f"{sep}incentiveData: {self.incentive_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                incentive_data=data_dict.get('incentiveData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentiveDescriptionListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDescriptionListDataType -> ComplexType
-    def __init__(
-            self,
-            incentive_description_data: list[IncentiveDescriptionDataType] = None,
-    ):
-        super().__init__()
-        
-        self.incentive_description_data = incentive_description_data
-
-        if not isinstance(self.incentive_description_data, list | NoneType):
-            raise TypeError("incentive_description_data is not of type list[IncentiveDescriptionDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.incentive_description_data is not None:
-            msg_data.append({"incentiveDescriptionData": [d.get_data() for d in self.incentive_description_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.incentive_description_data is not None:
-            result_str += f"{sep}incentiveDescriptionData: {self.incentive_description_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                incentive_description_data=data_dict.get('incentiveDescriptionData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class CommodityListDataType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityListDataType -> ComplexType
-    def __init__(
-            self,
-            commodity_data: list[CommodityDataType] = None,
-    ):
-        super().__init__()
-        
-        self.commodity_data = commodity_data
-
-        if not isinstance(self.commodity_data, list | NoneType):
-            raise TypeError("commodity_data is not of type list[CommodityDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.commodity_data is not None:
-            msg_data.append({"commodityData": [d.get_data() for d in self.commodity_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.commodity_data is not None:
-            result_str += f"{sep}commodityData: {self.commodity_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                commodity_data=data_dict.get('commodityData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierIncentiveRelationDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIncentiveRelationDataElementsType -> ComplexType
-    def __init__(
-            self,
-            tier_id: ElementTagType = None,
-            incentive_id: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.tier_id = tier_id
-        self.incentive_id = incentive_id
-
-        if not isinstance(self.tier_id, ElementTagType | NoneType):
-            raise TypeError("tier_id is not of type ElementTagType")
-        
-        if not isinstance(self.incentive_id, ElementTagType | NoneType):
-            raise TypeError("incentive_id is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        if self.incentive_id is not None:
-            msg_data.append({"incentiveId": self.incentive_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-            sep = ", "
-        if self.incentive_id is not None:
-            result_str += f"{sep}incentiveId: {self.incentive_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_id=data_dict.get('tierId'),
-                incentive_id=data_dict.get('incentiveId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierDescriptionDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDescriptionDataElementsType -> ComplexType
-    def __init__(
-            self,
-            tier_id: ElementTagType = None,
-            tier_type: ElementTagType = None,
-            label: ElementTagType = None,
-            description: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.tier_id = tier_id
-        self.tier_type = tier_type
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.tier_id, ElementTagType | NoneType):
-            raise TypeError("tier_id is not of type ElementTagType")
-        
-        if not isinstance(self.tier_type, ElementTagType | NoneType):
-            raise TypeError("tier_type is not of type ElementTagType")
-        
-        if not isinstance(self.label, ElementTagType | NoneType):
-            raise TypeError("label is not of type ElementTagType")
-        
-        if not isinstance(self.description, ElementTagType | NoneType):
-            raise TypeError("description is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        if self.tier_type is not None:
-            msg_data.append({"tierType": self.tier_type.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-            sep = ", "
-        if self.tier_type is not None:
-            result_str += f"{sep}tierType: {self.tier_type}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_id=data_dict.get('tierId'),
-                tier_type=data_dict.get('tierType'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDataElementsType -> ComplexType
-    def __init__(
-            self,
-            tier_id: ElementTagType = None,
-            time_period: TimePeriodElementsType = None,
-            time_table_id: ElementTagType = None,
-            active_incentive_id: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.tier_id = tier_id
-        self.time_period = time_period
-        self.time_table_id = time_table_id
-        self.active_incentive_id = active_incentive_id
-
-        if not isinstance(self.tier_id, ElementTagType | NoneType):
-            raise TypeError("tier_id is not of type ElementTagType")
-        
-        if not isinstance(self.time_period, TimePeriodElementsType | NoneType):
-            raise TypeError("time_period is not of type TimePeriodElementsType")
-        
-        if not isinstance(self.time_table_id, ElementTagType | NoneType):
-            raise TypeError("time_table_id is not of type ElementTagType")
-        
-        if not isinstance(self.active_incentive_id, ElementTagType | NoneType):
-            raise TypeError("active_incentive_id is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        if self.time_period is not None:
-            msg_data.append({"timePeriod": self.time_period.get_data()})
-        if self.time_table_id is not None:
-            msg_data.append({"timeTableId": self.time_table_id.get_data()})
-        if self.active_incentive_id is not None:
-            msg_data.append({"activeIncentiveId": self.active_incentive_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-            sep = ", "
-        if self.time_period is not None:
-            result_str += f"{sep}timePeriod: {self.time_period}"
-            sep = ", "
-        if self.time_table_id is not None:
-            result_str += f"{sep}timeTableId: {self.time_table_id}"
-            sep = ", "
-        if self.active_incentive_id is not None:
-            result_str += f"{sep}activeIncentiveId: {self.active_incentive_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_id=data_dict.get('tierId'),
-                time_period=data_dict.get('timePeriod'),
-                time_table_id=data_dict.get('timeTableId'),
-                active_incentive_id=data_dict.get('activeIncentiveId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryDescriptionDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDescriptionDataElementsType -> ComplexType
-    def __init__(
-            self,
-            boundary_id: ElementTagType = None,
-            boundary_type: ElementTagType = None,
-            valid_for_tier_id: ElementTagType = None,
-            switch_to_tier_id_when_lower: ElementTagType = None,
-            switch_to_tier_id_when_higher: ElementTagType = None,
-            boundary_unit: ElementTagType = None,
-            label: ElementTagType = None,
-            description: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.boundary_id = boundary_id
-        self.boundary_type = boundary_type
-        self.valid_for_tier_id = valid_for_tier_id
-        self.switch_to_tier_id_when_lower = switch_to_tier_id_when_lower
-        self.switch_to_tier_id_when_higher = switch_to_tier_id_when_higher
-        self.boundary_unit = boundary_unit
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.boundary_id, ElementTagType | NoneType):
-            raise TypeError("boundary_id is not of type ElementTagType")
-        
-        if not isinstance(self.boundary_type, ElementTagType | NoneType):
-            raise TypeError("boundary_type is not of type ElementTagType")
-        
-        if not isinstance(self.valid_for_tier_id, ElementTagType | NoneType):
-            raise TypeError("valid_for_tier_id is not of type ElementTagType")
-        
-        if not isinstance(self.switch_to_tier_id_when_lower, ElementTagType | NoneType):
-            raise TypeError("switch_to_tier_id_when_lower is not of type ElementTagType")
-        
-        if not isinstance(self.switch_to_tier_id_when_higher, ElementTagType | NoneType):
-            raise TypeError("switch_to_tier_id_when_higher is not of type ElementTagType")
-        
-        if not isinstance(self.boundary_unit, ElementTagType | NoneType):
-            raise TypeError("boundary_unit is not of type ElementTagType")
-        
-        if not isinstance(self.label, ElementTagType | NoneType):
-            raise TypeError("label is not of type ElementTagType")
-        
-        if not isinstance(self.description, ElementTagType | NoneType):
-            raise TypeError("description is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.boundary_id is not None:
-            msg_data.append({"boundaryId": self.boundary_id.get_data()})
-        if self.boundary_type is not None:
-            msg_data.append({"boundaryType": self.boundary_type.get_data()})
-        if self.valid_for_tier_id is not None:
-            msg_data.append({"validForTierId": self.valid_for_tier_id.get_data()})
-        if self.switch_to_tier_id_when_lower is not None:
-            msg_data.append({"switchToTierIdWhenLower": self.switch_to_tier_id_when_lower.get_data()})
-        if self.switch_to_tier_id_when_higher is not None:
-            msg_data.append({"switchToTierIdWhenHigher": self.switch_to_tier_id_when_higher.get_data()})
-        if self.boundary_unit is not None:
-            msg_data.append({"boundaryUnit": self.boundary_unit.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.boundary_id is not None:
-            result_str += f"{sep}boundaryId: {self.boundary_id}"
-            sep = ", "
-        if self.boundary_type is not None:
-            result_str += f"{sep}boundaryType: {self.boundary_type}"
-            sep = ", "
-        if self.valid_for_tier_id is not None:
-            result_str += f"{sep}validForTierId: {self.valid_for_tier_id}"
-            sep = ", "
-        if self.switch_to_tier_id_when_lower is not None:
-            result_str += f"{sep}switchToTierIdWhenLower: {self.switch_to_tier_id_when_lower}"
-            sep = ", "
-        if self.switch_to_tier_id_when_higher is not None:
-            result_str += f"{sep}switchToTierIdWhenHigher: {self.switch_to_tier_id_when_higher}"
-            sep = ", "
-        if self.boundary_unit is not None:
-            result_str += f"{sep}boundaryUnit: {self.boundary_unit}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                boundary_id=data_dict.get('boundaryId'),
-                boundary_type=data_dict.get('boundaryType'),
-                valid_for_tier_id=data_dict.get('validForTierId'),
-                switch_to_tier_id_when_lower=data_dict.get('switchToTierIdWhenLower'),
-                switch_to_tier_id_when_higher=data_dict.get('switchToTierIdWhenHigher'),
-                boundary_unit=data_dict.get('boundaryUnit'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDataElementsType -> ComplexType
-    def __init__(
-            self,
-            boundary_id: ElementTagType = None,
-            time_period: TimePeriodElementsType = None,
-            time_table_id: ElementTagType = None,
-            lower_boundary_value: ScaledNumberElementsType = None,
-            upper_boundary_value: ScaledNumberElementsType = None,
-    ):
-        super().__init__()
-        
-        self.boundary_id = boundary_id
-        self.time_period = time_period
-        self.time_table_id = time_table_id
-        self.lower_boundary_value = lower_boundary_value
-        self.upper_boundary_value = upper_boundary_value
-
-        if not isinstance(self.boundary_id, ElementTagType | NoneType):
-            raise TypeError("boundary_id is not of type ElementTagType")
-        
-        if not isinstance(self.time_period, TimePeriodElementsType | NoneType):
-            raise TypeError("time_period is not of type TimePeriodElementsType")
-        
-        if not isinstance(self.time_table_id, ElementTagType | NoneType):
-            raise TypeError("time_table_id is not of type ElementTagType")
-        
-        if not isinstance(self.lower_boundary_value, ScaledNumberElementsType | NoneType):
-            raise TypeError("lower_boundary_value is not of type ScaledNumberElementsType")
-        
-        if not isinstance(self.upper_boundary_value, ScaledNumberElementsType | NoneType):
-            raise TypeError("upper_boundary_value is not of type ScaledNumberElementsType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.boundary_id is not None:
-            msg_data.append({"boundaryId": self.boundary_id.get_data()})
-        if self.time_period is not None:
-            msg_data.append({"timePeriod": self.time_period.get_data()})
-        if self.time_table_id is not None:
-            msg_data.append({"timeTableId": self.time_table_id.get_data()})
-        if self.lower_boundary_value is not None:
-            msg_data.append({"lowerBoundaryValue": self.lower_boundary_value.get_data()})
-        if self.upper_boundary_value is not None:
-            msg_data.append({"upperBoundaryValue": self.upper_boundary_value.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.boundary_id is not None:
-            result_str += f"{sep}boundaryId: {self.boundary_id}"
-            sep = ", "
-        if self.time_period is not None:
-            result_str += f"{sep}timePeriod: {self.time_period}"
-            sep = ", "
-        if self.time_table_id is not None:
-            result_str += f"{sep}timeTableId: {self.time_table_id}"
-            sep = ", "
-        if self.lower_boundary_value is not None:
-            result_str += f"{sep}lowerBoundaryValue: {self.lower_boundary_value}"
-            sep = ", "
-        if self.upper_boundary_value is not None:
-            result_str += f"{sep}upperBoundaryValue: {self.upper_boundary_value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                boundary_id=data_dict.get('boundaryId'),
-                time_period=data_dict.get('timePeriod'),
-                time_table_id=data_dict.get('timeTableId'),
-                lower_boundary_value=data_dict.get('lowerBoundaryValue'),
-                upper_boundary_value=data_dict.get('upperBoundaryValue'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffTierRelationDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffTierRelationDataElementsType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: ElementTagType = None,
-            tier_id: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.tier_id = tier_id
-
-        if not isinstance(self.tariff_id, ElementTagType | NoneType):
-            raise TypeError("tariff_id is not of type ElementTagType")
-        
-        if not isinstance(self.tier_id, ElementTagType | NoneType):
-            raise TypeError("tier_id is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                tier_id=data_dict.get('tierId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffOverallConstraintsDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffOverallConstraintsDataElementsType -> ComplexType
-    def __init__(
-            self,
-            max_tariff_count: ElementTagType = None,
-            max_boundary_count: ElementTagType = None,
-            max_tier_count: ElementTagType = None,
-            max_incentive_count: ElementTagType = None,
-            max_boundaries_per_tariff: ElementTagType = None,
-            max_tiers_per_tariff: ElementTagType = None,
-            max_boundaries_per_tier: ElementTagType = None,
-            max_incentives_per_tier: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.max_tariff_count = max_tariff_count
-        self.max_boundary_count = max_boundary_count
-        self.max_tier_count = max_tier_count
-        self.max_incentive_count = max_incentive_count
-        self.max_boundaries_per_tariff = max_boundaries_per_tariff
-        self.max_tiers_per_tariff = max_tiers_per_tariff
-        self.max_boundaries_per_tier = max_boundaries_per_tier
-        self.max_incentives_per_tier = max_incentives_per_tier
-
-        if not isinstance(self.max_tariff_count, ElementTagType | NoneType):
-            raise TypeError("max_tariff_count is not of type ElementTagType")
-        
-        if not isinstance(self.max_boundary_count, ElementTagType | NoneType):
-            raise TypeError("max_boundary_count is not of type ElementTagType")
-        
-        if not isinstance(self.max_tier_count, ElementTagType | NoneType):
-            raise TypeError("max_tier_count is not of type ElementTagType")
-        
-        if not isinstance(self.max_incentive_count, ElementTagType | NoneType):
-            raise TypeError("max_incentive_count is not of type ElementTagType")
-        
-        if not isinstance(self.max_boundaries_per_tariff, ElementTagType | NoneType):
-            raise TypeError("max_boundaries_per_tariff is not of type ElementTagType")
-        
-        if not isinstance(self.max_tiers_per_tariff, ElementTagType | NoneType):
-            raise TypeError("max_tiers_per_tariff is not of type ElementTagType")
-        
-        if not isinstance(self.max_boundaries_per_tier, ElementTagType | NoneType):
-            raise TypeError("max_boundaries_per_tier is not of type ElementTagType")
-        
-        if not isinstance(self.max_incentives_per_tier, ElementTagType | NoneType):
-            raise TypeError("max_incentives_per_tier is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.max_tariff_count is not None:
-            msg_data.append({"maxTariffCount": self.max_tariff_count.get_data()})
-        if self.max_boundary_count is not None:
-            msg_data.append({"maxBoundaryCount": self.max_boundary_count.get_data()})
-        if self.max_tier_count is not None:
-            msg_data.append({"maxTierCount": self.max_tier_count.get_data()})
-        if self.max_incentive_count is not None:
-            msg_data.append({"maxIncentiveCount": self.max_incentive_count.get_data()})
-        if self.max_boundaries_per_tariff is not None:
-            msg_data.append({"maxBoundariesPerTariff": self.max_boundaries_per_tariff.get_data()})
-        if self.max_tiers_per_tariff is not None:
-            msg_data.append({"maxTiersPerTariff": self.max_tiers_per_tariff.get_data()})
-        if self.max_boundaries_per_tier is not None:
-            msg_data.append({"maxBoundariesPerTier": self.max_boundaries_per_tier.get_data()})
-        if self.max_incentives_per_tier is not None:
-            msg_data.append({"maxIncentivesPerTier": self.max_incentives_per_tier.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.max_tariff_count is not None:
-            result_str += f"{sep}maxTariffCount: {self.max_tariff_count}"
-            sep = ", "
-        if self.max_boundary_count is not None:
-            result_str += f"{sep}maxBoundaryCount: {self.max_boundary_count}"
-            sep = ", "
-        if self.max_tier_count is not None:
-            result_str += f"{sep}maxTierCount: {self.max_tier_count}"
-            sep = ", "
-        if self.max_incentive_count is not None:
-            result_str += f"{sep}maxIncentiveCount: {self.max_incentive_count}"
-            sep = ", "
-        if self.max_boundaries_per_tariff is not None:
-            result_str += f"{sep}maxBoundariesPerTariff: {self.max_boundaries_per_tariff}"
-            sep = ", "
-        if self.max_tiers_per_tariff is not None:
-            result_str += f"{sep}maxTiersPerTariff: {self.max_tiers_per_tariff}"
-            sep = ", "
-        if self.max_boundaries_per_tier is not None:
-            result_str += f"{sep}maxBoundariesPerTier: {self.max_boundaries_per_tier}"
-            sep = ", "
-        if self.max_incentives_per_tier is not None:
-            result_str += f"{sep}maxIncentivesPerTier: {self.max_incentives_per_tier}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                max_tariff_count=data_dict.get('maxTariffCount'),
-                max_boundary_count=data_dict.get('maxBoundaryCount'),
-                max_tier_count=data_dict.get('maxTierCount'),
-                max_incentive_count=data_dict.get('maxIncentiveCount'),
-                max_boundaries_per_tariff=data_dict.get('maxBoundariesPerTariff'),
-                max_tiers_per_tariff=data_dict.get('maxTiersPerTariff'),
-                max_boundaries_per_tier=data_dict.get('maxBoundariesPerTier'),
-                max_incentives_per_tier=data_dict.get('maxIncentivesPerTier'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffDescriptionDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDescriptionDataElementsType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: ElementTagType = None,
-            commodity_id: ElementTagType = None,
-            measurement_id: ElementTagType = None,
-            tariff_writeable: ElementTagType = None,
-            update_required: ElementTagType = None,
-            scope_type: ElementTagType = None,
-            label: ElementTagType = None,
-            description: ElementTagType = None,
-            slot_id_support: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.commodity_id = commodity_id
-        self.measurement_id = measurement_id
-        self.tariff_writeable = tariff_writeable
-        self.update_required = update_required
-        self.scope_type = scope_type
-        self.label = label
-        self.description = description
-        self.slot_id_support = slot_id_support
-
-        if not isinstance(self.tariff_id, ElementTagType | NoneType):
-            raise TypeError("tariff_id is not of type ElementTagType")
-        
-        if not isinstance(self.commodity_id, ElementTagType | NoneType):
-            raise TypeError("commodity_id is not of type ElementTagType")
-        
-        if not isinstance(self.measurement_id, ElementTagType | NoneType):
-            raise TypeError("measurement_id is not of type ElementTagType")
-        
-        if not isinstance(self.tariff_writeable, ElementTagType | NoneType):
-            raise TypeError("tariff_writeable is not of type ElementTagType")
-        
-        if not isinstance(self.update_required, ElementTagType | NoneType):
-            raise TypeError("update_required is not of type ElementTagType")
-        
-        if not isinstance(self.scope_type, ElementTagType | NoneType):
-            raise TypeError("scope_type is not of type ElementTagType")
-        
-        if not isinstance(self.label, ElementTagType | NoneType):
-            raise TypeError("label is not of type ElementTagType")
-        
-        if not isinstance(self.description, ElementTagType | NoneType):
-            raise TypeError("description is not of type ElementTagType")
-        
-        if not isinstance(self.slot_id_support, ElementTagType | NoneType):
-            raise TypeError("slot_id_support is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.commodity_id is not None:
-            msg_data.append({"commodityId": self.commodity_id.get_data()})
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.tariff_writeable is not None:
-            msg_data.append({"tariffWriteable": self.tariff_writeable.get_data()})
-        if self.update_required is not None:
-            msg_data.append({"updateRequired": self.update_required.get_data()})
-        if self.scope_type is not None:
-            msg_data.append({"scopeType": self.scope_type.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        if self.slot_id_support is not None:
-            msg_data.append({"slotIdSupport": self.slot_id_support.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.commodity_id is not None:
-            result_str += f"{sep}commodityId: {self.commodity_id}"
-            sep = ", "
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.tariff_writeable is not None:
-            result_str += f"{sep}tariffWriteable: {self.tariff_writeable}"
-            sep = ", "
-        if self.update_required is not None:
-            result_str += f"{sep}updateRequired: {self.update_required}"
-            sep = ", "
-        if self.scope_type is not None:
-            result_str += f"{sep}scopeType: {self.scope_type}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-            sep = ", "
-        if self.slot_id_support is not None:
-            result_str += f"{sep}slotIdSupport: {self.slot_id_support}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                commodity_id=data_dict.get('commodityId'),
-                measurement_id=data_dict.get('measurementId'),
-                tariff_writeable=data_dict.get('tariffWriteable'),
-                update_required=data_dict.get('updateRequired'),
-                scope_type=data_dict.get('scopeType'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-                slot_id_support=data_dict.get('slotIdSupport'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDataElementsType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: ElementTagType = None,
-            active_tier_id: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.active_tier_id = active_tier_id
-
-        if not isinstance(self.tariff_id, ElementTagType | NoneType):
-            raise TypeError("tariff_id is not of type ElementTagType")
-        
-        if not isinstance(self.active_tier_id, ElementTagType | NoneType):
-            raise TypeError("active_tier_id is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.active_tier_id is not None:
-            msg_data.append({"activeTierId": self.active_tier_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.active_tier_id is not None:
-            result_str += f"{sep}activeTierId: {self.active_tier_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                active_tier_id=data_dict.get('activeTierId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffBoundaryRelationDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffBoundaryRelationDataElementsType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: ElementTagType = None,
-            boundary_id: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.boundary_id = boundary_id
-
-        if not isinstance(self.tariff_id, ElementTagType | NoneType):
-            raise TypeError("tariff_id is not of type ElementTagType")
-        
-        if not isinstance(self.boundary_id, ElementTagType | NoneType):
-            raise TypeError("boundary_id is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.boundary_id is not None:
-            msg_data.append({"boundaryId": self.boundary_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.boundary_id is not None:
-            result_str += f"{sep}boundaryId: {self.boundary_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                boundary_id=data_dict.get('boundaryId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentiveDescriptionDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDescriptionDataElementsType -> ComplexType
-    def __init__(
-            self,
-            incentive_id: ElementTagType = None,
-            incentive_type: ElementTagType = None,
-            incentive_priority: ElementTagType = None,
-            currency: ElementTagType = None,
-            unit: ElementTagType = None,
-            label: ElementTagType = None,
-            description: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.incentive_id = incentive_id
-        self.incentive_type = incentive_type
-        self.incentive_priority = incentive_priority
-        self.currency = currency
-        self.unit = unit
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.incentive_id, ElementTagType | NoneType):
-            raise TypeError("incentive_id is not of type ElementTagType")
-        
-        if not isinstance(self.incentive_type, ElementTagType | NoneType):
-            raise TypeError("incentive_type is not of type ElementTagType")
-        
-        if not isinstance(self.incentive_priority, ElementTagType | NoneType):
-            raise TypeError("incentive_priority is not of type ElementTagType")
-        
-        if not isinstance(self.currency, ElementTagType | NoneType):
-            raise TypeError("currency is not of type ElementTagType")
-        
-        if not isinstance(self.unit, ElementTagType | NoneType):
-            raise TypeError("unit is not of type ElementTagType")
-        
-        if not isinstance(self.label, ElementTagType | NoneType):
-            raise TypeError("label is not of type ElementTagType")
-        
-        if not isinstance(self.description, ElementTagType | NoneType):
-            raise TypeError("description is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.incentive_id is not None:
-            msg_data.append({"incentiveId": self.incentive_id.get_data()})
-        if self.incentive_type is not None:
-            msg_data.append({"incentiveType": self.incentive_type.get_data()})
-        if self.incentive_priority is not None:
-            msg_data.append({"incentivePriority": self.incentive_priority.get_data()})
-        if self.currency is not None:
-            msg_data.append({"currency": self.currency.get_data()})
-        if self.unit is not None:
-            msg_data.append({"unit": self.unit.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.incentive_id is not None:
-            result_str += f"{sep}incentiveId: {self.incentive_id}"
-            sep = ", "
-        if self.incentive_type is not None:
-            result_str += f"{sep}incentiveType: {self.incentive_type}"
-            sep = ", "
-        if self.incentive_priority is not None:
-            result_str += f"{sep}incentivePriority: {self.incentive_priority}"
-            sep = ", "
-        if self.currency is not None:
-            result_str += f"{sep}currency: {self.currency}"
-            sep = ", "
-        if self.unit is not None:
-            result_str += f"{sep}unit: {self.unit}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                incentive_id=data_dict.get('incentiveId'),
-                incentive_type=data_dict.get('incentiveType'),
-                incentive_priority=data_dict.get('incentivePriority'),
-                currency=data_dict.get('currency'),
-                unit=data_dict.get('unit'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentiveDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDataElementsType -> ComplexType
-    def __init__(
-            self,
-            incentive_id: ElementTagType = None,
-            value_type: ElementTagType = None,
-            timestamp: ElementTagType = None,
-            time_period: TimePeriodElementsType = None,
-            time_table_id: ElementTagType = None,
-            value: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.incentive_id = incentive_id
-        self.value_type = value_type
-        self.timestamp = timestamp
-        self.time_period = time_period
-        self.time_table_id = time_table_id
-        self.value = value
-
-        if not isinstance(self.incentive_id, ElementTagType | NoneType):
-            raise TypeError("incentive_id is not of type ElementTagType")
-        
-        if not isinstance(self.value_type, ElementTagType | NoneType):
-            raise TypeError("value_type is not of type ElementTagType")
-        
-        if not isinstance(self.timestamp, ElementTagType | NoneType):
-            raise TypeError("timestamp is not of type ElementTagType")
-        
-        if not isinstance(self.time_period, TimePeriodElementsType | NoneType):
-            raise TypeError("time_period is not of type TimePeriodElementsType")
-        
-        if not isinstance(self.time_table_id, ElementTagType | NoneType):
-            raise TypeError("time_table_id is not of type ElementTagType")
-        
-        if not isinstance(self.value, ElementTagType | NoneType):
-            raise TypeError("value is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.incentive_id is not None:
-            msg_data.append({"incentiveId": self.incentive_id.get_data()})
-        if self.value_type is not None:
-            msg_data.append({"valueType": self.value_type.get_data()})
-        if self.timestamp is not None:
-            msg_data.append({"timestamp": self.timestamp.get_data()})
-        if self.time_period is not None:
-            msg_data.append({"timePeriod": self.time_period.get_data()})
-        if self.time_table_id is not None:
-            msg_data.append({"timeTableId": self.time_table_id.get_data()})
-        if self.value is not None:
-            msg_data.append({"value": self.value.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.incentive_id is not None:
-            result_str += f"{sep}incentiveId: {self.incentive_id}"
-            sep = ", "
-        if self.value_type is not None:
-            result_str += f"{sep}valueType: {self.value_type}"
-            sep = ", "
-        if self.timestamp is not None:
-            result_str += f"{sep}timestamp: {self.timestamp}"
-            sep = ", "
-        if self.time_period is not None:
-            result_str += f"{sep}timePeriod: {self.time_period}"
-            sep = ", "
-        if self.time_table_id is not None:
-            result_str += f"{sep}timeTableId: {self.time_table_id}"
-            sep = ", "
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                incentive_id=data_dict.get('incentiveId'),
-                value_type=data_dict.get('valueType'),
-                timestamp=data_dict.get('timestamp'),
-                time_period=data_dict.get('timePeriod'),
-                time_table_id=data_dict.get('timeTableId'),
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class CommodityDataElementsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityDataElementsType -> ComplexType
-    def __init__(
-            self,
-            commodity_id: ElementTagType = None,
-            commodity_type: ElementTagType = None,
-            positive_energy_direction: ElementTagType = None,
-            label: ElementTagType = None,
-            description: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.commodity_id = commodity_id
-        self.commodity_type = commodity_type
-        self.positive_energy_direction = positive_energy_direction
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.commodity_id, ElementTagType | NoneType):
-            raise TypeError("commodity_id is not of type ElementTagType")
-        
-        if not isinstance(self.commodity_type, ElementTagType | NoneType):
-            raise TypeError("commodity_type is not of type ElementTagType")
-        
-        if not isinstance(self.positive_energy_direction, ElementTagType | NoneType):
-            raise TypeError("positive_energy_direction is not of type ElementTagType")
-        
-        if not isinstance(self.label, ElementTagType | NoneType):
-            raise TypeError("label is not of type ElementTagType")
-        
-        if not isinstance(self.description, ElementTagType | NoneType):
-            raise TypeError("description is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.commodity_id is not None:
-            msg_data.append({"commodityId": self.commodity_id.get_data()})
-        if self.commodity_type is not None:
-            msg_data.append({"commodityType": self.commodity_type.get_data()})
-        if self.positive_energy_direction is not None:
-            msg_data.append({"positiveEnergyDirection": self.positive_energy_direction.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.commodity_id is not None:
-            result_str += f"{sep}commodityId: {self.commodity_id}"
-            sep = ", "
-        if self.commodity_type is not None:
-            result_str += f"{sep}commodityType: {self.commodity_type}"
-            sep = ", "
-        if self.positive_energy_direction is not None:
-            result_str += f"{sep}positiveEnergyDirection: {self.positive_energy_direction}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                commodity_id=data_dict.get('commodityId'),
-                commodity_type=data_dict.get('commodityType'),
-                positive_energy_direction=data_dict.get('positiveEnergyDirection'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            tier_id: TierIdType = None,
-            active_incentive_id: IncentiveIdType = None,
-    ):
-        super().__init__()
-        
-        self.tier_id = tier_id
-        self.active_incentive_id = active_incentive_id
-
-        if not isinstance(self.tier_id, TierIdType | NoneType):
-            raise TypeError("tier_id is not of type TierIdType")
-        
-        if not isinstance(self.active_incentive_id, IncentiveIdType | NoneType):
-            raise TypeError("active_incentive_id is not of type IncentiveIdType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        if self.active_incentive_id is not None:
-            msg_data.append({"activeIncentiveId": self.active_incentive_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-            sep = ", "
-        if self.active_incentive_id is not None:
-            result_str += f"{sep}activeIncentiveId: {self.active_incentive_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_id=data_dict.get('tierId'),
-                active_incentive_id=data_dict.get('activeIncentiveId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierIncentiveRelationListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIncentiveRelationListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            tier_id: TierIdType = None,
-            incentive_id: IncentiveIdType = None,
-    ):
-        super().__init__()
-        
-        self.tier_id = tier_id
-        self.incentive_id = incentive_id
-
-        if not isinstance(self.tier_id, TierIdType | NoneType):
-            raise TypeError("tier_id is not of type TierIdType")
-        
-        if not isinstance(self.incentive_id, IncentiveIdType | NoneType):
-            raise TypeError("incentive_id is not of type IncentiveIdType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        if self.incentive_id is not None:
-            msg_data.append({"incentiveId": self.incentive_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-            sep = ", "
-        if self.incentive_id is not None:
-            result_str += f"{sep}incentiveId: {self.incentive_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_id=data_dict.get('tierId'),
-                incentive_id=data_dict.get('incentiveId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierDescriptionListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDescriptionListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            tier_id: TierIdType = None,
-            tier_type: TierTypeType = None,
-    ):
-        super().__init__()
-        
-        self.tier_id = tier_id
-        self.tier_type = tier_type
-
-        if not isinstance(self.tier_id, TierIdType | NoneType):
-            raise TypeError("tier_id is not of type TierIdType")
-        
-        if not isinstance(self.tier_type, TierTypeType | NoneType):
-            raise TypeError("tier_type is not of type TierTypeType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        if self.tier_type is not None:
-            msg_data.append({"tierType": self.tier_type.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-            sep = ", "
-        if self.tier_type is not None:
-            result_str += f"{sep}tierType: {self.tier_type}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tier_id=data_dict.get('tierId'),
-                tier_type=data_dict.get('tierType'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            boundary_id: TierBoundaryIdType = None,
-    ):
-        super().__init__()
-        
-        self.boundary_id = boundary_id
-
-        if not isinstance(self.boundary_id, TierBoundaryIdType | NoneType):
-            raise TypeError("boundary_id is not of type TierBoundaryIdType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.boundary_id is not None:
-            msg_data.append({"boundaryId": self.boundary_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.boundary_id is not None:
-            result_str += f"{sep}boundaryId: {self.boundary_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                boundary_id=data_dict.get('boundaryId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryDescriptionListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDescriptionListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            boundary_id: TierBoundaryIdType = None,
-            boundary_type: TierBoundaryTypeType = None,
-    ):
-        super().__init__()
-        
-        self.boundary_id = boundary_id
-        self.boundary_type = boundary_type
-
-        if not isinstance(self.boundary_id, TierBoundaryIdType | NoneType):
-            raise TypeError("boundary_id is not of type TierBoundaryIdType")
-        
-        if not isinstance(self.boundary_type, TierBoundaryTypeType | NoneType):
-            raise TypeError("boundary_type is not of type TierBoundaryTypeType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.boundary_id is not None:
-            msg_data.append({"boundaryId": self.boundary_id.get_data()})
-        if self.boundary_type is not None:
-            msg_data.append({"boundaryType": self.boundary_type.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.boundary_id is not None:
-            result_str += f"{sep}boundaryId: {self.boundary_id}"
-            sep = ", "
-        if self.boundary_type is not None:
-            result_str += f"{sep}boundaryType: {self.boundary_type}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                boundary_id=data_dict.get('boundaryId'),
-                boundary_type=data_dict.get('boundaryType'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffTierRelationListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffTierRelationListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: TariffIdType = None,
-            tier_id: TierIdType = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.tier_id = tier_id
-
-        if not isinstance(self.tariff_id, TariffIdType | NoneType):
-            raise TypeError("tariff_id is not of type TariffIdType")
-        
-        if not isinstance(self.tier_id, TierIdType | NoneType):
-            raise TypeError("tier_id is not of type TierIdType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.tier_id is not None:
-            msg_data.append({"tierId": self.tier_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.tier_id is not None:
-            result_str += f"{sep}tierId: {self.tier_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                tier_id=data_dict.get('tierId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: TariffIdType = None,
-            active_tier_id: TierIdType = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.active_tier_id = active_tier_id
-
-        if not isinstance(self.tariff_id, TariffIdType | NoneType):
-            raise TypeError("tariff_id is not of type TariffIdType")
-        
-        if not isinstance(self.active_tier_id, TierIdType | NoneType):
-            raise TypeError("active_tier_id is not of type TierIdType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.active_tier_id is not None:
-            msg_data.append({"activeTierId": self.active_tier_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.active_tier_id is not None:
-            result_str += f"{sep}activeTierId: {self.active_tier_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                active_tier_id=data_dict.get('activeTierId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffDescriptionListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDescriptionListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: TariffIdType = None,
-            commodity_id: CommodityIdType = None,
-            measurement_id: MeasurementIdType = None,
-            scope_type: ScopeTypeType = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.commodity_id = commodity_id
-        self.measurement_id = measurement_id
-        self.scope_type = scope_type
-
-        if not isinstance(self.tariff_id, TariffIdType | NoneType):
-            raise TypeError("tariff_id is not of type TariffIdType")
-        
-        if not isinstance(self.commodity_id, CommodityIdType | NoneType):
-            raise TypeError("commodity_id is not of type CommodityIdType")
-        
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.scope_type, ScopeTypeType | NoneType):
-            raise TypeError("scope_type is not of type ScopeTypeType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.commodity_id is not None:
-            msg_data.append({"commodityId": self.commodity_id.get_data()})
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.scope_type is not None:
-            msg_data.append({"scopeType": self.scope_type.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.commodity_id is not None:
-            result_str += f"{sep}commodityId: {self.commodity_id}"
-            sep = ", "
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.scope_type is not None:
-            result_str += f"{sep}scopeType: {self.scope_type}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                commodity_id=data_dict.get('commodityId'),
-                measurement_id=data_dict.get('measurementId'),
-                scope_type=data_dict.get('scopeType'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffBoundaryRelationListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffBoundaryRelationListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            tariff_id: TariffIdType = None,
-            boundary_id: TierBoundaryIdType = None,
-    ):
-        super().__init__()
-        
-        self.tariff_id = tariff_id
-        self.boundary_id = boundary_id
-
-        if not isinstance(self.tariff_id, TariffIdType | NoneType):
-            raise TypeError("tariff_id is not of type TariffIdType")
-        
-        if not isinstance(self.boundary_id, TierBoundaryIdType | NoneType):
-            raise TypeError("boundary_id is not of type TierBoundaryIdType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.tariff_id is not None:
-            msg_data.append({"tariffId": self.tariff_id.get_data()})
-        if self.boundary_id is not None:
-            msg_data.append({"boundaryId": self.boundary_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.tariff_id is not None:
-            result_str += f"{sep}tariffId: {self.tariff_id}"
-            sep = ", "
-        if self.boundary_id is not None:
-            result_str += f"{sep}boundaryId: {self.boundary_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                tariff_id=data_dict.get('tariffId'),
-                boundary_id=data_dict.get('boundaryId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentiveListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            incentive_id: IncentiveIdType = None,
-            value_type: IncentiveValueTypeType = None,
-            timestamp_interval: TimestampIntervalType = None,
-    ):
-        super().__init__()
-        
-        self.incentive_id = incentive_id
-        self.value_type = value_type
-        self.timestamp_interval = timestamp_interval
-
-        if not isinstance(self.incentive_id, IncentiveIdType | NoneType):
-            raise TypeError("incentive_id is not of type IncentiveIdType")
-        
-        if not isinstance(self.value_type, IncentiveValueTypeType | NoneType):
-            raise TypeError("value_type is not of type IncentiveValueTypeType")
-        
-        if not isinstance(self.timestamp_interval, TimestampIntervalType | NoneType):
-            raise TypeError("timestamp_interval is not of type TimestampIntervalType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.incentive_id is not None:
-            msg_data.append({"incentiveId": self.incentive_id.get_data()})
-        if self.value_type is not None:
-            msg_data.append({"valueType": self.value_type.get_data()})
-        if self.timestamp_interval is not None:
-            msg_data.append({"timestampInterval": self.timestamp_interval.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.incentive_id is not None:
-            result_str += f"{sep}incentiveId: {self.incentive_id}"
-            sep = ", "
-        if self.value_type is not None:
-            result_str += f"{sep}valueType: {self.value_type}"
-            sep = ", "
-        if self.timestamp_interval is not None:
-            result_str += f"{sep}timestampInterval: {self.timestamp_interval}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                incentive_id=data_dict.get('incentiveId'),
-                value_type=data_dict.get('valueType'),
-                timestamp_interval=data_dict.get('timestampInterval'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentiveDescriptionListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDescriptionListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            incentive_id: IncentiveIdType = None,
-            incentive_type: IncentiveTypeType = None,
-    ):
-        super().__init__()
-        
-        self.incentive_id = incentive_id
-        self.incentive_type = incentive_type
-
-        if not isinstance(self.incentive_id, IncentiveIdType | NoneType):
-            raise TypeError("incentive_id is not of type IncentiveIdType")
-        
-        if not isinstance(self.incentive_type, IncentiveTypeType | NoneType):
-            raise TypeError("incentive_type is not of type IncentiveTypeType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.incentive_id is not None:
-            msg_data.append({"incentiveId": self.incentive_id.get_data()})
-        if self.incentive_type is not None:
-            msg_data.append({"incentiveType": self.incentive_type.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.incentive_id is not None:
-            result_str += f"{sep}incentiveId: {self.incentive_id}"
-            sep = ", "
-        if self.incentive_type is not None:
-            result_str += f"{sep}incentiveType: {self.incentive_type}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                incentive_id=data_dict.get('incentiveId'),
-                incentive_type=data_dict.get('incentiveType'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class CommodityListDataSelectorsType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            commodity_id: CommodityIdType = None,
-            commodity_type: CommodityTypeType = None,
-    ):
-        super().__init__()
-        
-        self.commodity_id = commodity_id
-        self.commodity_type = commodity_type
-
-        if not isinstance(self.commodity_id, CommodityIdType | NoneType):
-            raise TypeError("commodity_id is not of type CommodityIdType")
-        
-        if not isinstance(self.commodity_type, CommodityTypeType | NoneType):
-            raise TypeError("commodity_type is not of type CommodityTypeType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.commodity_id is not None:
-            msg_data.append({"commodityId": self.commodity_id.get_data()})
-        if self.commodity_type is not None:
-            msg_data.append({"commodityType": self.commodity_type.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.commodity_id is not None:
-            result_str += f"{sep}commodityId: {self.commodity_id}"
-            sep = ", "
-        if self.commodity_type is not None:
-            result_str += f"{sep}commodityType: {self.commodity_type}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                commodity_id=data_dict.get('commodityId'),
-                commodity_type=data_dict.get('commodityType'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
+    from spine.base_type.commondatatypes import ElementTagType
+    from spine.base_type.commondatatypes import ScaledNumberElementsType
+    from spine.base_type.commondatatypes import ScaledNumberType
+    from spine.base_type.commondatatypes import TimePeriodElementsType
+    from spine.base_type.commondatatypes import TimePeriodType
+    from spine.base_type.commondatatypes import TimestampIntervalType
+    from spine.simple_type.commondatatypes import DescriptionType
+    from spine.simple_type.commondatatypes import LabelType
+    from spine.simple_type.commondatatypes import NumberType
+    from spine.simple_type.commondatatypes import ScaleType
+    from spine.simple_type.measurement import MeasurementIdType
+    from spine.simple_type.tariffinformation import CommodityIdType
+    from spine.simple_type.tariffinformation import IncentiveCountType
+    from spine.simple_type.tariffinformation import IncentiveIdType
+    from spine.simple_type.tariffinformation import IncentivePriorityType
+    from spine.simple_type.tariffinformation import TariffCountType
+    from spine.simple_type.tariffinformation import TariffIdType
+    from spine.simple_type.tariffinformation import TierBoundaryCountType
+    from spine.simple_type.tariffinformation import TierBoundaryIdType
+    from spine.simple_type.tariffinformation import TierCountType
+    from spine.simple_type.tariffinformation import TierIdType
+    from spine.simple_type.timetable import TimeTableIdType
+    from spine.union_type.commondatatypes import AbsoluteOrRelativeTimeType
+    from spine.union_type.commondatatypes import CommodityTypeType
+    from spine.union_type.commondatatypes import CurrencyType
+    from spine.union_type.commondatatypes import EnergyDirectionType
+    from spine.union_type.commondatatypes import ScopeTypeType
+    from spine.union_type.commondatatypes import UnitOfMeasurementType
+    from spine.union_type.tariffinformation import IncentiveTypeType
+    from spine.union_type.tariffinformation import IncentiveValueTypeType
+    from spine.union_type.tariffinformation import TierBoundaryTypeType
+    from spine.union_type.tariffinformation import TierTypeType
+
+
+
+@spine_type('ns_p:IncentiveDescriptionDataType', is_value_type=False, no_attrib_name=False)
+class IncentiveDescriptionDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDescriptionDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveIdType"
+        },
+        {
+            "name": "incentive_type",
+            "xml_name": "incentiveType",
+            "type": "ns_p:IncentiveTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveTypeType"
+        },
+        {
+            "name": "incentive_priority",
+            "xml_name": "incentivePriority",
+            "type": "ns_p:IncentivePriorityType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentivePriorityType"
+        },
+        {
+            "name": "currency",
+            "xml_name": "currency",
+            "type": "ns_p:CurrencyType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CurrencyType"
+        },
+        {
+            "name": "unit",
+            "xml_name": "unit",
+            "type": "ns_p:UnitOfMeasurementType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "UnitOfMeasurementType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentiveDataType', is_value_type=False, no_attrib_name=False)
+class IncentiveDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveIdType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:IncentiveValueTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveValueTypeType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "time_period",
+            "xml_name": "timePeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "time_table_id",
+            "xml_name": "timeTableId",
+            "type": "ns_p:TimeTableIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimeTableIdType"
+        },
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:NumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "NumberType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ScaleType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaleType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierDescriptionDataType', is_value_type=False, no_attrib_name=False)
+class TierDescriptionDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDescriptionDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "tier_type",
+            "xml_name": "tierType",
+            "type": "ns_p:TierTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierTypeType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierIncentiveRelationDataType', is_value_type=False, no_attrib_name=False)
+class TierIncentiveRelationDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIncentiveRelationDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:TierDataType', is_value_type=False, no_attrib_name=False)
+class TierDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "time_period",
+            "xml_name": "timePeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "time_table_id",
+            "xml_name": "timeTableId",
+            "type": "ns_p:TimeTableIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimeTableIdType"
+        },
+        {
+            "name": "active_incentive_id",
+            "xml_name": "activeIncentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:CommodityDataType', is_value_type=False, no_attrib_name=False)
+class CommodityDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "commodity_id",
+            "xml_name": "commodityId",
+            "type": "ns_p:CommodityIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityIdType"
+        },
+        {
+            "name": "commodity_type",
+            "xml_name": "commodityType",
+            "type": "ns_p:CommodityTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityTypeType"
+        },
+        {
+            "name": "positive_energy_direction",
+            "xml_name": "positiveEnergyDirection",
+            "type": "ns_p:EnergyDirectionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "EnergyDirectionType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryDescriptionDataType', is_value_type=False, no_attrib_name=False)
+class TierBoundaryDescriptionDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDescriptionDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryIdType"
+        },
+        {
+            "name": "boundary_type",
+            "xml_name": "boundaryType",
+            "type": "ns_p:TierBoundaryTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryTypeType"
+        },
+        {
+            "name": "valid_for_tier_id",
+            "xml_name": "validForTierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "switch_to_tier_id_when_lower",
+            "xml_name": "switchToTierIdWhenLower",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "switch_to_tier_id_when_higher",
+            "xml_name": "switchToTierIdWhenHigher",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "boundary_unit",
+            "xml_name": "boundaryUnit",
+            "type": "ns_p:UnitOfMeasurementType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "UnitOfMeasurementType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryDataType', is_value_type=False, no_attrib_name=False)
+class TierBoundaryDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryIdType"
+        },
+        {
+            "name": "time_period",
+            "xml_name": "timePeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "time_table_id",
+            "xml_name": "timeTableId",
+            "type": "ns_p:TimeTableIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimeTableIdType"
+        },
+        {
+            "name": "lower_boundary_value",
+            "xml_name": "lowerBoundaryValue",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:NumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "NumberType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ScaleType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaleType"
+        },
+        {
+            "name": "upper_boundary_value",
+            "xml_name": "upperBoundaryValue",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffDescriptionDataType', is_value_type=False, no_attrib_name=False)
+class TariffDescriptionDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDescriptionDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "commodity_id",
+            "xml_name": "commodityId",
+            "type": "ns_p:CommodityIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityIdType"
+        },
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "tariff_writeable",
+            "xml_name": "tariffWriteable",
+            "type": "xs:boolean",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "bool"
+        },
+        {
+            "name": "update_required",
+            "xml_name": "updateRequired",
+            "type": "xs:boolean",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "bool"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ScopeTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScopeTypeType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+        {
+            "name": "slot_id_support",
+            "xml_name": "slotIdSupport",
+            "type": "xs:boolean",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "bool"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffBoundaryRelationDataType', is_value_type=False, no_attrib_name=False)
+class TariffBoundaryRelationDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffBoundaryRelationDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffTierRelationDataType', is_value_type=False, no_attrib_name=False)
+class TariffTierRelationDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffTierRelationDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffDataType', is_value_type=False, no_attrib_name=False)
+class TariffDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "active_tier_id",
+            "xml_name": "activeTierId",
+            "type": "ns_p:TierIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentiveDescriptionListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class IncentiveDescriptionListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDescriptionListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveIdType"
+        },
+        {
+            "name": "incentive_type",
+            "xml_name": "incentiveType",
+            "type": "ns_p:IncentiveTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveTypeType"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentiveDescriptionListDataType', is_value_type=False, no_attrib_name=False)
+class IncentiveDescriptionListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDescriptionListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "incentive_description_data",
+            "xml_name": "incentiveDescriptionData",
+            "type": "ns_p:IncentiveDescriptionDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveIdType"
+        },
+        {
+            "name": "incentive_type",
+            "xml_name": "incentiveType",
+            "type": "ns_p:IncentiveTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveTypeType"
+        },
+        {
+            "name": "incentive_priority",
+            "xml_name": "incentivePriority",
+            "type": "ns_p:IncentivePriorityType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentivePriorityType"
+        },
+        {
+            "name": "currency",
+            "xml_name": "currency",
+            "type": "ns_p:CurrencyType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CurrencyType"
+        },
+        {
+            "name": "unit",
+            "xml_name": "unit",
+            "type": "ns_p:UnitOfMeasurementType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "UnitOfMeasurementType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentiveListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class IncentiveListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveIdType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:IncentiveValueTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveValueTypeType"
+        },
+        {
+            "name": "timestamp_interval",
+            "xml_name": "timestampInterval",
+            "type": "ns_p:TimestampIntervalType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimestampIntervalType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentiveListDataType', is_value_type=False, no_attrib_name=False)
+class IncentiveListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "incentive_data",
+            "xml_name": "incentiveData",
+            "type": "ns_p:IncentiveDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveIdType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:IncentiveValueTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveValueTypeType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "time_period",
+            "xml_name": "timePeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "time_table_id",
+            "xml_name": "timeTableId",
+            "type": "ns_p:TimeTableIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimeTableIdType"
+        },
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierDescriptionListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class TierDescriptionListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDescriptionListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "tier_type",
+            "xml_name": "tierType",
+            "type": "ns_p:TierTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierTypeType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierDescriptionListDataType', is_value_type=False, no_attrib_name=False)
+class TierDescriptionListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDescriptionListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_description_data",
+            "xml_name": "tierDescriptionData",
+            "type": "ns_p:TierDescriptionDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "tier_type",
+            "xml_name": "tierType",
+            "type": "ns_p:TierTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierTypeType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierIncentiveRelationListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class TierIncentiveRelationListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIncentiveRelationListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierIncentiveRelationListDataType', is_value_type=False, no_attrib_name=False)
+class TierIncentiveRelationListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIncentiveRelationListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_incentive_relation_data",
+            "xml_name": "tierIncentiveRelationData",
+            "type": "ns_p:TierIncentiveRelationDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:TierIncentiveRelationDataElementsType', is_value_type=False, no_attrib_name=False)
+class TierIncentiveRelationDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIncentiveRelationDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class TierListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "active_incentive_id",
+            "xml_name": "activeIncentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierListDataType', is_value_type=False, no_attrib_name=False)
+class TierListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_data",
+            "xml_name": "tierData",
+            "type": "ns_p:TierDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "time_period",
+            "xml_name": "timePeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "time_table_id",
+            "xml_name": "timeTableId",
+            "type": "ns_p:TimeTableIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimeTableIdType"
+        },
+        {
+            "name": "active_incentive_id",
+            "xml_name": "activeIncentiveId",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:CommodityListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class CommodityListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "commodity_id",
+            "xml_name": "commodityId",
+            "type": "ns_p:CommodityIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityIdType"
+        },
+        {
+            "name": "commodity_type",
+            "xml_name": "commodityType",
+            "type": "ns_p:CommodityTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityTypeType"
+        },
+    ]
+
+
+@spine_type('ns_p:CommodityListDataType', is_value_type=False, no_attrib_name=False)
+class CommodityListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "commodity_data",
+            "xml_name": "commodityData",
+            "type": "ns_p:CommodityDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "commodity_id",
+            "xml_name": "commodityId",
+            "type": "ns_p:CommodityIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityIdType"
+        },
+        {
+            "name": "commodity_type",
+            "xml_name": "commodityType",
+            "type": "ns_p:CommodityTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityTypeType"
+        },
+        {
+            "name": "positive_energy_direction",
+            "xml_name": "positiveEnergyDirection",
+            "type": "ns_p:EnergyDirectionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "EnergyDirectionType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:CommodityDataElementsType', is_value_type=False, no_attrib_name=False)
+class CommodityDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "commodity_id",
+            "xml_name": "commodityId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "commodity_type",
+            "xml_name": "commodityType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "positive_energy_direction",
+            "xml_name": "positiveEnergyDirection",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryDescriptionListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class TierBoundaryDescriptionListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDescriptionListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryIdType"
+        },
+        {
+            "name": "boundary_type",
+            "xml_name": "boundaryType",
+            "type": "ns_p:TierBoundaryTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryTypeType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryDescriptionListDataType', is_value_type=False, no_attrib_name=False)
+class TierBoundaryDescriptionListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDescriptionListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_boundary_description_data",
+            "xml_name": "tierBoundaryDescriptionData",
+            "type": "ns_p:TierBoundaryDescriptionDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryIdType"
+        },
+        {
+            "name": "boundary_type",
+            "xml_name": "boundaryType",
+            "type": "ns_p:TierBoundaryTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryTypeType"
+        },
+        {
+            "name": "valid_for_tier_id",
+            "xml_name": "validForTierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "switch_to_tier_id_when_lower",
+            "xml_name": "switchToTierIdWhenLower",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "switch_to_tier_id_when_higher",
+            "xml_name": "switchToTierIdWhenHigher",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+        {
+            "name": "boundary_unit",
+            "xml_name": "boundaryUnit",
+            "type": "ns_p:UnitOfMeasurementType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "UnitOfMeasurementType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class TierBoundaryListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryListDataType', is_value_type=False, no_attrib_name=False)
+class TierBoundaryListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_boundary_data",
+            "xml_name": "tierBoundaryData",
+            "type": "ns_p:TierBoundaryDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryIdType"
+        },
+        {
+            "name": "time_period",
+            "xml_name": "timePeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "time_table_id",
+            "xml_name": "timeTableId",
+            "type": "ns_p:TimeTableIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimeTableIdType"
+        },
+        {
+            "name": "lower_boundary_value",
+            "xml_name": "lowerBoundaryValue",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "upper_boundary_value",
+            "xml_name": "upperBoundaryValue",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffDescriptionListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class TariffDescriptionListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDescriptionListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "commodity_id",
+            "xml_name": "commodityId",
+            "type": "ns_p:CommodityIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityIdType"
+        },
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ScopeTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScopeTypeType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffDescriptionListDataType', is_value_type=False, no_attrib_name=False)
+class TariffDescriptionListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDescriptionListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_description_data",
+            "xml_name": "tariffDescriptionData",
+            "type": "ns_p:TariffDescriptionDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "commodity_id",
+            "xml_name": "commodityId",
+            "type": "ns_p:CommodityIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityIdType"
+        },
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "tariff_writeable",
+            "xml_name": "tariffWriteable",
+            "type": "xs:boolean",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "bool"
+        },
+        {
+            "name": "update_required",
+            "xml_name": "updateRequired",
+            "type": "xs:boolean",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "bool"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ScopeTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScopeTypeType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+        {
+            "name": "slot_id_support",
+            "xml_name": "slotIdSupport",
+            "type": "xs:boolean",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "bool"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffBoundaryRelationListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class TariffBoundaryRelationListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffBoundaryRelationListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffBoundaryRelationListDataType', is_value_type=False, no_attrib_name=False)
+class TariffBoundaryRelationListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffBoundaryRelationListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_boundary_relation_data",
+            "xml_name": "tariffBoundaryRelationData",
+            "type": "ns_p:TariffBoundaryRelationDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffBoundaryRelationDataElementsType', is_value_type=False, no_attrib_name=False)
+class TariffBoundaryRelationDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffBoundaryRelationDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffTierRelationListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class TariffTierRelationListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffTierRelationListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffTierRelationListDataType', is_value_type=False, no_attrib_name=False)
+class TariffTierRelationListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffTierRelationListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_tier_relation_data",
+            "xml_name": "tariffTierRelationData",
+            "type": "ns_p:TariffTierRelationDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:TierIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffTierRelationDataElementsType', is_value_type=False, no_attrib_name=False)
+class TariffTierRelationDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffTierRelationDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class TariffListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "active_tier_id",
+            "xml_name": "activeTierId",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffListDataType', is_value_type=False, no_attrib_name=False)
+class TariffListDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_data",
+            "xml_name": "tariffData",
+            "type": "ns_p:TariffDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+        {
+            "name": "active_tier_id",
+            "xml_name": "activeTierId",
+            "type": "ns_p:TierIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffOverallConstraintsDataElementsType', is_value_type=False, no_attrib_name=False)
+class TariffOverallConstraintsDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffOverallConstraintsDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "max_tariff_count",
+            "xml_name": "maxTariffCount",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "max_boundary_count",
+            "xml_name": "maxBoundaryCount",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "max_tier_count",
+            "xml_name": "maxTierCount",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "max_incentive_count",
+            "xml_name": "maxIncentiveCount",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "max_boundaries_per_tariff",
+            "xml_name": "maxBoundariesPerTariff",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "max_tiers_per_tariff",
+            "xml_name": "maxTiersPerTariff",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "max_boundaries_per_tier",
+            "xml_name": "maxBoundariesPerTier",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "max_incentives_per_tier",
+            "xml_name": "maxIncentivesPerTier",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffOverallConstraintsDataType', is_value_type=False, no_attrib_name=False)
+class TariffOverallConstraintsDataType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffOverallConstraintsDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "max_tariff_count",
+            "xml_name": "maxTariffCount",
+            "type": "ns_p:TariffCountType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffCountType"
+        },
+        {
+            "name": "max_boundary_count",
+            "xml_name": "maxBoundaryCount",
+            "type": "ns_p:TierBoundaryCountType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryCountType"
+        },
+        {
+            "name": "max_tier_count",
+            "xml_name": "maxTierCount",
+            "type": "ns_p:TierCountType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierCountType"
+        },
+        {
+            "name": "max_incentive_count",
+            "xml_name": "maxIncentiveCount",
+            "type": "ns_p:IncentiveCountType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveCountType"
+        },
+        {
+            "name": "max_boundaries_per_tariff",
+            "xml_name": "maxBoundariesPerTariff",
+            "type": "ns_p:TierBoundaryCountType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryCountType"
+        },
+        {
+            "name": "max_tiers_per_tariff",
+            "xml_name": "maxTiersPerTariff",
+            "type": "ns_p:TierCountType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierCountType"
+        },
+        {
+            "name": "max_boundaries_per_tier",
+            "xml_name": "maxBoundariesPerTier",
+            "type": "ns_p:TierBoundaryCountType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryCountType"
+        },
+        {
+            "name": "max_incentives_per_tier",
+            "xml_name": "maxIncentivesPerTier",
+            "type": "ns_p:IncentiveCountType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveCountType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffDescriptionDataElementsType', is_value_type=False, no_attrib_name=False)
+class TariffDescriptionDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDescriptionDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "commodity_id",
+            "xml_name": "commodityId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "tariff_writeable",
+            "xml_name": "tariffWriteable",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "update_required",
+            "xml_name": "updateRequired",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "slot_id_support",
+            "xml_name": "slotIdSupport",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentiveDescriptionDataElementsType', is_value_type=False, no_attrib_name=False)
+class IncentiveDescriptionDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDescriptionDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "incentive_type",
+            "xml_name": "incentiveType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "incentive_priority",
+            "xml_name": "incentivePriority",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "currency",
+            "xml_name": "currency",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "unit",
+            "xml_name": "unit",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryDescriptionDataElementsType', is_value_type=False, no_attrib_name=False)
+class TierBoundaryDescriptionDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDescriptionDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "boundary_type",
+            "xml_name": "boundaryType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "valid_for_tier_id",
+            "xml_name": "validForTierId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "switch_to_tier_id_when_lower",
+            "xml_name": "switchToTierIdWhenLower",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "switch_to_tier_id_when_higher",
+            "xml_name": "switchToTierIdWhenHigher",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "boundary_unit",
+            "xml_name": "boundaryUnit",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierDescriptionDataElementsType', is_value_type=False, no_attrib_name=False)
+class TierDescriptionDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDescriptionDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "tier_type",
+            "xml_name": "tierType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffDataElementsType', is_value_type=False, no_attrib_name=False)
+class TariffDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tariff_id",
+            "xml_name": "tariffId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "active_tier_id",
+            "xml_name": "activeTierId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentiveDataElementsType', is_value_type=False, no_attrib_name=False)
+class IncentiveDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "incentive_id",
+            "xml_name": "incentiveId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "time_period",
+            "xml_name": "timePeriod",
+            "type": "ns_p:TimePeriodElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodElementsType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "time_table_id",
+            "xml_name": "timeTableId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryDataElementsType', is_value_type=False, no_attrib_name=False)
+class TierBoundaryDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "boundary_id",
+            "xml_name": "boundaryId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "time_period",
+            "xml_name": "timePeriod",
+            "type": "ns_p:TimePeriodElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodElementsType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "time_table_id",
+            "xml_name": "timeTableId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "lower_boundary_value",
+            "xml_name": "lowerBoundaryValue",
+            "type": "ns_p:ScaledNumberElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberElementsType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "upper_boundary_value",
+            "xml_name": "upperBoundaryValue",
+            "type": "ns_p:ScaledNumberElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberElementsType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierDataElementsType', is_value_type=False, no_attrib_name=False)
+class TierDataElementsType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "tier_id",
+            "xml_name": "tierId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "time_period",
+            "xml_name": "timePeriod",
+            "type": "ns_p:TimePeriodElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodElementsType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "time_table_id",
+            "xml_name": "timeTableId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "active_incentive_id",
+            "xml_name": "activeIncentiveId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
 

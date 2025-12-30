@@ -1,1523 +1,1238 @@
 # Jinja Template message_type.py.jinja2
-from spine.base_type.commondatatypes import ElementTagType
-from spine.base_type.commondatatypes import ScaledNumberElementsType
-from spine.base_type.commondatatypes import ScaledNumberType
-from spine.base_type.commondatatypes import TimePeriodElementsType
-from spine.base_type.commondatatypes import TimePeriodType
-from spine.base_type.commondatatypes import TimestampIntervalType
-from spine.simple_type.commondatatypes import DescriptionType
-from spine.simple_type.commondatatypes import LabelType
-from spine.simple_type.measurement import MeasurementIdType
-from spine.simple_type.threshold import ThresholdIdType
-from spine.union_type.commondatatypes import AbsoluteOrRelativeTimeType
-from spine.union_type.commondatatypes import CommodityTypeType
-from spine.union_type.commondatatypes import ScopeTypeType
-from spine.union_type.commondatatypes import UnitOfMeasurementType
-from spine.union_type.measurement import MeasurementTypeType
-from spine.union_type.measurement import MeasurementValueSourceType
-from spine.union_type.measurement import MeasurementValueStateType
-from spine.union_type.measurement import MeasurementValueTendencyType
-from spine.union_type.measurement import MeasurementValueTypeType
-from types import NoneType
-from spine import array_2_dict
-
-
-class MeasurementThresholdRelationDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementThresholdRelationDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-            threshold_id: list[ThresholdIdType] = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.threshold_id = threshold_id
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.threshold_id, list | NoneType):
-            raise TypeError("threshold_id is not of type list[ThresholdIdType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.threshold_id is not None:
-            msg_data.append({"thresholdId": [d.get_data() for d in self.threshold_id]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.threshold_id is not None:
-            result_str += f"{sep}thresholdId: {self.threshold_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                threshold_id=data_dict.get('thresholdId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementSeriesDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementSeriesDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-            value_type: MeasurementValueTypeType = None,
-            timestamp: AbsoluteOrRelativeTimeType = None,
-            value: ScaledNumberType = None,
-            evaluation_period: TimePeriodType = None,
-            value_source: MeasurementValueSourceType = None,
-            value_tendency: MeasurementValueTendencyType = None,
-            value_state: MeasurementValueStateType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.value_type = value_type
-        self.timestamp = timestamp
-        self.value = value
-        self.evaluation_period = evaluation_period
-        self.value_source = value_source
-        self.value_tendency = value_tendency
-        self.value_state = value_state
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.value_type, MeasurementValueTypeType | NoneType):
-            raise TypeError("value_type is not of type MeasurementValueTypeType")
-        
-        if not isinstance(self.timestamp, AbsoluteOrRelativeTimeType | NoneType):
-            raise TypeError("timestamp is not of type AbsoluteOrRelativeTimeType")
-        
-        if not isinstance(self.value, ScaledNumberType | NoneType):
-            raise TypeError("value is not of type ScaledNumberType")
-        
-        if not isinstance(self.evaluation_period, TimePeriodType | NoneType):
-            raise TypeError("evaluation_period is not of type TimePeriodType")
-        
-        if not isinstance(self.value_source, MeasurementValueSourceType | NoneType):
-            raise TypeError("value_source is not of type MeasurementValueSourceType")
-        
-        if not isinstance(self.value_tendency, MeasurementValueTendencyType | NoneType):
-            raise TypeError("value_tendency is not of type MeasurementValueTendencyType")
-        
-        if not isinstance(self.value_state, MeasurementValueStateType | NoneType):
-            raise TypeError("value_state is not of type MeasurementValueStateType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.value_type is not None:
-            msg_data.append({"valueType": self.value_type.get_data()})
-        if self.timestamp is not None:
-            msg_data.append({"timestamp": self.timestamp.get_data()})
-        if self.value is not None:
-            msg_data.append({"value": self.value.get_data()})
-        if self.evaluation_period is not None:
-            msg_data.append({"evaluationPeriod": self.evaluation_period.get_data()})
-        if self.value_source is not None:
-            msg_data.append({"valueSource": self.value_source.get_data()})
-        if self.value_tendency is not None:
-            msg_data.append({"valueTendency": self.value_tendency.get_data()})
-        if self.value_state is not None:
-            msg_data.append({"valueState": self.value_state.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.value_type is not None:
-            result_str += f"{sep}valueType: {self.value_type}"
-            sep = ", "
-        if self.timestamp is not None:
-            result_str += f"{sep}timestamp: {self.timestamp}"
-            sep = ", "
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-            sep = ", "
-        if self.evaluation_period is not None:
-            result_str += f"{sep}evaluationPeriod: {self.evaluation_period}"
-            sep = ", "
-        if self.value_source is not None:
-            result_str += f"{sep}valueSource: {self.value_source}"
-            sep = ", "
-        if self.value_tendency is not None:
-            result_str += f"{sep}valueTendency: {self.value_tendency}"
-            sep = ", "
-        if self.value_state is not None:
-            result_str += f"{sep}valueState: {self.value_state}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                value_type=data_dict.get('valueType'),
-                timestamp=data_dict.get('timestamp'),
-                value=data_dict.get('value'),
-                evaluation_period=data_dict.get('evaluationPeriod'),
-                value_source=data_dict.get('valueSource'),
-                value_tendency=data_dict.get('valueTendency'),
-                value_state=data_dict.get('valueState'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-            value_type: MeasurementValueTypeType = None,
-            timestamp: AbsoluteOrRelativeTimeType = None,
-            value: ScaledNumberType = None,
-            evaluation_period: TimePeriodType = None,
-            value_source: MeasurementValueSourceType = None,
-            value_tendency: MeasurementValueTendencyType = None,
-            value_state: MeasurementValueStateType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.value_type = value_type
-        self.timestamp = timestamp
-        self.value = value
-        self.evaluation_period = evaluation_period
-        self.value_source = value_source
-        self.value_tendency = value_tendency
-        self.value_state = value_state
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.value_type, MeasurementValueTypeType | NoneType):
-            raise TypeError("value_type is not of type MeasurementValueTypeType")
-        
-        if not isinstance(self.timestamp, AbsoluteOrRelativeTimeType | NoneType):
-            raise TypeError("timestamp is not of type AbsoluteOrRelativeTimeType")
-        
-        if not isinstance(self.value, ScaledNumberType | NoneType):
-            raise TypeError("value is not of type ScaledNumberType")
-        
-        if not isinstance(self.evaluation_period, TimePeriodType | NoneType):
-            raise TypeError("evaluation_period is not of type TimePeriodType")
-        
-        if not isinstance(self.value_source, MeasurementValueSourceType | NoneType):
-            raise TypeError("value_source is not of type MeasurementValueSourceType")
-        
-        if not isinstance(self.value_tendency, MeasurementValueTendencyType | NoneType):
-            raise TypeError("value_tendency is not of type MeasurementValueTendencyType")
-        
-        if not isinstance(self.value_state, MeasurementValueStateType | NoneType):
-            raise TypeError("value_state is not of type MeasurementValueStateType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.value_type is not None:
-            msg_data.append({"valueType": self.value_type.get_data()})
-        if self.timestamp is not None:
-            msg_data.append({"timestamp": self.timestamp.get_data()})
-        if self.value is not None:
-            msg_data.append({"value": self.value.get_data()})
-        if self.evaluation_period is not None:
-            msg_data.append({"evaluationPeriod": self.evaluation_period.get_data()})
-        if self.value_source is not None:
-            msg_data.append({"valueSource": self.value_source.get_data()})
-        if self.value_tendency is not None:
-            msg_data.append({"valueTendency": self.value_tendency.get_data()})
-        if self.value_state is not None:
-            msg_data.append({"valueState": self.value_state.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.value_type is not None:
-            result_str += f"{sep}valueType: {self.value_type}"
-            sep = ", "
-        if self.timestamp is not None:
-            result_str += f"{sep}timestamp: {self.timestamp}"
-            sep = ", "
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-            sep = ", "
-        if self.evaluation_period is not None:
-            result_str += f"{sep}evaluationPeriod: {self.evaluation_period}"
-            sep = ", "
-        if self.value_source is not None:
-            result_str += f"{sep}valueSource: {self.value_source}"
-            sep = ", "
-        if self.value_tendency is not None:
-            result_str += f"{sep}valueTendency: {self.value_tendency}"
-            sep = ", "
-        if self.value_state is not None:
-            result_str += f"{sep}valueState: {self.value_state}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                value_type=data_dict.get('valueType'),
-                timestamp=data_dict.get('timestamp'),
-                value=data_dict.get('value'),
-                evaluation_period=data_dict.get('evaluationPeriod'),
-                value_source=data_dict.get('valueSource'),
-                value_tendency=data_dict.get('valueTendency'),
-                value_state=data_dict.get('valueState'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementDescriptionDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDescriptionDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-            measurement_type: MeasurementTypeType = None,
-            commodity_type: CommodityTypeType = None,
-            unit: UnitOfMeasurementType = None,
-            calibration_value: ScaledNumberType = None,
-            scope_type: ScopeTypeType = None,
-            label: LabelType = None,
-            description: DescriptionType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.measurement_type = measurement_type
-        self.commodity_type = commodity_type
-        self.unit = unit
-        self.calibration_value = calibration_value
-        self.scope_type = scope_type
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.measurement_type, MeasurementTypeType | NoneType):
-            raise TypeError("measurement_type is not of type MeasurementTypeType")
-        
-        if not isinstance(self.commodity_type, CommodityTypeType | NoneType):
-            raise TypeError("commodity_type is not of type CommodityTypeType")
-        
-        if not isinstance(self.unit, UnitOfMeasurementType | NoneType):
-            raise TypeError("unit is not of type UnitOfMeasurementType")
-        
-        if not isinstance(self.calibration_value, ScaledNumberType | NoneType):
-            raise TypeError("calibration_value is not of type ScaledNumberType")
-        
-        if not isinstance(self.scope_type, ScopeTypeType | NoneType):
-            raise TypeError("scope_type is not of type ScopeTypeType")
-        
-        if not isinstance(self.label, LabelType | NoneType):
-            raise TypeError("label is not of type LabelType")
-        
-        if not isinstance(self.description, DescriptionType | NoneType):
-            raise TypeError("description is not of type DescriptionType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.measurement_type is not None:
-            msg_data.append({"measurementType": self.measurement_type.get_data()})
-        if self.commodity_type is not None:
-            msg_data.append({"commodityType": self.commodity_type.get_data()})
-        if self.unit is not None:
-            msg_data.append({"unit": self.unit.get_data()})
-        if self.calibration_value is not None:
-            msg_data.append({"calibrationValue": self.calibration_value.get_data()})
-        if self.scope_type is not None:
-            msg_data.append({"scopeType": self.scope_type.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.measurement_type is not None:
-            result_str += f"{sep}measurementType: {self.measurement_type}"
-            sep = ", "
-        if self.commodity_type is not None:
-            result_str += f"{sep}commodityType: {self.commodity_type}"
-            sep = ", "
-        if self.unit is not None:
-            result_str += f"{sep}unit: {self.unit}"
-            sep = ", "
-        if self.calibration_value is not None:
-            result_str += f"{sep}calibrationValue: {self.calibration_value}"
-            sep = ", "
-        if self.scope_type is not None:
-            result_str += f"{sep}scopeType: {self.scope_type}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                measurement_type=data_dict.get('measurementType'),
-                commodity_type=data_dict.get('commodityType'),
-                unit=data_dict.get('unit'),
-                calibration_value=data_dict.get('calibrationValue'),
-                scope_type=data_dict.get('scopeType'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementConstraintsDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementConstraintsDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-            value_range_min: ScaledNumberType = None,
-            value_range_max: ScaledNumberType = None,
-            value_step_size: ScaledNumberType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.value_range_min = value_range_min
-        self.value_range_max = value_range_max
-        self.value_step_size = value_step_size
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.value_range_min, ScaledNumberType | NoneType):
-            raise TypeError("value_range_min is not of type ScaledNumberType")
-        
-        if not isinstance(self.value_range_max, ScaledNumberType | NoneType):
-            raise TypeError("value_range_max is not of type ScaledNumberType")
-        
-        if not isinstance(self.value_step_size, ScaledNumberType | NoneType):
-            raise TypeError("value_step_size is not of type ScaledNumberType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.value_range_min is not None:
-            msg_data.append({"valueRangeMin": self.value_range_min.get_data()})
-        if self.value_range_max is not None:
-            msg_data.append({"valueRangeMax": self.value_range_max.get_data()})
-        if self.value_step_size is not None:
-            msg_data.append({"valueStepSize": self.value_step_size.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.value_range_min is not None:
-            result_str += f"{sep}valueRangeMin: {self.value_range_min}"
-            sep = ", "
-        if self.value_range_max is not None:
-            result_str += f"{sep}valueRangeMax: {self.value_range_max}"
-            sep = ", "
-        if self.value_step_size is not None:
-            result_str += f"{sep}valueStepSize: {self.value_step_size}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                value_range_min=data_dict.get('valueRangeMin'),
-                value_range_max=data_dict.get('valueRangeMax'),
-                value_step_size=data_dict.get('valueStepSize'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementThresholdRelationListDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementThresholdRelationListDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_threshold_relation_data: list[MeasurementThresholdRelationDataType] = None,
-    ):
-        super().__init__()
-        
-        self.measurement_threshold_relation_data = measurement_threshold_relation_data
-
-        if not isinstance(self.measurement_threshold_relation_data, list | NoneType):
-            raise TypeError("measurement_threshold_relation_data is not of type list[MeasurementThresholdRelationDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_threshold_relation_data is not None:
-            msg_data.append({"measurementThresholdRelationData": [d.get_data() for d in self.measurement_threshold_relation_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_threshold_relation_data is not None:
-            result_str += f"{sep}measurementThresholdRelationData: {self.measurement_threshold_relation_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_threshold_relation_data=data_dict.get('measurementThresholdRelationData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementSeriesListDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementSeriesListDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_series_data: list[MeasurementSeriesDataType] = None,
-    ):
-        super().__init__()
-        
-        self.measurement_series_data = measurement_series_data
-
-        if not isinstance(self.measurement_series_data, list | NoneType):
-            raise TypeError("measurement_series_data is not of type list[MeasurementSeriesDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_series_data is not None:
-            msg_data.append({"measurementSeriesData": [d.get_data() for d in self.measurement_series_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_series_data is not None:
-            result_str += f"{sep}measurementSeriesData: {self.measurement_series_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_series_data=data_dict.get('measurementSeriesData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementListDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementListDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_data: list[MeasurementDataType] = None,
-    ):
-        super().__init__()
-        
-        self.measurement_data = measurement_data
-
-        if not isinstance(self.measurement_data, list | NoneType):
-            raise TypeError("measurement_data is not of type list[MeasurementDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_data is not None:
-            msg_data.append({"measurementData": [d.get_data() for d in self.measurement_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_data is not None:
-            result_str += f"{sep}measurementData: {self.measurement_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_data=data_dict.get('measurementData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementDescriptionListDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDescriptionListDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_description_data: list[MeasurementDescriptionDataType] = None,
-    ):
-        super().__init__()
-        
-        self.measurement_description_data = measurement_description_data
-
-        if not isinstance(self.measurement_description_data, list | NoneType):
-            raise TypeError("measurement_description_data is not of type list[MeasurementDescriptionDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_description_data is not None:
-            msg_data.append({"measurementDescriptionData": [d.get_data() for d in self.measurement_description_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_description_data is not None:
-            result_str += f"{sep}measurementDescriptionData: {self.measurement_description_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_description_data=data_dict.get('measurementDescriptionData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementConstraintsListDataType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementConstraintsListDataType -> ComplexType
-    def __init__(
-            self,
-            measurement_constraints_data: list[MeasurementConstraintsDataType] = None,
-    ):
-        super().__init__()
-        
-        self.measurement_constraints_data = measurement_constraints_data
-
-        if not isinstance(self.measurement_constraints_data, list | NoneType):
-            raise TypeError("measurement_constraints_data is not of type list[MeasurementConstraintsDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_constraints_data is not None:
-            msg_data.append({"measurementConstraintsData": [d.get_data() for d in self.measurement_constraints_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_constraints_data is not None:
-            result_str += f"{sep}measurementConstraintsData: {self.measurement_constraints_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_constraints_data=data_dict.get('measurementConstraintsData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementThresholdRelationDataElementsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementThresholdRelationDataElementsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: ElementTagType = None,
-            threshold_id: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.threshold_id = threshold_id
-
-        if not isinstance(self.measurement_id, ElementTagType | NoneType):
-            raise TypeError("measurement_id is not of type ElementTagType")
-        
-        if not isinstance(self.threshold_id, ElementTagType | NoneType):
-            raise TypeError("threshold_id is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.threshold_id is not None:
-            msg_data.append({"thresholdId": self.threshold_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.threshold_id is not None:
-            result_str += f"{sep}thresholdId: {self.threshold_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                threshold_id=data_dict.get('thresholdId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementSeriesDataElementsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementSeriesDataElementsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: ElementTagType = None,
-            value_type: ElementTagType = None,
-            timestamp: ElementTagType = None,
-            value: ScaledNumberElementsType = None,
-            evaluation_period: TimePeriodElementsType = None,
-            value_source: ElementTagType = None,
-            value_tendency: ElementTagType = None,
-            value_state: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.value_type = value_type
-        self.timestamp = timestamp
-        self.value = value
-        self.evaluation_period = evaluation_period
-        self.value_source = value_source
-        self.value_tendency = value_tendency
-        self.value_state = value_state
-
-        if not isinstance(self.measurement_id, ElementTagType | NoneType):
-            raise TypeError("measurement_id is not of type ElementTagType")
-        
-        if not isinstance(self.value_type, ElementTagType | NoneType):
-            raise TypeError("value_type is not of type ElementTagType")
-        
-        if not isinstance(self.timestamp, ElementTagType | NoneType):
-            raise TypeError("timestamp is not of type ElementTagType")
-        
-        if not isinstance(self.value, ScaledNumberElementsType | NoneType):
-            raise TypeError("value is not of type ScaledNumberElementsType")
-        
-        if not isinstance(self.evaluation_period, TimePeriodElementsType | NoneType):
-            raise TypeError("evaluation_period is not of type TimePeriodElementsType")
-        
-        if not isinstance(self.value_source, ElementTagType | NoneType):
-            raise TypeError("value_source is not of type ElementTagType")
-        
-        if not isinstance(self.value_tendency, ElementTagType | NoneType):
-            raise TypeError("value_tendency is not of type ElementTagType")
-        
-        if not isinstance(self.value_state, ElementTagType | NoneType):
-            raise TypeError("value_state is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.value_type is not None:
-            msg_data.append({"valueType": self.value_type.get_data()})
-        if self.timestamp is not None:
-            msg_data.append({"timestamp": self.timestamp.get_data()})
-        if self.value is not None:
-            msg_data.append({"value": self.value.get_data()})
-        if self.evaluation_period is not None:
-            msg_data.append({"evaluationPeriod": self.evaluation_period.get_data()})
-        if self.value_source is not None:
-            msg_data.append({"valueSource": self.value_source.get_data()})
-        if self.value_tendency is not None:
-            msg_data.append({"valueTendency": self.value_tendency.get_data()})
-        if self.value_state is not None:
-            msg_data.append({"valueState": self.value_state.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.value_type is not None:
-            result_str += f"{sep}valueType: {self.value_type}"
-            sep = ", "
-        if self.timestamp is not None:
-            result_str += f"{sep}timestamp: {self.timestamp}"
-            sep = ", "
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-            sep = ", "
-        if self.evaluation_period is not None:
-            result_str += f"{sep}evaluationPeriod: {self.evaluation_period}"
-            sep = ", "
-        if self.value_source is not None:
-            result_str += f"{sep}valueSource: {self.value_source}"
-            sep = ", "
-        if self.value_tendency is not None:
-            result_str += f"{sep}valueTendency: {self.value_tendency}"
-            sep = ", "
-        if self.value_state is not None:
-            result_str += f"{sep}valueState: {self.value_state}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                value_type=data_dict.get('valueType'),
-                timestamp=data_dict.get('timestamp'),
-                value=data_dict.get('value'),
-                evaluation_period=data_dict.get('evaluationPeriod'),
-                value_source=data_dict.get('valueSource'),
-                value_tendency=data_dict.get('valueTendency'),
-                value_state=data_dict.get('valueState'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementDescriptionDataElementsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDescriptionDataElementsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: ElementTagType = None,
-            measurement_type: ElementTagType = None,
-            commodity_type: ElementTagType = None,
-            unit: ElementTagType = None,
-            calibration_value: ScaledNumberElementsType = None,
-            scope_type: ElementTagType = None,
-            label: ElementTagType = None,
-            description: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.measurement_type = measurement_type
-        self.commodity_type = commodity_type
-        self.unit = unit
-        self.calibration_value = calibration_value
-        self.scope_type = scope_type
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.measurement_id, ElementTagType | NoneType):
-            raise TypeError("measurement_id is not of type ElementTagType")
-        
-        if not isinstance(self.measurement_type, ElementTagType | NoneType):
-            raise TypeError("measurement_type is not of type ElementTagType")
-        
-        if not isinstance(self.commodity_type, ElementTagType | NoneType):
-            raise TypeError("commodity_type is not of type ElementTagType")
-        
-        if not isinstance(self.unit, ElementTagType | NoneType):
-            raise TypeError("unit is not of type ElementTagType")
-        
-        if not isinstance(self.calibration_value, ScaledNumberElementsType | NoneType):
-            raise TypeError("calibration_value is not of type ScaledNumberElementsType")
-        
-        if not isinstance(self.scope_type, ElementTagType | NoneType):
-            raise TypeError("scope_type is not of type ElementTagType")
-        
-        if not isinstance(self.label, ElementTagType | NoneType):
-            raise TypeError("label is not of type ElementTagType")
-        
-        if not isinstance(self.description, ElementTagType | NoneType):
-            raise TypeError("description is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.measurement_type is not None:
-            msg_data.append({"measurementType": self.measurement_type.get_data()})
-        if self.commodity_type is not None:
-            msg_data.append({"commodityType": self.commodity_type.get_data()})
-        if self.unit is not None:
-            msg_data.append({"unit": self.unit.get_data()})
-        if self.calibration_value is not None:
-            msg_data.append({"calibrationValue": self.calibration_value.get_data()})
-        if self.scope_type is not None:
-            msg_data.append({"scopeType": self.scope_type.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.measurement_type is not None:
-            result_str += f"{sep}measurementType: {self.measurement_type}"
-            sep = ", "
-        if self.commodity_type is not None:
-            result_str += f"{sep}commodityType: {self.commodity_type}"
-            sep = ", "
-        if self.unit is not None:
-            result_str += f"{sep}unit: {self.unit}"
-            sep = ", "
-        if self.calibration_value is not None:
-            result_str += f"{sep}calibrationValue: {self.calibration_value}"
-            sep = ", "
-        if self.scope_type is not None:
-            result_str += f"{sep}scopeType: {self.scope_type}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                measurement_type=data_dict.get('measurementType'),
-                commodity_type=data_dict.get('commodityType'),
-                unit=data_dict.get('unit'),
-                calibration_value=data_dict.get('calibrationValue'),
-                scope_type=data_dict.get('scopeType'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementDataElementsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDataElementsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: ElementTagType = None,
-            value_type: ElementTagType = None,
-            timestamp: ElementTagType = None,
-            value: ScaledNumberElementsType = None,
-            evaluation_period: TimePeriodElementsType = None,
-            value_source: ElementTagType = None,
-            value_tendency: ElementTagType = None,
-            value_state: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.value_type = value_type
-        self.timestamp = timestamp
-        self.value = value
-        self.evaluation_period = evaluation_period
-        self.value_source = value_source
-        self.value_tendency = value_tendency
-        self.value_state = value_state
-
-        if not isinstance(self.measurement_id, ElementTagType | NoneType):
-            raise TypeError("measurement_id is not of type ElementTagType")
-        
-        if not isinstance(self.value_type, ElementTagType | NoneType):
-            raise TypeError("value_type is not of type ElementTagType")
-        
-        if not isinstance(self.timestamp, ElementTagType | NoneType):
-            raise TypeError("timestamp is not of type ElementTagType")
-        
-        if not isinstance(self.value, ScaledNumberElementsType | NoneType):
-            raise TypeError("value is not of type ScaledNumberElementsType")
-        
-        if not isinstance(self.evaluation_period, TimePeriodElementsType | NoneType):
-            raise TypeError("evaluation_period is not of type TimePeriodElementsType")
-        
-        if not isinstance(self.value_source, ElementTagType | NoneType):
-            raise TypeError("value_source is not of type ElementTagType")
-        
-        if not isinstance(self.value_tendency, ElementTagType | NoneType):
-            raise TypeError("value_tendency is not of type ElementTagType")
-        
-        if not isinstance(self.value_state, ElementTagType | NoneType):
-            raise TypeError("value_state is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.value_type is not None:
-            msg_data.append({"valueType": self.value_type.get_data()})
-        if self.timestamp is not None:
-            msg_data.append({"timestamp": self.timestamp.get_data()})
-        if self.value is not None:
-            msg_data.append({"value": self.value.get_data()})
-        if self.evaluation_period is not None:
-            msg_data.append({"evaluationPeriod": self.evaluation_period.get_data()})
-        if self.value_source is not None:
-            msg_data.append({"valueSource": self.value_source.get_data()})
-        if self.value_tendency is not None:
-            msg_data.append({"valueTendency": self.value_tendency.get_data()})
-        if self.value_state is not None:
-            msg_data.append({"valueState": self.value_state.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.value_type is not None:
-            result_str += f"{sep}valueType: {self.value_type}"
-            sep = ", "
-        if self.timestamp is not None:
-            result_str += f"{sep}timestamp: {self.timestamp}"
-            sep = ", "
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-            sep = ", "
-        if self.evaluation_period is not None:
-            result_str += f"{sep}evaluationPeriod: {self.evaluation_period}"
-            sep = ", "
-        if self.value_source is not None:
-            result_str += f"{sep}valueSource: {self.value_source}"
-            sep = ", "
-        if self.value_tendency is not None:
-            result_str += f"{sep}valueTendency: {self.value_tendency}"
-            sep = ", "
-        if self.value_state is not None:
-            result_str += f"{sep}valueState: {self.value_state}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                value_type=data_dict.get('valueType'),
-                timestamp=data_dict.get('timestamp'),
-                value=data_dict.get('value'),
-                evaluation_period=data_dict.get('evaluationPeriod'),
-                value_source=data_dict.get('valueSource'),
-                value_tendency=data_dict.get('valueTendency'),
-                value_state=data_dict.get('valueState'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementConstraintsDataElementsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementConstraintsDataElementsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: ElementTagType = None,
-            value_range_min: ScaledNumberElementsType = None,
-            value_range_max: ScaledNumberElementsType = None,
-            value_step_size: ScaledNumberElementsType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.value_range_min = value_range_min
-        self.value_range_max = value_range_max
-        self.value_step_size = value_step_size
-
-        if not isinstance(self.measurement_id, ElementTagType | NoneType):
-            raise TypeError("measurement_id is not of type ElementTagType")
-        
-        if not isinstance(self.value_range_min, ScaledNumberElementsType | NoneType):
-            raise TypeError("value_range_min is not of type ScaledNumberElementsType")
-        
-        if not isinstance(self.value_range_max, ScaledNumberElementsType | NoneType):
-            raise TypeError("value_range_max is not of type ScaledNumberElementsType")
-        
-        if not isinstance(self.value_step_size, ScaledNumberElementsType | NoneType):
-            raise TypeError("value_step_size is not of type ScaledNumberElementsType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.value_range_min is not None:
-            msg_data.append({"valueRangeMin": self.value_range_min.get_data()})
-        if self.value_range_max is not None:
-            msg_data.append({"valueRangeMax": self.value_range_max.get_data()})
-        if self.value_step_size is not None:
-            msg_data.append({"valueStepSize": self.value_step_size.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.value_range_min is not None:
-            result_str += f"{sep}valueRangeMin: {self.value_range_min}"
-            sep = ", "
-        if self.value_range_max is not None:
-            result_str += f"{sep}valueRangeMax: {self.value_range_max}"
-            sep = ", "
-        if self.value_step_size is not None:
-            result_str += f"{sep}valueStepSize: {self.value_step_size}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                value_range_min=data_dict.get('valueRangeMin'),
-                value_range_max=data_dict.get('valueRangeMax'),
-                value_step_size=data_dict.get('valueStepSize'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementThresholdRelationListDataSelectorsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementThresholdRelationListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-            threshold_id: ThresholdIdType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.threshold_id = threshold_id
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.threshold_id, ThresholdIdType | NoneType):
-            raise TypeError("threshold_id is not of type ThresholdIdType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.threshold_id is not None:
-            msg_data.append({"thresholdId": self.threshold_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.threshold_id is not None:
-            result_str += f"{sep}thresholdId: {self.threshold_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                threshold_id=data_dict.get('thresholdId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementSeriesListDataSelectorsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementSeriesListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-            value_type: MeasurementValueTypeType = None,
-            timestamp_interval: TimestampIntervalType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.value_type = value_type
-        self.timestamp_interval = timestamp_interval
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.value_type, MeasurementValueTypeType | NoneType):
-            raise TypeError("value_type is not of type MeasurementValueTypeType")
-        
-        if not isinstance(self.timestamp_interval, TimestampIntervalType | NoneType):
-            raise TypeError("timestamp_interval is not of type TimestampIntervalType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.value_type is not None:
-            msg_data.append({"valueType": self.value_type.get_data()})
-        if self.timestamp_interval is not None:
-            msg_data.append({"timestampInterval": self.timestamp_interval.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.value_type is not None:
-            result_str += f"{sep}valueType: {self.value_type}"
-            sep = ", "
-        if self.timestamp_interval is not None:
-            result_str += f"{sep}timestampInterval: {self.timestamp_interval}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                value_type=data_dict.get('valueType'),
-                timestamp_interval=data_dict.get('timestampInterval'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementListDataSelectorsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-            value_type: MeasurementValueTypeType = None,
-            timestamp_interval: TimestampIntervalType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.value_type = value_type
-        self.timestamp_interval = timestamp_interval
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.value_type, MeasurementValueTypeType | NoneType):
-            raise TypeError("value_type is not of type MeasurementValueTypeType")
-        
-        if not isinstance(self.timestamp_interval, TimestampIntervalType | NoneType):
-            raise TypeError("timestamp_interval is not of type TimestampIntervalType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.value_type is not None:
-            msg_data.append({"valueType": self.value_type.get_data()})
-        if self.timestamp_interval is not None:
-            msg_data.append({"timestampInterval": self.timestamp_interval.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.value_type is not None:
-            result_str += f"{sep}valueType: {self.value_type}"
-            sep = ", "
-        if self.timestamp_interval is not None:
-            result_str += f"{sep}timestampInterval: {self.timestamp_interval}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                value_type=data_dict.get('valueType'),
-                timestamp_interval=data_dict.get('timestampInterval'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementDescriptionListDataSelectorsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDescriptionListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-            measurement_type: MeasurementTypeType = None,
-            commodity_type: CommodityTypeType = None,
-            scope_type: ScopeTypeType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-        self.measurement_type = measurement_type
-        self.commodity_type = commodity_type
-        self.scope_type = scope_type
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-        if not isinstance(self.measurement_type, MeasurementTypeType | NoneType):
-            raise TypeError("measurement_type is not of type MeasurementTypeType")
-        
-        if not isinstance(self.commodity_type, CommodityTypeType | NoneType):
-            raise TypeError("commodity_type is not of type CommodityTypeType")
-        
-        if not isinstance(self.scope_type, ScopeTypeType | NoneType):
-            raise TypeError("scope_type is not of type ScopeTypeType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        if self.measurement_type is not None:
-            msg_data.append({"measurementType": self.measurement_type.get_data()})
-        if self.commodity_type is not None:
-            msg_data.append({"commodityType": self.commodity_type.get_data()})
-        if self.scope_type is not None:
-            msg_data.append({"scopeType": self.scope_type.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-            sep = ", "
-        if self.measurement_type is not None:
-            result_str += f"{sep}measurementType: {self.measurement_type}"
-            sep = ", "
-        if self.commodity_type is not None:
-            result_str += f"{sep}commodityType: {self.commodity_type}"
-            sep = ", "
-        if self.scope_type is not None:
-            result_str += f"{sep}scopeType: {self.scope_type}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-                measurement_type=data_dict.get('measurementType'),
-                commodity_type=data_dict.get('commodityType'),
-                scope_type=data_dict.get('scopeType'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class MeasurementConstraintsListDataSelectorsType: # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementConstraintsListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            measurement_id: MeasurementIdType = None,
-    ):
-        super().__init__()
-        
-        self.measurement_id = measurement_id
-
-        if not isinstance(self.measurement_id, MeasurementIdType | NoneType):
-            raise TypeError("measurement_id is not of type MeasurementIdType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.measurement_id is not None:
-            msg_data.append({"measurementId": self.measurement_id.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.measurement_id is not None:
-            result_str += f"{sep}measurementId: {self.measurement_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                measurement_id=data_dict.get('measurementId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
+    from spine.base_type.commondatatypes import ElementTagType
+    from spine.base_type.commondatatypes import ScaledNumberElementsType
+    from spine.base_type.commondatatypes import ScaledNumberType
+    from spine.base_type.commondatatypes import TimePeriodElementsType
+    from spine.base_type.commondatatypes import TimePeriodType
+    from spine.base_type.commondatatypes import TimestampIntervalType
+    from spine.simple_type.commondatatypes import DescriptionType
+    from spine.simple_type.commondatatypes import LabelType
+    from spine.simple_type.commondatatypes import NumberType
+    from spine.simple_type.commondatatypes import ScaleType
+    from spine.simple_type.measurement import MeasurementIdType
+    from spine.simple_type.threshold import ThresholdIdType
+    from spine.union_type.commondatatypes import AbsoluteOrRelativeTimeType
+    from spine.union_type.commondatatypes import CommodityTypeType
+    from spine.union_type.commondatatypes import ScopeTypeType
+    from spine.union_type.commondatatypes import UnitOfMeasurementType
+    from spine.union_type.measurement import MeasurementTypeType
+    from spine.union_type.measurement import MeasurementValueSourceType
+    from spine.union_type.measurement import MeasurementValueStateType
+    from spine.union_type.measurement import MeasurementValueTendencyType
+    from spine.union_type.measurement import MeasurementValueTypeType
+
+
+
+@spine_type('ns_p:MeasurementThresholdRelationDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementThresholdRelationDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementThresholdRelationDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "threshold_id",
+            "xml_name": "thresholdId",
+            "type": "ns_p:ThresholdIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementDescriptionDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementDescriptionDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDescriptionDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "measurement_type",
+            "xml_name": "measurementType",
+            "type": "ns_p:MeasurementTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementTypeType"
+        },
+        {
+            "name": "commodity_type",
+            "xml_name": "commodityType",
+            "type": "ns_p:CommodityTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityTypeType"
+        },
+        {
+            "name": "unit",
+            "xml_name": "unit",
+            "type": "ns_p:UnitOfMeasurementType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "UnitOfMeasurementType"
+        },
+        {
+            "name": "calibration_value",
+            "xml_name": "calibrationValue",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:NumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "NumberType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ScaleType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaleType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ScopeTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScopeTypeType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementConstraintsDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementConstraintsDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementConstraintsDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "value_range_min",
+            "xml_name": "valueRangeMin",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:NumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "NumberType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ScaleType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaleType"
+        },
+        {
+            "name": "value_range_max",
+            "xml_name": "valueRangeMax",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "value_step_size",
+            "xml_name": "valueStepSize",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementSeriesDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementSeriesDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementSeriesDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:MeasurementValueTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTypeType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:NumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "NumberType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ScaleType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaleType"
+        },
+        {
+            "name": "evaluation_period",
+            "xml_name": "evaluationPeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "value_source",
+            "xml_name": "valueSource",
+            "type": "ns_p:MeasurementValueSourceType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueSourceType"
+        },
+        {
+            "name": "value_tendency",
+            "xml_name": "valueTendency",
+            "type": "ns_p:MeasurementValueTendencyType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTendencyType"
+        },
+        {
+            "name": "value_state",
+            "xml_name": "valueState",
+            "type": "ns_p:MeasurementValueStateType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueStateType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:MeasurementValueTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTypeType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:NumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "NumberType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ScaleType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaleType"
+        },
+        {
+            "name": "evaluation_period",
+            "xml_name": "evaluationPeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "value_source",
+            "xml_name": "valueSource",
+            "type": "ns_p:MeasurementValueSourceType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueSourceType"
+        },
+        {
+            "name": "value_tendency",
+            "xml_name": "valueTendency",
+            "type": "ns_p:MeasurementValueTendencyType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTendencyType"
+        },
+        {
+            "name": "value_state",
+            "xml_name": "valueState",
+            "type": "ns_p:MeasurementValueStateType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueStateType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementThresholdRelationListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class MeasurementThresholdRelationListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementThresholdRelationListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "threshold_id",
+            "xml_name": "thresholdId",
+            "type": "ns_p:ThresholdIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ThresholdIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementThresholdRelationListDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementThresholdRelationListDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementThresholdRelationListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_threshold_relation_data",
+            "xml_name": "measurementThresholdRelationData",
+            "type": "ns_p:MeasurementThresholdRelationDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "threshold_id",
+            "xml_name": "thresholdId",
+            "type": "ns_p:ThresholdIdType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementThresholdRelationDataElementsType', is_value_type=False, no_attrib_name=False)
+class MeasurementThresholdRelationDataElementsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementThresholdRelationDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "threshold_id",
+            "xml_name": "thresholdId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementDescriptionListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class MeasurementDescriptionListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDescriptionListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "measurement_type",
+            "xml_name": "measurementType",
+            "type": "ns_p:MeasurementTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementTypeType"
+        },
+        {
+            "name": "commodity_type",
+            "xml_name": "commodityType",
+            "type": "ns_p:CommodityTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityTypeType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ScopeTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScopeTypeType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementDescriptionListDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementDescriptionListDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDescriptionListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_description_data",
+            "xml_name": "measurementDescriptionData",
+            "type": "ns_p:MeasurementDescriptionDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "measurement_type",
+            "xml_name": "measurementType",
+            "type": "ns_p:MeasurementTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementTypeType"
+        },
+        {
+            "name": "commodity_type",
+            "xml_name": "commodityType",
+            "type": "ns_p:CommodityTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "CommodityTypeType"
+        },
+        {
+            "name": "unit",
+            "xml_name": "unit",
+            "type": "ns_p:UnitOfMeasurementType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "UnitOfMeasurementType"
+        },
+        {
+            "name": "calibration_value",
+            "xml_name": "calibrationValue",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ScopeTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScopeTypeType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementDescriptionDataElementsType', is_value_type=False, no_attrib_name=False)
+class MeasurementDescriptionDataElementsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDescriptionDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "measurement_type",
+            "xml_name": "measurementType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "commodity_type",
+            "xml_name": "commodityType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "unit",
+            "xml_name": "unit",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "calibration_value",
+            "xml_name": "calibrationValue",
+            "type": "ns_p:ScaledNumberElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberElementsType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementConstraintsListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class MeasurementConstraintsListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementConstraintsListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementConstraintsListDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementConstraintsListDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementConstraintsListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_constraints_data",
+            "xml_name": "measurementConstraintsData",
+            "type": "ns_p:MeasurementConstraintsDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "value_range_min",
+            "xml_name": "valueRangeMin",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "value_range_max",
+            "xml_name": "valueRangeMax",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "value_step_size",
+            "xml_name": "valueStepSize",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementConstraintsDataElementsType', is_value_type=False, no_attrib_name=False)
+class MeasurementConstraintsDataElementsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementConstraintsDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_range_min",
+            "xml_name": "valueRangeMin",
+            "type": "ns_p:ScaledNumberElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberElementsType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_range_max",
+            "xml_name": "valueRangeMax",
+            "type": "ns_p:ScaledNumberElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberElementsType"
+        },
+        {
+            "name": "value_step_size",
+            "xml_name": "valueStepSize",
+            "type": "ns_p:ScaledNumberElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberElementsType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementSeriesListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class MeasurementSeriesListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementSeriesListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:MeasurementValueTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTypeType"
+        },
+        {
+            "name": "timestamp_interval",
+            "xml_name": "timestampInterval",
+            "type": "ns_p:TimestampIntervalType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimestampIntervalType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementSeriesListDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementSeriesListDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementSeriesListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_series_data",
+            "xml_name": "measurementSeriesData",
+            "type": "ns_p:MeasurementSeriesDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:MeasurementValueTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTypeType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "evaluation_period",
+            "xml_name": "evaluationPeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "value_source",
+            "xml_name": "valueSource",
+            "type": "ns_p:MeasurementValueSourceType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueSourceType"
+        },
+        {
+            "name": "value_tendency",
+            "xml_name": "valueTendency",
+            "type": "ns_p:MeasurementValueTendencyType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTendencyType"
+        },
+        {
+            "name": "value_state",
+            "xml_name": "valueState",
+            "type": "ns_p:MeasurementValueStateType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueStateType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementSeriesDataElementsType', is_value_type=False, no_attrib_name=False)
+class MeasurementSeriesDataElementsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementSeriesDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:ScaledNumberElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberElementsType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "evaluation_period",
+            "xml_name": "evaluationPeriod",
+            "type": "ns_p:TimePeriodElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodElementsType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_source",
+            "xml_name": "valueSource",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_tendency",
+            "xml_name": "valueTendency",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_state",
+            "xml_name": "valueState",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class MeasurementListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:MeasurementValueTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTypeType"
+        },
+        {
+            "name": "timestamp_interval",
+            "xml_name": "timestampInterval",
+            "type": "ns_p:TimestampIntervalType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimestampIntervalType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementListDataType', is_value_type=False, no_attrib_name=False)
+class MeasurementListDataType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_data",
+            "xml_name": "measurementData",
+            "type": "ns_p:MeasurementDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:MeasurementIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementIdType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:MeasurementValueTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTypeType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "evaluation_period",
+            "xml_name": "evaluationPeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "value_source",
+            "xml_name": "valueSource",
+            "type": "ns_p:MeasurementValueSourceType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueSourceType"
+        },
+        {
+            "name": "value_tendency",
+            "xml_name": "valueTendency",
+            "type": "ns_p:MeasurementValueTendencyType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueTendencyType"
+        },
+        {
+            "name": "value_state",
+            "xml_name": "valueState",
+            "type": "ns_p:MeasurementValueStateType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "MeasurementValueStateType"
+        },
+    ]
+
+
+@spine_type('ns_p:MeasurementDataElementsType', is_value_type=False, no_attrib_name=False)
+class MeasurementDataElementsType(SpineBase): # EEBus_SPINE_TS_Measurement.xsd:ns_p:MeasurementDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "measurement_id",
+            "xml_name": "measurementId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_type",
+            "xml_name": "valueType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:ScaledNumberElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberElementsType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "evaluation_period",
+            "xml_name": "evaluationPeriod",
+            "type": "ns_p:TimePeriodElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodElementsType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_source",
+            "xml_name": "valueSource",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_tendency",
+            "xml_name": "valueTendency",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "value_state",
+            "xml_name": "valueState",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
 

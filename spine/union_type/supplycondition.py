@@ -1,105 +1,27 @@
 # Jinja Template message_type.py.jinja2
-from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
 
 
-class GridConditionType: # EEBus_SPINE_TS_SupplyCondition.xsd:ns_p:GridConditionType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
 
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
+@spine_type('ns_p:GridConditionType', is_value_type=False, no_attrib_name=False)
+class GridConditionType(SpineBase): # EEBus_SPINE_TS_SupplyCondition.xsd:ns_p:GridConditionType -> UnionType
+    _MEMBER_INFO = [
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:SupplyConditionOriginatorType', is_value_type=False, no_attrib_name=False)
+class SupplyConditionOriginatorType(SpineBase): # EEBus_SPINE_TS_SupplyCondition.xsd:ns_p:SupplyConditionOriginatorType -> UnionType
+    _MEMBER_INFO = [
+    ]
 
 
-class SupplyConditionOriginatorType: # EEBus_SPINE_TS_SupplyCondition.xsd:ns_p:SupplyConditionOriginatorType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class SupplyConditionEventTypeType: # EEBus_SPINE_TS_SupplyCondition.xsd:ns_p:SupplyConditionEventTypeType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+@spine_type('ns_p:SupplyConditionEventTypeType', is_value_type=False, no_attrib_name=False)
+class SupplyConditionEventTypeType(SpineBase): # EEBus_SPINE_TS_SupplyCondition.xsd:ns_p:SupplyConditionEventTypeType -> UnionType
+    _MEMBER_INFO = [
+    ]
 

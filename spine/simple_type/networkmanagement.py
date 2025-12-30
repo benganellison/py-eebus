@@ -1,310 +1,121 @@
 # Jinja Template message_type.py.jinja2
-from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
 
 
-class NetworkManagementScanSetupType: # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementScanSetupType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
 
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
+@spine_type('ns_p:NetworkManagementMinimumTrustLevelType', is_value_type=True, no_attrib_name=False)
+class NetworkManagementMinimumTrustLevelType(SpineBase): # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementMinimumTrustLevelType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:NetworkManagementCommunicationsTechnologyInformationType', is_value_type=True, no_attrib_name=False)
+class NetworkManagementCommunicationsTechnologyInformationType(SpineBase): # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementCommunicationsTechnologyInformationType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-class NetworkManagementCandidateSetupType: # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementCandidateSetupType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
+@spine_type('ns_p:NetworkManagementTechnologyAddressType', is_value_type=True, no_attrib_name=False)
+class NetworkManagementTechnologyAddressType(SpineBase): # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementTechnologyAddressType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:NetworkManagementCandidateSetupType', is_value_type=True, no_attrib_name=False)
+class NetworkManagementCandidateSetupType(SpineBase): # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementCandidateSetupType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-class NetworkManagementSetupType: # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementSetupType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
+@spine_type('ns_p:NetworkManagementSetupType', is_value_type=True, no_attrib_name=False)
+class NetworkManagementSetupType(SpineBase): # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementSetupType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:NetworkManagementScanSetupType', is_value_type=True, no_attrib_name=False)
+class NetworkManagementScanSetupType(SpineBase): # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementScanSetupType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-class NetworkManagementMinimumTrustLevelType: # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementMinimumTrustLevelType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
+@spine_type('ns_p:NetworkManagementProcessTimeoutType', is_value_type=True, no_attrib_name=False)
+class NetworkManagementProcessTimeoutType(SpineBase): # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementProcessTimeoutType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:duration",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class NetworkManagementCommunicationsTechnologyInformationType: # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementCommunicationsTechnologyInformationType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class NetworkManagementTechnologyAddressType: # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementTechnologyAddressType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class NetworkManagementProcessTimeoutType: # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementProcessTimeoutType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class NetworkManagementNativeSetupType: # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementNativeSetupType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+@spine_type('ns_p:NetworkManagementNativeSetupType', is_value_type=True, no_attrib_name=False)
+class NetworkManagementNativeSetupType(SpineBase): # EEBus_SPINE_TS_NetworkManagement.xsd:ns_p:NetworkManagementNativeSetupType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 

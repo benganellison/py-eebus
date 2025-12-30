@@ -1,386 +1,149 @@
 # Jinja Template message_type.py.jinja2
-from types import NoneType
-from spine import array_2_dict
-
-
-class IncentiveIdType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveIdType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierIdType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIdType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryIdType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryIdType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffIdType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffIdType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentiveCountType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveCountType -> AliasType
-    def __init__(
-            self,
-            value: IncentiveIdType,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, IncentiveIdType):
-            raise TypeError("value is not of type IncentiveIdType")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierCountType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierCountType -> AliasType
-    def __init__(
-            self,
-            value: TierIdType,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, TierIdType):
-            raise TypeError("value is not of type TierIdType")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TierBoundaryCountType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryCountType -> AliasType
-    def __init__(
-            self,
-            value: TierBoundaryIdType,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, TierBoundaryIdType):
-            raise TypeError("value is not of type TierBoundaryIdType")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TariffCountType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffCountType -> AliasType
-    def __init__(
-            self,
-            value: TariffIdType,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, TariffIdType):
-            raise TypeError("value is not of type TariffIdType")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class IncentivePriorityType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentivePriorityType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class CommodityIdType: # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityIdType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
+
+
+
+@spine_type('ns_p:TariffIdType', is_value_type=True, no_attrib_name=False)
+class TariffIdType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffIdType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentiveIdType', is_value_type=True, no_attrib_name=False)
+class IncentiveIdType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveIdType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryIdType', is_value_type=True, no_attrib_name=False)
+class TierBoundaryIdType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryIdType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
+
+
+@spine_type('ns_p:TierIdType', is_value_type=True, no_attrib_name=False)
+class TierIdType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierIdType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
+
+
+@spine_type('ns_p:TariffCountType', is_value_type=True, no_attrib_name=False)
+class TariffCountType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TariffCountType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:TariffIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TariffIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentiveCountType', is_value_type=True, no_attrib_name=False)
+class IncentiveCountType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentiveCountType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:IncentiveIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "IncentiveIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierBoundaryCountType', is_value_type=True, no_attrib_name=False)
+class TierBoundaryCountType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierBoundaryCountType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:TierBoundaryIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierBoundaryIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:TierCountType', is_value_type=True, no_attrib_name=False)
+class TierCountType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:TierCountType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:TierIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TierIdType"
+        },
+    ]
+
+
+@spine_type('ns_p:CommodityIdType', is_value_type=True, no_attrib_name=False)
+class CommodityIdType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:CommodityIdType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
+
+
+@spine_type('ns_p:IncentivePriorityType', is_value_type=True, no_attrib_name=False)
+class IncentivePriorityType(SpineBase): # EEBus_SPINE_TS_TariffInformation.xsd:ns_p:IncentivePriorityType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
 

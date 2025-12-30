@@ -1,72 +1,21 @@
 # Jinja Template message_type.py.jinja2
-from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
 
 
-class TaskManagementJobSourceType: # EEBus_SPINE_TS_TaskManagement.xsd:ns_p:TaskManagementJobSourceType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
 
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
+@spine_type('ns_p:TaskManagementJobSourceType', is_value_type=False, no_attrib_name=False)
+class TaskManagementJobSourceType(SpineBase): # EEBus_SPINE_TS_TaskManagement.xsd:ns_p:TaskManagementJobSourceType -> UnionType
+    _MEMBER_INFO = [
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class TaskManagementJobStateType: # EEBus_SPINE_TS_TaskManagement.xsd:ns_p:TaskManagementJobStateType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+@spine_type('ns_p:TaskManagementJobStateType', is_value_type=False, no_attrib_name=False)
+class TaskManagementJobStateType(SpineBase): # EEBus_SPINE_TS_TaskManagement.xsd:ns_p:TaskManagementJobStateType -> UnionType
+    _MEMBER_INFO = [
+    ]
 

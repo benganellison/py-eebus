@@ -15,9 +15,13 @@ from xmlschema.validators import XsdGroup
 import xsd2code
 
 schemas = [
-   # {"file": 'xsd/EEBus_SHIP_TS_TransferProtocol.xsd', "folder": "ship"},
-    {"file": 'xsd/EEBus_SPINE_TS_Datagram.xsd', "folder": "spine"}
+    # {"file": 'xsd/EEBus_SHIP_TS_TransferProtocol.xsd', "folder": "ship"},
 ]
+for f in os.listdir('xsd'):
+    if f.startswith('EEBus_SPINE_TS_') and f.endswith('.xsd') and not f.endswith('_overview.xsd'):
+        schemas.append({"file": os.path.join('xsd', f), "folder": "spine"})
+# Sort schemas to ensure consistent generation order (e.g. Datagram last or first)
+schemas.sort(key=lambda x: x["file"])
 
 BASE_TYPES = ["str", "int", "bool"]
 

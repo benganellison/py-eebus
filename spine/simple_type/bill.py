@@ -1,196 +1,79 @@
 # Jinja Template message_type.py.jinja2
-from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
 
 
-class BillPositionIdType: # EEBus_SPINE_TS_Bill.xsd:ns_p:BillPositionIdType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
 
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
+@spine_type('ns_p:BillPositionIdType', is_value_type=True, no_attrib_name=False)
+class BillPositionIdType(SpineBase): # EEBus_SPINE_TS_Bill.xsd:ns_p:BillPositionIdType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:BillPositionCountType', is_value_type=True, no_attrib_name=False)
+class BillPositionCountType(SpineBase): # EEBus_SPINE_TS_Bill.xsd:ns_p:BillPositionCountType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:BillPositionIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "BillPositionIdType"
+        },
+    ]
 
 
-class BillCostIdType: # EEBus_SPINE_TS_Bill.xsd:ns_p:BillCostIdType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
+@spine_type('ns_p:BillIdType', is_value_type=True, no_attrib_name=False)
+class BillIdType(SpineBase): # EEBus_SPINE_TS_Bill.xsd:ns_p:BillIdType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:BillCostIdType', is_value_type=True, no_attrib_name=False)
+class BillCostIdType(SpineBase): # EEBus_SPINE_TS_Bill.xsd:ns_p:BillCostIdType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
 
 
-class BillValueIdType: # EEBus_SPINE_TS_Bill.xsd:ns_p:BillValueIdType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class BillPositionCountType: # EEBus_SPINE_TS_Bill.xsd:ns_p:BillPositionCountType -> AliasType
-    def __init__(
-            self,
-            value: BillPositionIdType,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, BillPositionIdType):
-            raise TypeError("value is not of type BillPositionIdType")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class BillIdType: # EEBus_SPINE_TS_Bill.xsd:ns_p:BillIdType -> AliasType
-    def __init__(
-            self,
-            value: int,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, int):
-            raise TypeError("value is not of type int")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+@spine_type('ns_p:BillValueIdType', is_value_type=True, no_attrib_name=False)
+class BillValueIdType(SpineBase): # EEBus_SPINE_TS_Bill.xsd:ns_p:BillValueIdType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
 

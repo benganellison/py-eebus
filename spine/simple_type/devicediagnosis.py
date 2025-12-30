@@ -1,82 +1,37 @@
 # Jinja Template message_type.py.jinja2
-from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
 
 
-class LastErrorCodeType: # EEBus_SPINE_TS_DeviceDiagnosis.xsd:ns_p:LastErrorCodeType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
 
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
+@spine_type('ns_p:LastErrorCodeType', is_value_type=True, no_attrib_name=False)
+class LastErrorCodeType(SpineBase): # EEBus_SPINE_TS_DeviceDiagnosis.xsd:ns_p:LastErrorCodeType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class VendorStateCodeType: # EEBus_SPINE_TS_DeviceDiagnosis.xsd:ns_p:VendorStateCodeType -> AliasType
-    def __init__(
-            self,
-            value: str,
-    ):
-        super().__init__()
-        
-        self.value = value
-
-        if not isinstance(self.value, str):
-            raise TypeError("value is not of type str")
-        
-    def get_data(self):
-
-        return self.value
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.value is not None:
-            result_str += f"{sep}value: {self.value}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                value=data_dict.get('value'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+@spine_type('ns_p:VendorStateCodeType', is_value_type=True, no_attrib_name=False)
+class VendorStateCodeType(SpineBase): # EEBus_SPINE_TS_DeviceDiagnosis.xsd:ns_p:VendorStateCodeType -> AliasType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
