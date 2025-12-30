@@ -26,3 +26,9 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# EEBUS Specifications
+EEBUS_specifications/
+
+# macOS
+.DS_Store
