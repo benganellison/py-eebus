@@ -1,3 +1,4 @@
+import pytest
 from spine.base_message import SpineMessage
 from spine.base_type.datagram import DatagramType, HeaderType, PayloadType
 from spine.base_type.commandframe import CmdType
@@ -9,6 +10,7 @@ from spine.base_type.devicediagnosis import DeviceDiagnosisHeartbeatDataType
 # Note: heartbeat_counter is defined as xs:unsignedLong -> int
 # heartbeat_timeout is defined as xs:duration -> str
 
+@pytest.mark.requirement("LPC-TS-006")
 def test_lpc_heartbeat_construction():
     """
     Scenario 3: Heartbeat.

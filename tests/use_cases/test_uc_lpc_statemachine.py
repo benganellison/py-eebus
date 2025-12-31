@@ -36,6 +36,8 @@ class MockActor:
         if time.time() - self.last_heartbeat > timeout:
             self.state = "FAILSAFE"
 
+@pytest.mark.requirement("LPC-TS-028")
+@pytest.mark.requirement("LPC-TS-029")
 def test_lpc_state_machine_transitions():
     """
     Scenario: Verify transitions between INIT, CONTROLLED, and FAILSAFE states.

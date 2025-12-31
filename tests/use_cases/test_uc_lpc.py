@@ -53,6 +53,7 @@ class TestUCLPC:
         )
         return datagram
 
+    @pytest.mark.requirement("LPC-TS-001")
     def test_lpc_limit_construction(self):
         """
         Verify that we can correctly construct the LPC hierarchy and simple types.
@@ -123,6 +124,7 @@ class TestUCLPC:
         assert recovered_limit.value.number.value == 4200
         assert recovered_limit.limit_id.value == 1
 
+    @pytest.mark.requirement("LPC-TS-011")
     def test_failsafe_limit_structure(self):
         """
         Scenario 2: Failsafe values.

@@ -20,6 +20,8 @@ from spine.enums.deviceconfiguration import DeviceConfigurationKeyValueTypeType
 from spine.base_type.commondatatypes import ScaledNumberType
 from spine.simple_type.commondatatypes import NumberType, ScaleType
 
+@pytest.mark.requirement("LPC-TS-011")
+@pytest.mark.requirement("LPC-TS-013")
 def test_lpc_failsafe_structure():
     """
     Scenario 2: Failsafe Values.
