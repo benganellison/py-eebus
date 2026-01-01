@@ -1,204 +1,94 @@
 # Jinja Template message_type.py.jinja2
-from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
+    pass
 
 
-class ElectricalConnectionCharacteristicTypeType: # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionCharacteristicTypeType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
 
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:ElectricalConnectionCharacteristicTypeType', is_value_type=True, no_attrib_name=False)
+class ElectricalConnectionCharacteristicTypeType(SpineBase): # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionCharacteristicTypeType -> UnionType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-class ElectricalConnectionCharacteristicContextType: # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionCharacteristicContextType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:ElectricalConnectionCharacteristicContextType', is_value_type=True, no_attrib_name=False)
+class ElectricalConnectionCharacteristicContextType(SpineBase): # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionCharacteristicContextType -> UnionType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-class ElectricalConnectionPhaseNameType: # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionPhaseNameType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:ElectricalConnectionPhaseNameType', is_value_type=True, no_attrib_name=False)
+class ElectricalConnectionPhaseNameType(SpineBase): # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionPhaseNameType -> UnionType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-class ElectricalConnectionAcMeasurementTypeType: # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionAcMeasurementTypeType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:ElectricalConnectionAcMeasurementTypeType', is_value_type=True, no_attrib_name=False)
+class ElectricalConnectionAcMeasurementTypeType(SpineBase): # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionAcMeasurementTypeType -> UnionType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-class ElectricalConnectionVoltageTypeType: # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionVoltageTypeType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:ElectricalConnectionVoltageTypeType', is_value_type=True, no_attrib_name=False)
+class ElectricalConnectionVoltageTypeType(SpineBase): # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionVoltageTypeType -> UnionType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 
 
-class ElectricalConnectionMeasurandVariantType: # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionMeasurandVariantType -> UnionType
-    def __init__(
-            self,
-    ):
-        super().__init__()
-        
-
-    def get_data(self):
-
-        msg_data = []
-        
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+@spine_type('ns_p:ElectricalConnectionMeasurandVariantType', is_value_type=True, no_attrib_name=False)
+class ElectricalConnectionMeasurandVariantType(SpineBase): # EEBus_SPINE_TS_ElectricalConnection.xsd:ns_p:ElectricalConnectionMeasurandVariantType -> UnionType
+    _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 

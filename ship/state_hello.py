@@ -145,7 +145,7 @@ class HandleHello:
 
     # State PENDING methods:
     def handle_state_sme_hello_state_pending_init(self):
-        self._con.send_message(ConnectionHello(phase=ConnectionHelloPhaseType.READY))
+        self._con.send_message(ConnectionHello(phase=ConnectionHelloPhaseType.PENDING))
         self.set_hello_sub_state(HelloSubState.SME_HELLO_STATE_PENDING_LISTEN)
         return False
 

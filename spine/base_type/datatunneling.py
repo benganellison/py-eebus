@@ -1,247 +1,164 @@
 # Jinja Template message_type.py.jinja2
-from spine.base_type.commondatatypes import ElementTagType
-from spine.simple_type.datatunneling import ChannelIdType
-from spine.simple_type.datatunneling import PurposeIdType
-from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
+    from spine.base_type.commondatatypes import ElementTagType
+    from spine.simple_type.datatunneling import ChannelIdType
+    from spine.simple_type.datatunneling import PurposeIdType
 
 
-class DataTunnelingHeaderType: # EEBus_SPINE_TS_DataTunneling.xsd:ns_p:DataTunnelingHeaderType -> ComplexType
-    def __init__(
-            self,
-            purpose_id: PurposeIdType = None,
-            channel_id: ChannelIdType = None,
-            sequence_id: int = None,
-    ):
-        super().__init__()
-        
-        self.purpose_id = purpose_id
-        self.channel_id = channel_id
-        self.sequence_id = sequence_id
 
-        if not isinstance(self.purpose_id, PurposeIdType | NoneType):
-            raise TypeError("purpose_id is not of type PurposeIdType")
-        
-        if not isinstance(self.channel_id, ChannelIdType | NoneType):
-            raise TypeError("channel_id is not of type ChannelIdType")
-        
-        if not isinstance(self.sequence_id, int | NoneType):
-            raise TypeError("sequence_id is not of type int")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.purpose_id is not None:
-            msg_data.append({"purposeId": self.purpose_id.get_data()})
-        if self.channel_id is not None:
-            msg_data.append({"channelId": self.channel_id.get_data()})
-        if self.sequence_id is not None:
-            msg_data.append({"sequenceId": self.sequence_id})
-        
-        return msg_data
+@spine_type('ns_p:DataTunnelingHeaderElementsType', is_value_type=False, no_attrib_name=False)
+class DataTunnelingHeaderElementsType(SpineBase): # EEBus_SPINE_TS_DataTunneling.xsd:ns_p:DataTunnelingHeaderElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "purpose_id",
+            "xml_name": "purposeId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "channel_id",
+            "xml_name": "channelId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "sequence_id",
+            "xml_name": "sequenceId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.purpose_id is not None:
-            result_str += f"{sep}purposeId: {self.purpose_id}"
-            sep = ", "
-        if self.channel_id is not None:
-            result_str += f"{sep}channelId: {self.channel_id}"
-            sep = ", "
-        if self.sequence_id is not None:
-            result_str += f"{sep}sequenceId: {self.sequence_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                purpose_id=data_dict.get('purposeId'),
-                channel_id=data_dict.get('channelId'),
-                sequence_id=data_dict.get('sequenceId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class DataTunnelingHeaderElementsType: # EEBus_SPINE_TS_DataTunneling.xsd:ns_p:DataTunnelingHeaderElementsType -> ComplexType
-    def __init__(
-            self,
-            purpose_id: ElementTagType = None,
-            channel_id: ElementTagType = None,
-            sequence_id: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.purpose_id = purpose_id
-        self.channel_id = channel_id
-        self.sequence_id = sequence_id
-
-        if not isinstance(self.purpose_id, ElementTagType | NoneType):
-            raise TypeError("purpose_id is not of type ElementTagType")
-        
-        if not isinstance(self.channel_id, ElementTagType | NoneType):
-            raise TypeError("channel_id is not of type ElementTagType")
-        
-        if not isinstance(self.sequence_id, ElementTagType | NoneType):
-            raise TypeError("sequence_id is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.purpose_id is not None:
-            msg_data.append({"purposeId": self.purpose_id.get_data()})
-        if self.channel_id is not None:
-            msg_data.append({"channelId": self.channel_id.get_data()})
-        if self.sequence_id is not None:
-            msg_data.append({"sequenceId": self.sequence_id.get_data()})
-        
-        return msg_data
+@spine_type('ns_p:DataTunnelingHeaderType', is_value_type=False, no_attrib_name=False)
+class DataTunnelingHeaderType(SpineBase): # EEBus_SPINE_TS_DataTunneling.xsd:ns_p:DataTunnelingHeaderType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "purpose_id",
+            "xml_name": "purposeId",
+            "type": "ns_p:PurposeIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "PurposeIdType"
+        },
+        {
+            "name": "channel_id",
+            "xml_name": "channelId",
+            "type": "ns_p:ChannelIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ChannelIdType"
+        },
+        {
+            "name": "sequence_id",
+            "xml_name": "sequenceId",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.purpose_id is not None:
-            result_str += f"{sep}purposeId: {self.purpose_id}"
-            sep = ", "
-        if self.channel_id is not None:
-            result_str += f"{sep}channelId: {self.channel_id}"
-            sep = ", "
-        if self.sequence_id is not None:
-            result_str += f"{sep}sequenceId: {self.sequence_id}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                purpose_id=data_dict.get('purposeId'),
-                channel_id=data_dict.get('channelId'),
-                sequence_id=data_dict.get('sequenceId'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class DataTunnelingCallType: # EEBus_SPINE_TS_DataTunneling.xsd:ns_p:DataTunnelingCallType -> ComplexType
-    def __init__(
-            self,
-            header: DataTunnelingHeaderType = None,
-            payload: str = None,
-    ):
-        super().__init__()
-        
-        self.header = header
-        self.payload = payload
-
-        if not isinstance(self.header, DataTunnelingHeaderType | NoneType):
-            raise TypeError("header is not of type DataTunnelingHeaderType")
-        
-        if not isinstance(self.payload, str | NoneType):
-            raise TypeError("payload is not of type str")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.header is not None:
-            msg_data.append({"header": self.header.get_data()})
-        if self.payload is not None:
-            msg_data.append({"payload": self.payload})
-        
-        return msg_data
+@spine_type('ns_p:DataTunnelingCallElementsType', is_value_type=False, no_attrib_name=False)
+class DataTunnelingCallElementsType(SpineBase): # EEBus_SPINE_TS_DataTunneling.xsd:ns_p:DataTunnelingCallElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "header",
+            "xml_name": "header",
+            "type": "ns_p:DataTunnelingHeaderElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DataTunnelingHeaderElementsType"
+        },
+        {
+            "name": "purpose_id",
+            "xml_name": "purposeId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "channel_id",
+            "xml_name": "channelId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "sequence_id",
+            "xml_name": "sequenceId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "payload",
+            "xml_name": "payload",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
 
 
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.header is not None:
-            result_str += f"{sep}header: {self.header}"
-            sep = ", "
-        if self.payload is not None:
-            result_str += f"{sep}payload: {self.payload}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                header=data_dict.get('header'),
-                payload=data_dict.get('payload'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
-class DataTunnelingCallElementsType: # EEBus_SPINE_TS_DataTunneling.xsd:ns_p:DataTunnelingCallElementsType -> ComplexType
-    def __init__(
-            self,
-            header: DataTunnelingHeaderElementsType = None,
-            payload: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.header = header
-        self.payload = payload
-
-        if not isinstance(self.header, DataTunnelingHeaderElementsType | NoneType):
-            raise TypeError("header is not of type DataTunnelingHeaderElementsType")
-        
-        if not isinstance(self.payload, ElementTagType | NoneType):
-            raise TypeError("payload is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.header is not None:
-            msg_data.append({"header": self.header.get_data()})
-        if self.payload is not None:
-            msg_data.append({"payload": self.payload.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.header is not None:
-            result_str += f"{sep}header: {self.header}"
-            sep = ", "
-        if self.payload is not None:
-            result_str += f"{sep}payload: {self.payload}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                header=data_dict.get('header'),
-                payload=data_dict.get('payload'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+@spine_type('ns_p:DataTunnelingCallType', is_value_type=False, no_attrib_name=False)
+class DataTunnelingCallType(SpineBase): # EEBus_SPINE_TS_DataTunneling.xsd:ns_p:DataTunnelingCallType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "header",
+            "xml_name": "header",
+            "type": "ns_p:DataTunnelingHeaderType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DataTunnelingHeaderType"
+        },
+        {
+            "name": "purpose_id",
+            "xml_name": "purposeId",
+            "type": "ns_p:PurposeIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "PurposeIdType"
+        },
+        {
+            "name": "channel_id",
+            "xml_name": "channelId",
+            "type": "ns_p:ChannelIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ChannelIdType"
+        },
+        {
+            "name": "sequence_id",
+            "xml_name": "sequenceId",
+            "type": "xs:unsignedInt",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "int"
+        },
+        {
+            "name": "payload",
+            "xml_name": "payload",
+            "type": "xs:hexBinary",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
+    ]
 

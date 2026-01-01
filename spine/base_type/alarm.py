@@ -1,377 +1,351 @@
 # Jinja Template message_type.py.jinja2
-from spine.base_type.commondatatypes import ElementTagType
-from spine.base_type.commondatatypes import ScaledNumberElementsType
-from spine.base_type.commondatatypes import ScaledNumberType
-from spine.base_type.commondatatypes import TimePeriodElementsType
-from spine.base_type.commondatatypes import TimePeriodType
-from spine.simple_type.alarm import AlarmIdType
-from spine.simple_type.commondatatypes import DescriptionType
-from spine.simple_type.commondatatypes import LabelType
-from spine.simple_type.threshold import ThresholdIdType
-from spine.union_type.alarm import AlarmTypeType
-from spine.union_type.commondatatypes import AbsoluteOrRelativeTimeType
-from spine.union_type.commondatatypes import ScopeTypeType
-from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
+    from spine.base_type.commondatatypes import ElementTagType
+    from spine.base_type.commondatatypes import ScaledNumberElementsType
+    from spine.base_type.commondatatypes import ScaledNumberType
+    from spine.base_type.commondatatypes import TimePeriodElementsType
+    from spine.base_type.commondatatypes import TimePeriodType
+    from spine.simple_type.alarm import AlarmIdType
+    from spine.simple_type.commondatatypes import DescriptionType
+    from spine.simple_type.commondatatypes import LabelType
+    from spine.simple_type.commondatatypes import NumberType
+    from spine.simple_type.commondatatypes import ScaleType
+    from spine.simple_type.threshold import ThresholdIdType
+    from spine.union_type.alarm import AlarmTypeType
+    from spine.union_type.commondatatypes import AbsoluteOrRelativeTimeType
+    from spine.union_type.commondatatypes import ScopeTypeType
 
 
-class AlarmDataType: # EEBus_SPINE_TS_Alarm.xsd:ns_p:AlarmDataType -> ComplexType
-    def __init__(
-            self,
-            alarm_id: AlarmIdType = None,
-            threshold_id: ThresholdIdType = None,
-            timestamp: AbsoluteOrRelativeTimeType = None,
-            alarm_type: AlarmTypeType = None,
-            measured_value: ScaledNumberType = None,
-            evaluation_period: TimePeriodType = None,
-            scope_type: ScopeTypeType = None,
-            label: LabelType = None,
-            description: DescriptionType = None,
-    ):
-        super().__init__()
-        
-        self.alarm_id = alarm_id
-        self.threshold_id = threshold_id
-        self.timestamp = timestamp
-        self.alarm_type = alarm_type
-        self.measured_value = measured_value
-        self.evaluation_period = evaluation_period
-        self.scope_type = scope_type
-        self.label = label
-        self.description = description
 
-        if not isinstance(self.alarm_id, AlarmIdType | NoneType):
-            raise TypeError("alarm_id is not of type AlarmIdType")
-        
-        if not isinstance(self.threshold_id, ThresholdIdType | NoneType):
-            raise TypeError("threshold_id is not of type ThresholdIdType")
-        
-        if not isinstance(self.timestamp, AbsoluteOrRelativeTimeType | NoneType):
-            raise TypeError("timestamp is not of type AbsoluteOrRelativeTimeType")
-        
-        if not isinstance(self.alarm_type, AlarmTypeType | NoneType):
-            raise TypeError("alarm_type is not of type AlarmTypeType")
-        
-        if not isinstance(self.measured_value, ScaledNumberType | NoneType):
-            raise TypeError("measured_value is not of type ScaledNumberType")
-        
-        if not isinstance(self.evaluation_period, TimePeriodType | NoneType):
-            raise TypeError("evaluation_period is not of type TimePeriodType")
-        
-        if not isinstance(self.scope_type, ScopeTypeType | NoneType):
-            raise TypeError("scope_type is not of type ScopeTypeType")
-        
-        if not isinstance(self.label, LabelType | NoneType):
-            raise TypeError("label is not of type LabelType")
-        
-        if not isinstance(self.description, DescriptionType | NoneType):
-            raise TypeError("description is not of type DescriptionType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.alarm_id is not None:
-            msg_data.append({"alarmId": self.alarm_id.get_data()})
-        if self.threshold_id is not None:
-            msg_data.append({"thresholdId": self.threshold_id.get_data()})
-        if self.timestamp is not None:
-            msg_data.append({"timestamp": self.timestamp.get_data()})
-        if self.alarm_type is not None:
-            msg_data.append({"alarmType": self.alarm_type.get_data()})
-        if self.measured_value is not None:
-            msg_data.append({"measuredValue": self.measured_value.get_data()})
-        if self.evaluation_period is not None:
-            msg_data.append({"evaluationPeriod": self.evaluation_period.get_data()})
-        if self.scope_type is not None:
-            msg_data.append({"scopeType": self.scope_type.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.alarm_id is not None:
-            result_str += f"{sep}alarmId: {self.alarm_id}"
-            sep = ", "
-        if self.threshold_id is not None:
-            result_str += f"{sep}thresholdId: {self.threshold_id}"
-            sep = ", "
-        if self.timestamp is not None:
-            result_str += f"{sep}timestamp: {self.timestamp}"
-            sep = ", "
-        if self.alarm_type is not None:
-            result_str += f"{sep}alarmType: {self.alarm_type}"
-            sep = ", "
-        if self.measured_value is not None:
-            result_str += f"{sep}measuredValue: {self.measured_value}"
-            sep = ", "
-        if self.evaluation_period is not None:
-            result_str += f"{sep}evaluationPeriod: {self.evaluation_period}"
-            sep = ", "
-        if self.scope_type is not None:
-            result_str += f"{sep}scopeType: {self.scope_type}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                alarm_id=data_dict.get('alarmId'),
-                threshold_id=data_dict.get('thresholdId'),
-                timestamp=data_dict.get('timestamp'),
-                alarm_type=data_dict.get('alarmType'),
-                measured_value=data_dict.get('measuredValue'),
-                evaluation_period=data_dict.get('evaluationPeriod'),
-                scope_type=data_dict.get('scopeType'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:AlarmDataType', is_value_type=False, no_attrib_name=False)
+class AlarmDataType(SpineBase): # EEBus_SPINE_TS_Alarm.xsd:ns_p:AlarmDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "alarm_id",
+            "xml_name": "alarmId",
+            "type": "ns_p:AlarmIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AlarmIdType"
+        },
+        {
+            "name": "threshold_id",
+            "xml_name": "thresholdId",
+            "type": "ns_p:ThresholdIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ThresholdIdType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "alarm_type",
+            "xml_name": "alarmType",
+            "type": "ns_p:AlarmTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AlarmTypeType"
+        },
+        {
+            "name": "measured_value",
+            "xml_name": "measuredValue",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:NumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "NumberType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ScaleType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaleType"
+        },
+        {
+            "name": "evaluation_period",
+            "xml_name": "evaluationPeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ScopeTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScopeTypeType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
 
 
-class AlarmListDataType: # EEBus_SPINE_TS_Alarm.xsd:ns_p:AlarmListDataType -> ComplexType
-    def __init__(
-            self,
-            alarm_data: list[AlarmDataType] = None,
-    ):
-        super().__init__()
-        
-        self.alarm_data = alarm_data
-
-        if not isinstance(self.alarm_data, list | NoneType):
-            raise TypeError("alarm_data is not of type list[AlarmDataType]")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.alarm_data is not None:
-            msg_data.append({"alarmData": [d.get_data() for d in self.alarm_data]})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.alarm_data is not None:
-            result_str += f"{sep}alarmData: {self.alarm_data}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                alarm_data=data_dict.get('alarmData'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:AlarmListDataSelectorsType', is_value_type=False, no_attrib_name=False)
+class AlarmListDataSelectorsType(SpineBase): # EEBus_SPINE_TS_Alarm.xsd:ns_p:AlarmListDataSelectorsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "alarm_id",
+            "xml_name": "alarmId",
+            "type": "ns_p:AlarmIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AlarmIdType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ScopeTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScopeTypeType"
+        },
+    ]
 
 
-class AlarmDataElementsType: # EEBus_SPINE_TS_Alarm.xsd:ns_p:AlarmDataElementsType -> ComplexType
-    def __init__(
-            self,
-            alarm_id: ElementTagType = None,
-            threshold_id: ElementTagType = None,
-            timestamp: ElementTagType = None,
-            alarm_type: ElementTagType = None,
-            measured_value: ScaledNumberElementsType = None,
-            evaluation_period: TimePeriodElementsType = None,
-            scope_type: ElementTagType = None,
-            label: ElementTagType = None,
-            description: ElementTagType = None,
-    ):
-        super().__init__()
-        
-        self.alarm_id = alarm_id
-        self.threshold_id = threshold_id
-        self.timestamp = timestamp
-        self.alarm_type = alarm_type
-        self.measured_value = measured_value
-        self.evaluation_period = evaluation_period
-        self.scope_type = scope_type
-        self.label = label
-        self.description = description
-
-        if not isinstance(self.alarm_id, ElementTagType | NoneType):
-            raise TypeError("alarm_id is not of type ElementTagType")
-        
-        if not isinstance(self.threshold_id, ElementTagType | NoneType):
-            raise TypeError("threshold_id is not of type ElementTagType")
-        
-        if not isinstance(self.timestamp, ElementTagType | NoneType):
-            raise TypeError("timestamp is not of type ElementTagType")
-        
-        if not isinstance(self.alarm_type, ElementTagType | NoneType):
-            raise TypeError("alarm_type is not of type ElementTagType")
-        
-        if not isinstance(self.measured_value, ScaledNumberElementsType | NoneType):
-            raise TypeError("measured_value is not of type ScaledNumberElementsType")
-        
-        if not isinstance(self.evaluation_period, TimePeriodElementsType | NoneType):
-            raise TypeError("evaluation_period is not of type TimePeriodElementsType")
-        
-        if not isinstance(self.scope_type, ElementTagType | NoneType):
-            raise TypeError("scope_type is not of type ElementTagType")
-        
-        if not isinstance(self.label, ElementTagType | NoneType):
-            raise TypeError("label is not of type ElementTagType")
-        
-        if not isinstance(self.description, ElementTagType | NoneType):
-            raise TypeError("description is not of type ElementTagType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.alarm_id is not None:
-            msg_data.append({"alarmId": self.alarm_id.get_data()})
-        if self.threshold_id is not None:
-            msg_data.append({"thresholdId": self.threshold_id.get_data()})
-        if self.timestamp is not None:
-            msg_data.append({"timestamp": self.timestamp.get_data()})
-        if self.alarm_type is not None:
-            msg_data.append({"alarmType": self.alarm_type.get_data()})
-        if self.measured_value is not None:
-            msg_data.append({"measuredValue": self.measured_value.get_data()})
-        if self.evaluation_period is not None:
-            msg_data.append({"evaluationPeriod": self.evaluation_period.get_data()})
-        if self.scope_type is not None:
-            msg_data.append({"scopeType": self.scope_type.get_data()})
-        if self.label is not None:
-            msg_data.append({"label": self.label.get_data()})
-        if self.description is not None:
-            msg_data.append({"description": self.description.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.alarm_id is not None:
-            result_str += f"{sep}alarmId: {self.alarm_id}"
-            sep = ", "
-        if self.threshold_id is not None:
-            result_str += f"{sep}thresholdId: {self.threshold_id}"
-            sep = ", "
-        if self.timestamp is not None:
-            result_str += f"{sep}timestamp: {self.timestamp}"
-            sep = ", "
-        if self.alarm_type is not None:
-            result_str += f"{sep}alarmType: {self.alarm_type}"
-            sep = ", "
-        if self.measured_value is not None:
-            result_str += f"{sep}measuredValue: {self.measured_value}"
-            sep = ", "
-        if self.evaluation_period is not None:
-            result_str += f"{sep}evaluationPeriod: {self.evaluation_period}"
-            sep = ", "
-        if self.scope_type is not None:
-            result_str += f"{sep}scopeType: {self.scope_type}"
-            sep = ", "
-        if self.label is not None:
-            result_str += f"{sep}label: {self.label}"
-            sep = ", "
-        if self.description is not None:
-            result_str += f"{sep}description: {self.description}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                alarm_id=data_dict.get('alarmId'),
-                threshold_id=data_dict.get('thresholdId'),
-                timestamp=data_dict.get('timestamp'),
-                alarm_type=data_dict.get('alarmType'),
-                measured_value=data_dict.get('measuredValue'),
-                evaluation_period=data_dict.get('evaluationPeriod'),
-                scope_type=data_dict.get('scopeType'),
-                label=data_dict.get('label'),
-                description=data_dict.get('description'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('ns_p:AlarmListDataType', is_value_type=False, no_attrib_name=False)
+class AlarmListDataType(SpineBase): # EEBus_SPINE_TS_Alarm.xsd:ns_p:AlarmListDataType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "alarm_data",
+            "xml_name": "alarmData",
+            "type": "ns_p:AlarmDataType",
+            "is_array": True,
+            "is_optional": True,
+            "class_check": "list"
+        },
+        {
+            "name": "alarm_id",
+            "xml_name": "alarmId",
+            "type": "ns_p:AlarmIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AlarmIdType"
+        },
+        {
+            "name": "threshold_id",
+            "xml_name": "thresholdId",
+            "type": "ns_p:ThresholdIdType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ThresholdIdType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:AbsoluteOrRelativeTimeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AbsoluteOrRelativeTimeType"
+        },
+        {
+            "name": "alarm_type",
+            "xml_name": "alarmType",
+            "type": "ns_p:AlarmTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "AlarmTypeType"
+        },
+        {
+            "name": "measured_value",
+            "xml_name": "measuredValue",
+            "type": "ns_p:ScaledNumberType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberType"
+        },
+        {
+            "name": "evaluation_period",
+            "xml_name": "evaluationPeriod",
+            "type": "ns_p:TimePeriodType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ScopeTypeType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScopeTypeType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:LabelType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "LabelType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:DescriptionType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "DescriptionType"
+        },
+    ]
 
 
-class AlarmListDataSelectorsType: # EEBus_SPINE_TS_Alarm.xsd:ns_p:AlarmListDataSelectorsType -> ComplexType
-    def __init__(
-            self,
-            alarm_id: AlarmIdType = None,
-            scope_type: ScopeTypeType = None,
-    ):
-        super().__init__()
-        
-        self.alarm_id = alarm_id
-        self.scope_type = scope_type
-
-        if not isinstance(self.alarm_id, AlarmIdType | NoneType):
-            raise TypeError("alarm_id is not of type AlarmIdType")
-        
-        if not isinstance(self.scope_type, ScopeTypeType | NoneType):
-            raise TypeError("scope_type is not of type ScopeTypeType")
-        
-    def get_data(self):
-
-        msg_data = []
-        
-        if self.alarm_id is not None:
-            msg_data.append({"alarmId": self.alarm_id.get_data()})
-        if self.scope_type is not None:
-            msg_data.append({"scopeType": self.scope_type.get_data()})
-        
-        return msg_data
-
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        if self.alarm_id is not None:
-            result_str += f"{sep}alarmId: {self.alarm_id}"
-            sep = ", "
-        if self.scope_type is not None:
-            result_str += f"{sep}scopeType: {self.scope_type}"
-        
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls(
-                alarm_id=data_dict.get('alarmId'),
-                scope_type=data_dict.get('scopeType'),
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
-
-
+@spine_type('ns_p:AlarmDataElementsType', is_value_type=False, no_attrib_name=False)
+class AlarmDataElementsType(SpineBase): # EEBus_SPINE_TS_Alarm.xsd:ns_p:AlarmDataElementsType -> ComplexType
+    _MEMBER_INFO = [
+        {
+            "name": "alarm_id",
+            "xml_name": "alarmId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "threshold_id",
+            "xml_name": "thresholdId",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "timestamp",
+            "xml_name": "timestamp",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "alarm_type",
+            "xml_name": "alarmType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "measured_value",
+            "xml_name": "measuredValue",
+            "type": "ns_p:ScaledNumberElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ScaledNumberElementsType"
+        },
+        {
+            "name": "number",
+            "xml_name": "number",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "scale",
+            "xml_name": "scale",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "evaluation_period",
+            "xml_name": "evaluationPeriod",
+            "type": "ns_p:TimePeriodElementsType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "TimePeriodElementsType"
+        },
+        {
+            "name": "start_time",
+            "xml_name": "startTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "end_time",
+            "xml_name": "endTime",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "scope_type",
+            "xml_name": "scopeType",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "label",
+            "xml_name": "label",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+        {
+            "name": "description",
+            "xml_name": "description",
+            "type": "ns_p:ElementTagType",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "ElementTagType"
+        },
+    ]
 

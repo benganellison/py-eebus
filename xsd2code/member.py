@@ -45,10 +45,7 @@ class Member:
 
     @property
     def has_default_or_optional(self):
-        if self._is_optional or self._default_value:
-            return True
-        else:
-            return False
+        return True
 
     @property
     def data_access_method(self):
@@ -56,6 +53,18 @@ class Member:
             return f"[d{self._data_type.data_access_method} for d in self.{self.snake_case_name}]"
         else:
             return f"self.{self.snake_case_name}{self._data_type.data_access_method}"
+
+    @property
+    def is_array(self):
+        return self._is_array
+    
+    @property
+    def is_optional(self):
+        return self._is_optional
+    
+    @property
+    def default_value(self):
+        return self._default_value
 
     def __eq__(self, other):
         if type(self) is not type(other):
@@ -73,5 +82,17 @@ class Member:
     @property
     def fq_name(self):
         return self._fq_member_name
+
+    @property
+    def metadata(self):
+        # (xml_name, attr_name, type_fq_name, is_optional, is_array, access_method)
+        return (
+            self.member_name,
+            self.snake_case_name,
+            self.data_type.fq_name,
+            self.is_optional,
+            self.is_array,
+            self.data_type.data_access_method
+        )
 
 

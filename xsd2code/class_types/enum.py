@@ -11,14 +11,14 @@ class EnumType(xsd2code.DataType):
     @classmethod
     def can_create(cls, xsd_type: XsdType):
         if isinstance(xsd_type, XsdAtomicRestriction) and xsd_type.enumeration:
-            return xsd_type.display_name
+            return xsd_type.display_name or f"ns_p:Anonymous_{id(xsd_type)}"
 
         return None
 
     @classmethod
     def create_from_xsd(cls, xsd_type: XsdAtomicRestriction) -> xsd2code.EnumType:
         return xsd2code.EnumType(
-            type_name=xsd_type.display_name,
+            type_name=xsd_type.display_name or f"ns_p:Anonymous_{id(xsd_type)}",
             source_file=xsd_type.schema.name,
             enum_values=xsd_type.enumeration
         )

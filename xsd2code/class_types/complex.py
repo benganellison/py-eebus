@@ -11,7 +11,7 @@ class ComplexType(xsd2code.DataType):
     @classmethod
     def can_create(cls, xsd_type: XsdType):
         if isinstance(xsd_type, XsdComplexType):
-            return xsd_type.display_name
+            return xsd_type.display_name or f"ns_p:Anonymous_{id(xsd_type)}"
 
         return None
 
@@ -19,7 +19,7 @@ class ComplexType(xsd2code.DataType):
     def create_from_xsd(cls, xsd_type: XsdComplexType) -> xsd2code.ComplexType:
 
         comp_type = xsd2code.ComplexType(
-            type_name=xsd_type.display_name,
+            type_name=xsd_type.display_name or f"ns_p:Anonymous_{id(xsd_type)}",
             source_file=xsd_type.schema.name
         )
         # print(f"-------- {xsd_type.display_name} --------")
@@ -76,11 +76,10 @@ class ComplexType(xsd2code.DataType):
         self._base_type = None
 
     def add_member(self, add_member):
-        if add_member in self._members:
-            raise RuntimeError(f"Member {add_member} was already added to type {self.type_name}")
-            #print(f"Member {add_member} was already added to type {self.type_name}")
-        else:
-            self._members.append(add_member)
+        for existing_member in self._members:
+            if existing_member.fq_name == add_member.fq_name:
+                return
+        self._members.append(add_member)
 
     def add_group_type(self, add_group_type):
         print(f"add_group_type members {self.fq_name} {add_group_type.fq_name}")

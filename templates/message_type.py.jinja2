@@ -1,58 +1,27 @@
 # Jinja Template message_type.py.jinja2
-{% for imp in imports %}{{ imp }}
-{% endfor %}from types import NoneType
-from spine import array_2_dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from spine.base import SpineBase, spine_type
+from spine.type_registry import TypeRegistry
+
+if TYPE_CHECKING:
+{% for imp in imports %}    {{ imp }}
+{% endfor %}
 
 {% if is_ship_msg_type %}
 {%- set base_type = 'ShipMessageType' if folder == 'ship' else 'SpineMessageType' %}{% endif %}
 {%- for class_type in types %}
-class {{ class_type.class_name }}{% if is_ship_msg_type %}({{ base_type }}){% endif %}: # {{ class_type.info_comment }}
-    def __init__(
-            self,
-{% for m in class_type.members %}            {{ m.snake_case_name }}{% if m.class_name %}: {{ m.class_name }}{% endif %}{% if m.has_default_or_optional %} = None{% endif %},
-{% endfor %}    ):
-        super().__init__()
-        {% for m in class_type.members %}{% if m.default_value %}
-        if {{ m.snake_case_name }} is None:
-            {{ m.snake_case_name }} = {{ m.default_value }}{% endif %}{% endfor %}
-{% for m in class_type.members %}        self.{{ m.snake_case_name }} = {{ m.snake_case_name }}
-{% endfor %}{% for m in class_type.members %}
-        if not isinstance(self.{{ m.snake_case_name }}, {{ m.class_check }}{% if m.has_default_or_optional %} | NoneType{% endif %}):
-            raise TypeError("{{ m.snake_case_name }} is not of type {{ m.class_name }}")
-        {% endfor %}
-    def get_data(self):
-{% if class_type.return_type == 'value' %}
-        return self.{{ class_type.members[0].snake_case_name }}
-{%  else %}
-        msg_data = {% if not class_type.no_attrib_name %}[]
-        {% else %}self.{% for m in class_type.members %}{{ m.snake_case_name }}{% endfor %}{% endif %}
-        {% if not class_type.no_attrib_name %}{% for m in class_type.members %}if self.{{ m.snake_case_name }} is not None:
-            msg_data.append({"{{ m.member_name }}": {{ m.data_access_method }}})
-        {% endfor %}
-        {% endif %}return msg_data
-{% endif %}
-
-    def __str__(self):
-        result_str = ""
-        sep = ""
-        {% for m in class_type.members %}if self.{{ m.snake_case_name }} is not None:
-            result_str += f"{sep}{% if not class_type.no_attrib_name %}{{ m.member_name }}: {% endif %}{% if m.is_array %}{', '.join([str(x) for x in self.{{ m.snake_case_name }}])}{% else %}{self.{{ m.snake_case_name }}}{% endif %}"{% if not loop.last %}
-            sep = ", "{% endif %}
-        {% endfor %}
-        return result_str
-
-    @classmethod
-    def from_data(cls, data):
-        if type(data) == list:
-            data_dict = array_2_dict(data)
-            return cls({% for m in class_type.members %}
-                {{ m.snake_case_name }}=data_dict.get('{{ m.member_name }}'),{% endfor %}
-            )
-        elif data:
-            return cls(data)
-        else:
-            return cls()
+@spine_type('{{ class_type.fq_name }}', is_value_type={{ "True" if class_type.return_type == 'value' else "False" }}, no_attrib_name={{ "True" if class_type.no_attrib_name else "False" }})
+class {{ class_type.class_name }}(SpineBase{% if is_ship_msg_type %}, {{ base_type }}{% endif %}): # {{ class_type.info_comment }}
+    _MEMBER_INFO = [
+{% for m in class_type.members %}        {
+            "name": "{{ m.snake_case_name }}",
+            "xml_name": "{{ m.member_name }}",
+            "type": "{{ m.data_type.fq_name }}",
+            "is_array": {{ "True" if m.is_array else "False" }},
+            "is_optional": {{ "True" if m.has_default_or_optional else "False" }},
+            "class_check": "{{ m.class_check }}"
+        },
+{% endfor %}    ]
 
 {% endfor %}
-
-
