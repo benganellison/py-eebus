@@ -5,6 +5,7 @@ from spine.base import SpineBase, spine_type
 from spine.type_registry import TypeRegistry
 
 if TYPE_CHECKING:
+    pass
     from spine.simple_type.commondatatypes import DescriptionType
 
 

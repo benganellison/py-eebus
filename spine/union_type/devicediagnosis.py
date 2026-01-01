@@ -5,7 +5,7 @@ from spine.base import SpineBase, spine_type
 from spine.type_registry import TypeRegistry
 
 if TYPE_CHECKING:
-
+    pass
 
 
 @spine_type('ns_p:PowerSupplyConditionType', is_value_type=False, no_attrib_name=False)
@@ -17,5 +17,13 @@ class PowerSupplyConditionType(SpineBase): # EEBus_SPINE_TS_DeviceDiagnosis.xsd:
 @spine_type('ns_p:DeviceDiagnosisOperatingStateType', is_value_type=False, no_attrib_name=False)
 class DeviceDiagnosisOperatingStateType(SpineBase): # EEBus_SPINE_TS_DeviceDiagnosis.xsd:ns_p:DeviceDiagnosisOperatingStateType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "ns_p:DeviceDiagnosisOperatingStateEnumType",
+            "is_array": False,
+            "is_optional": False,
+            "class_check": "str"
+        },
     ]
 

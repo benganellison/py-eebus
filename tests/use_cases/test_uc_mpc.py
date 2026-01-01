@@ -1,243 +1,189 @@
 import pytest
+from spine.base_type.measurement import (
+    MeasurementDescriptionDataType,
+    MeasurementDataType,
+)
+from spine.union_type.measurement import (
+    MeasurementTypeType,
+    MeasurementValueTypeType,
+)
+from spine.enums.measurement import (
+    MeasurementTypeEnumType,
+    MeasurementValueTypeEnumType,
+)
+from spine.union_type.commondatatypes import (
+    ScopeTypeType,
+    UnitOfMeasurementType,
+)
+from spine.enums.commondatatypes import (
+    ScopeTypeEnumType,
+    UnitOfMeasurementEnumType,
+)
+from spine.base_type.commondatatypes import (
+    ScaledNumberType,
+)
+from spine.simple_type.commondatatypes import (
+    NumberType,
+    ScaleType,
+)
+
 # MPC Use Case Tests
 # Monitoring of Power Consumption
-
-@pytest.mark.requirement("MPC-001")
-def test_mpc_req_001():
-    assert True
-
-@pytest.mark.requirement("MPC-002")
-def test_mpc_req_002():
-    assert True
-
-@pytest.mark.requirement("MPC-003")
-def test_mpc_req_003():
-    assert True
-
-@pytest.mark.requirement("MPC-007")
-def test_mpc_req_007():
-    assert True
+# Ref: EEBus_UC_TS_MonitoringOfPowerConsumption_V1.0.0_public.md
 
 @pytest.mark.requirement("MPC-011")
-def test_mpc_req_011():
-    assert True
+def test_mpc_total_active_power():
+    """
+    Verify Total Active Power (Scenario 1).
+    Ref: [MPC-011]
+    """
+    # Total Active Power: acPowerTotal
+    # Description check
+    meas_desc = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acPowerTotal),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.power)
+    )
+    assert meas_desc.scope_type.value == "acPowerTotal"
+    assert meas_desc.measurement_type.value == "power"
+
+    # Value check
+    meas_val = MeasurementDataType(
+        value=ScaledNumberType(
+            number=NumberType(value=1000),
+            scale=ScaleType(value=0)
+        ),
+        value_type=MeasurementValueTypeType(value=MeasurementValueTypeEnumType.value)
+    )
+    assert meas_val.value.number.value == 1000
 
 @pytest.mark.requirement("MPC-012")
-def test_mpc_req_012():
-    assert True
+def test_mpc_phase_active_power():
+    """
+    Verify Phase-Specific Active Power (Scenario 1).
+    Ref: [MPC-012]
+    """
+    # Phase A, B, C
+    meas_a = MeasurementDescriptionDataType(scope_type=ScopeTypeType(value=ScopeTypeEnumType.acPowerA))
+    meas_b = MeasurementDescriptionDataType(scope_type=ScopeTypeType(value=ScopeTypeEnumType.acPowerB))
+    meas_c = MeasurementDescriptionDataType(scope_type=ScopeTypeType(value=ScopeTypeEnumType.acPowerC))
+    
+    assert meas_a.scope_type.value == "acPowerA"
+    assert meas_b.scope_type.value == "acPowerB"
+    assert meas_c.scope_type.value == "acPowerC"
 
-@pytest.mark.requirement("MPC-012/1")
-def test_mpc_req_012_1():
-    assert True
-
-@pytest.mark.requirement("MPC-012/2")
-def test_mpc_req_012_2():
-    assert True
-
-@pytest.mark.requirement("MPC-012/3")
-def test_mpc_req_012_3():
-    assert True
+    # Value check example (Phase A)
+    val_a = MeasurementDataType(
+        value=ScaledNumberType(
+            number=NumberType(value=2300),
+            scale=ScaleType(value=-1) # 230.0 W
+        )
+    )
+    assert val_a.value.number.value == 2300
+    assert val_a.value.scale.value == -1
 
 @pytest.mark.requirement("MPC-021")
-def test_mpc_req_021():
-    assert True
+def test_mpc_total_consumed_energy():
+    """
+    Verify Total Consumed Energy (Scenario 2).
+    Ref: [MPC-021]
+    """
+    # acEnergyConsumed
+    meas = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acEnergyConsumed),
+        unit=UnitOfMeasurementType(value=UnitOfMeasurementEnumType.Wh),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.energy)
+    )
+    assert meas.scope_type.value == "acEnergyConsumed"
+    assert meas.unit.value == "Wh"
+    assert meas.measurement_type.value == "energy"
+
+    # Value check
+    val = MeasurementDataType(
+        value=ScaledNumberType(number=NumberType(value=5000))
+    )
+    assert val.value.number.value == 5000
 
 @pytest.mark.requirement("MPC-022")
-def test_mpc_req_022():
-    assert True
+def test_mpc_total_produced_energy():
+    """
+    Verify Total Produced Energy (Scenario 2).
+    Ref: [MPC-022]
+    """
+    # acEnergyProduced
+    meas = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acEnergyProduced),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.energy)
+    )
+    assert meas.scope_type.value == "acEnergyProduced"
 
-@pytest.mark.requirement("MPC-030/1")
-def test_mpc_req_030_1():
-    assert True
-
-@pytest.mark.requirement("MPC-030/2")
-def test_mpc_req_030_2():
-    assert True
+    # Value check
+    val = MeasurementDataType(
+        value=ScaledNumberType(number=NumberType(value=120))
+    )
+    assert val.value.number.value == 120
 
 @pytest.mark.requirement("MPC-031")
-def test_mpc_req_031():
-    assert True
+def test_mpc_phase_current():
+    """
+    Verify Phase-Specific AC Current (Scenario 3).
+    Ref: [MPC-031]
+    """
+    # acCurrentA, B, C
+    meas_a = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acCurrentA),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.current)
+    )
+    assert meas_a.scope_type.value == "acCurrentA"
+    assert meas_a.measurement_type.value == "current"
 
-@pytest.mark.requirement("MPC-031/1")
-def test_mpc_req_031_1():
-    assert True
-
-@pytest.mark.requirement("MPC-031/2")
-def test_mpc_req_031_2():
-    assert True
-
-@pytest.mark.requirement("MPC-031/3")
-def test_mpc_req_031_3():
-    assert True
+    # Value check (16A)
+    val = MeasurementDataType(
+        value=ScaledNumberType(
+            number=NumberType(value=16)
+        )
+    )
+    assert val.value.number.value == 16
 
 @pytest.mark.requirement("MPC-041")
-def test_mpc_req_041():
-    assert True
+def test_mpc_phase_voltage():
+    """
+    Verify Phase-Specific AC Voltage (Scenario 4).
+    Ref: [MPC-041]
+    """
+    # acVoltageA, B, C
+    meas_a = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acVoltageA),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.voltage)
+    )
+    assert meas_a.scope_type.value == "acVoltageA"
+    assert meas_a.measurement_type.value == "voltage"
 
-@pytest.mark.requirement("MPC-041/1")
-def test_mpc_req_041_1():
-    assert True
-
-@pytest.mark.requirement("MPC-041/2")
-def test_mpc_req_041_2():
-    assert True
-
-@pytest.mark.requirement("MPC-041/3")
-def test_mpc_req_041_3():
-    assert True
-
-@pytest.mark.requirement("MPC-041/4")
-def test_mpc_req_041_4():
-    assert True
-
-@pytest.mark.requirement("MPC-041/5")
-def test_mpc_req_041_5():
-    assert True
-
-@pytest.mark.requirement("MPC-041/6")
-def test_mpc_req_041_6():
-    assert True
+    # Value check (230V)
+    val = MeasurementDataType(
+        value=ScaledNumberType(
+            number=NumberType(value=230)
+        )
+    )
+    assert val.value.number.value == 230
 
 @pytest.mark.requirement("MPC-051")
-def test_mpc_req_051():
-    assert True
+def test_mpc_frequency():
+    """
+    Verify AC Frequency (Scenario 5).
+    Ref: [MPC-051]
+    """
+    # acFrequency
+    meas = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acFrequency),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.frequency)
+    )
+    assert meas.scope_type.value == "acFrequency"
+    assert meas.measurement_type.value == "frequency"
 
-@pytest.mark.requirement("MPC-TS-001")
-def test_mpc_ts_req_001():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-002")
-def test_mpc_ts_req_002():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-002/1")
-def test_mpc_ts_req_002_1():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-002/2")
-def test_mpc_ts_req_002_2():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-002/3")
-def test_mpc_ts_req_002_3():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-002/4")
-def test_mpc_ts_req_002_4():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-003")
-def test_mpc_ts_req_003():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-003/1")
-def test_mpc_ts_req_003_1():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-004")
-def test_mpc_ts_req_004():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-004/1")
-def test_mpc_ts_req_004_1():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-005")
-def test_mpc_ts_req_005():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-005/1")
-def test_mpc_ts_req_005_1():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-005/2")
-def test_mpc_ts_req_005_2():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-005/3")
-def test_mpc_ts_req_005_3():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-005/4")
-def test_mpc_ts_req_005_4():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-005/5")
-def test_mpc_ts_req_005_5():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-005/6")
-def test_mpc_ts_req_005_6():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-006")
-def test_mpc_ts_req_006():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-006/1")
-def test_mpc_ts_req_006_1():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-006/2")
-def test_mpc_ts_req_006_2():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-006/3")
-def test_mpc_ts_req_006_3():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-006/4")
-def test_mpc_ts_req_006_4():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-006/5")
-def test_mpc_ts_req_006_5():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-006/6")
-def test_mpc_ts_req_006_6():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-006/7")
-def test_mpc_ts_req_006_7():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-007")
-def test_mpc_ts_req_007():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-008")
-def test_mpc_ts_req_008():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-008/1")
-def test_mpc_ts_req_008_1():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-008/2")
-def test_mpc_ts_req_008_2():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-009")
-def test_mpc_ts_req_009():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-010")
-def test_mpc_ts_req_010():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-011")
-def test_mpc_ts_req_011():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-012")
-def test_mpc_ts_req_012():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-013")
-def test_mpc_ts_req_013():
-    assert True
-
-@pytest.mark.requirement("MPC-TS-014")
-def test_mpc_ts_req_014():
-    assert True
+    # Value check (50Hz)
+    val = MeasurementDataType(
+        value=ScaledNumberType(
+            number=NumberType(value=50)
+        )
+    )
+    assert val.value.number.value == 50

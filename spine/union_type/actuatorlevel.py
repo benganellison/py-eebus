@@ -5,11 +5,20 @@ from spine.base import SpineBase, spine_type
 from spine.type_registry import TypeRegistry
 
 if TYPE_CHECKING:
+    pass
 
 
 
-@spine_type('ns_p:ActuatorLevelFctType', is_value_type=False, no_attrib_name=False)
+@spine_type('ns_p:ActuatorLevelFctType', is_value_type=True, no_attrib_name=False)
 class ActuatorLevelFctType(SpineBase): # EEBus_SPINE_TS_ActuatorLevel.xsd:ns_p:ActuatorLevelFctType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
     ]
 

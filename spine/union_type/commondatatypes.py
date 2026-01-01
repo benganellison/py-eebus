@@ -5,18 +5,35 @@ from spine.base import SpineBase, spine_type
 from spine.type_registry import TypeRegistry
 
 if TYPE_CHECKING:
+    pass
 
 
 
-@spine_type('ns_p:FunctionType', is_value_type=False, no_attrib_name=False)
+@spine_type('ns_p:FunctionType', is_value_type=True, no_attrib_name=False)
 class FunctionType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:FunctionType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
     ]
 
 
-@spine_type('ns_p:FeatureSpecificUsageType', is_value_type=False, no_attrib_name=False)
+@spine_type('ns_p:FeatureSpecificUsageType', is_value_type=True, no_attrib_name=False)
 class FeatureSpecificUsageType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:FeatureSpecificUsageType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
     ]
 
 
@@ -26,33 +43,73 @@ class FeatureSpecificUsageEnumType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.
     ]
 
 
-@spine_type('ns_p:FeatureTypeType', is_value_type=False, no_attrib_name=False)
+@spine_type('ns_p:FeatureTypeType', is_value_type=True, no_attrib_name=False)
 class FeatureTypeType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:FeatureTypeType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
     ]
 
 
-@spine_type('ns_p:EntityTypeType', is_value_type=False, no_attrib_name=False)
+@spine_type('ns_p:EntityTypeType', is_value_type=True, no_attrib_name=False)
 class EntityTypeType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:EntityTypeType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
     ]
 
 
-@spine_type('ns_p:DeviceTypeType', is_value_type=False, no_attrib_name=False)
+@spine_type('ns_p:DeviceTypeType', is_value_type=True, no_attrib_name=False)
 class DeviceTypeType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:DeviceTypeType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
     ]
 
 
-@spine_type('ns_p:ScopeTypeType', is_value_type=False, no_attrib_name=False)
+@spine_type('ns_p:ScopeTypeType', is_value_type=True, no_attrib_name=False)
 class ScopeTypeType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:ScopeTypeType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
     ]
 
 
 @spine_type('ns_p:CurrencyType', is_value_type=False, no_attrib_name=False)
 class CurrencyType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:CurrencyType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": False,
+            "class_check": "str"
+        },
     ]
 
 
@@ -68,9 +125,17 @@ class EnergyDirectionType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:
     ]
 
 
-@spine_type('ns_p:CommodityTypeType', is_value_type=False, no_attrib_name=False)
+@spine_type('ns_p:CommodityTypeType', is_value_type=True, no_attrib_name=False)
 class CommodityTypeType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:CommodityTypeType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
     ]
 
 
@@ -92,8 +157,16 @@ class AbsoluteOrRelativeTimeType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xs
     ]
 
 
-@spine_type('ns_p:UnitOfMeasurementType', is_value_type=False, no_attrib_name=False)
+@spine_type('ns_p:UnitOfMeasurementType', is_value_type=True, no_attrib_name=False)
 class UnitOfMeasurementType(SpineBase): # EEBus_SPINE_TS_CommonDataTypes.xsd:ns_p:UnitOfMeasurementType -> UnionType
     _MEMBER_INFO = [
+        {
+            "name": "value",
+            "xml_name": "value",
+            "type": "xs:string",
+            "is_array": False,
+            "is_optional": True,
+            "class_check": "str"
+        },
     ]
 

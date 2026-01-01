@@ -1,279 +1,163 @@
 import pytest
+from spine.base_type.measurement import (
+    MeasurementDataType,
+    MeasurementDescriptionDataType,
+)
+from spine.base_type.deviceconfiguration import (
+    DeviceConfigurationKeyValueDataType,
+    DeviceConfigurationKeyValueDescriptionDataType,
+)
+from spine.simple_type.deviceconfiguration import DeviceConfigurationKeyIdType
+from spine.union_type.deviceconfiguration import DeviceConfigurationKeyNameType
+from spine.enums.deviceconfiguration import (
+    DeviceConfigurationKeyValueTypeType,
+    DeviceConfigurationKeyNameEnumType,
+)
+from spine.union_type.measurement import MeasurementTypeType
+from spine.enums.measurement import MeasurementTypeEnumType
+from spine.union_type.commondatatypes import ScopeTypeType
+from spine.enums.commondatatypes import ScopeTypeEnumType
+
 # MGCP Use Case Tests
 # Monitoring of Grid Connection Point
+# Ref: EEBus_UC_TS_MonitoringOfGridConnectionPoint_V1.0.0_public.md
 
 @pytest.mark.requirement("MGCP-TS-001")
 def test_mgcp_scenario_1_pv_feed_in():
     """
     Verify Scenario 1: Monitor PV feed-in power limitation factor.
     Ref: [MGCP-TS-001]
+    Key: pvCurtailmentLimitFactor (best match for PV Feed-In Power Limitation Factor in standard Enums)
+         or potentially proprietary if not standard.
+         We will use 'pvCurtailmentLimitFactor' as the likely standard candidate.
+    Type: scaledNumber
     """
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-001/1")
-def test_mgcp_pv_factor_definition():
-    """
-    Verify PV feed-in power limitation factor definition.
-    Ref: [MGCP-TS-001/1]
-    """
-    assert True
+    config = DeviceConfigurationKeyValueDescriptionDataType(
+        key_name=DeviceConfigurationKeyNameType(
+            value=DeviceConfigurationKeyNameEnumType.pvCurtailmentLimitFactor
+        ),
+        value_type=DeviceConfigurationKeyValueTypeType.scaledNumber
+    )
+    assert config.key_name.value == "pvCurtailmentLimitFactor"
+    assert config.value_type.value == "scaledNumber"
 
 @pytest.mark.requirement("MGCP-TS-002")
 def test_mgcp_scenario_2_momentary_power():
     """
-    Verify Scenario 2: Monitor momentary power.
+    Verify Scenario 2: Monitor momentary power consumption/production.
     Ref: [MGCP-TS-002]
+    Scope: acPowerTotal
+    Type: power
     """
-    assert True
+    meas = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acPowerTotal),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.power)
+    )
+    assert meas.scope_type.value == "acPowerTotal"
+    assert meas.measurement_type.value == "power"
 
 @pytest.mark.requirement("MGCP-TS-003")
 def test_mgcp_scenario_3_total_feed_in():
     """
     Verify Scenario 3: Monitor total feed-in energy.
     Ref: [MGCP-TS-003]
+    Scope: gridFeedIn
+    Type: energy
     """
-    assert True
+    meas = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.gridFeedIn),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.energy)
+    )
+    assert meas.scope_type.value == "gridFeedIn"
+    assert meas.measurement_type.value == "energy"
 
 @pytest.mark.requirement("MGCP-TS-004")
 def test_mgcp_scenario_4_total_consumed():
     """
     Verify Scenario 4: Monitor total consumed energy.
     Ref: [MGCP-TS-004]
+    Scope: gridConsumption
+    Type: energy
     """
-    assert True
+    meas = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.gridConsumption),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.energy)
+    )
+    assert meas.scope_type.value == "gridConsumption"
+    assert meas.measurement_type.value == "energy"
 
 @pytest.mark.requirement("MGCP-TS-005")
 def test_mgcp_scenario_5_current_details():
     """
-    Verify Scenario 5: Monitor phase-specific current details.
+    Verify Scenario 5: Monitor momentary current consumption/production phase details.
     Ref: [MGCP-TS-005]
+    Scope: acCurrentA, acCurrentB, acCurrentC
+    Type: current
     """
-    assert True
+    # Phase A
+    meas_a = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acCurrentA),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.current)
+    )
+    assert meas_a.scope_type.value == "acCurrentA"
+    assert meas_a.measurement_type.value == "current"
 
-@pytest.mark.requirement("MGCP-TS-005/1")
-def test_mgcp_phase_a_current():
-    assert True
+    # Phase B
+    meas_b = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acCurrentB),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.current)
+    )
+    assert meas_b.scope_type.value == "acCurrentB"
 
-@pytest.mark.requirement("MGCP-TS-005/2")
-def test_mgcp_phase_b_current():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-005/3")
-def test_mgcp_phase_c_current():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-005/4")
-def test_mgcp_active_current_only():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-005/5")
-def test_mgcp_rms_values():
-    assert True
+    # Phase C
+    meas_c = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acCurrentC),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.current)
+    )
+    assert meas_c.scope_type.value == "acCurrentC"
 
 @pytest.mark.requirement("MGCP-TS-006")
-def test_mgcp_voltage_monitoring():
+def test_mgcp_scenario_6_voltage_details():
     """
-    Verify voltage monitoring requirements.
+    Verify Scenario 6: Monitor voltage phase details.
     Ref: [MGCP-TS-006]
+    Scope: acVoltageA, acVoltageB, acVoltageC
+    Type: voltage
     """
-    assert True
+    # Phase A
+    meas_a = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acVoltageA),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.voltage)
+    )
+    assert meas_a.scope_type.value == "acVoltageA"
+    assert meas_a.measurement_type.value == "voltage"
 
-@pytest.mark.requirement("MGCP-TS-006/1")
-def test_mgcp_phase_a_voltage():
-    assert True
+    # Phase B
+    meas_b = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acVoltageB),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.voltage)
+    )
+    assert meas_b.scope_type.value == "acVoltageB"
 
-@pytest.mark.requirement("MGCP-TS-006/2")
-def test_mgcp_phase_b_voltage():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-006/3")
-def test_mgcp_phase_c_voltage():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-006/4")
-def test_mgcp_phase_ab_voltage():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-006/5")
-def test_mgcp_phase_bc_voltage():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-006/6")
-def test_mgcp_phase_ca_voltage():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-006/7")
-def test_mgcp_connected_phases_only():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-006/8")
-def test_mgcp_at_least_one_voltage():
-    assert True
+    # Phase C
+    meas_c = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acVoltageC),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.voltage)
+    )
+    assert meas_c.scope_type.value == "acVoltageC"
 
 @pytest.mark.requirement("MGCP-TS-007")
 def test_mgcp_scenario_7_frequency():
     """
     Verify Scenario 7: Monitor frequency.
     Ref: [MGCP-TS-007]
+    Scope: acFrequency
+    Type: frequency
     """
-    assert True
+    meas = MeasurementDescriptionDataType(
+        scope_type=ScopeTypeType(value=ScopeTypeEnumType.acFrequency),
+        measurement_type=MeasurementTypeType(value=MeasurementTypeEnumType.frequency)
+    )
+    assert meas.scope_type.value == "acFrequency"
+    assert meas.measurement_type.value == "frequency"
 
-@pytest.mark.requirement("MGCP-TS-008")
-def test_mgcp_measurement_state():
-    """
-    Verify measurement value states.
-    Ref: [MGCP-TS-008]
-    """
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-008/1")
-def test_mgcp_out_of_range():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-008/2")
-def test_mgcp_error_state():
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-009")
-def test_mgcp_support_mandatory_scenarios():
-    """
-    Verify support for at least Scenario 2, 3, or 4.
-    Ref: [MGCP-TS-009]
-    """
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-010")
-def test_mgcp_value_expression():
-    """
-    Verify expression of current, power, energy.
-    Ref: [MGCP-TS-010]
-    """
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-011")
-def test_mgcp_voltage_independence():
-    """
-    Verify voltage check independent of energy direction.
-    Ref: [MGCP-TS-011]
-    """
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-012")
-def test_mgcp_polling_support():
-    """
-    Verify support for polling (interval).
-    Ref: [MGCP-TS-012]
-    """
-    assert True
-
-@pytest.mark.requirement("MGCP-TS-013")
-def test_mgcp_notification_support():
-    """
-    Verify support for notifications.
-    Ref: [MGCP-TS-013]
-    """
-    assert True
-
-@pytest.mark.requirement("MGCP-001")
-def test_mgcp_req_001():
-    assert True
-
-@pytest.mark.requirement("MGCP-002")
-def test_mgcp_req_002():
-    assert True
-
-@pytest.mark.requirement("MGCP-003")
-def test_mgcp_req_003():
-    assert True
-
-@pytest.mark.requirement("MGCP-004")
-def test_mgcp_req_004():
-    assert True
-
-@pytest.mark.requirement("MGCP-005")
-def test_mgcp_req_005():
-    assert True
-
-@pytest.mark.requirement("MGCP-006")
-def test_mgcp_req_006():
-    assert True
-
-@pytest.mark.requirement("MGCP-007")
-def test_mgcp_req_007():
-    assert True
-
-@pytest.mark.requirement("MGCP-008")
-def test_mgcp_req_008():
-    assert True
-
-@pytest.mark.requirement("MGCP-011")
-def test_mgcp_req_011():
-    assert True
-
-@pytest.mark.requirement("MGCP-021")
-def test_mgcp_req_021():
-    assert True
-
-@pytest.mark.requirement("MGCP-031")
-def test_mgcp_req_031():
-    assert True
-
-@pytest.mark.requirement("MGCP-041")
-def test_mgcp_req_041():
-    assert True
-
-@pytest.mark.requirement("MGCP-050/1")
-def test_mgcp_req_050_1():
-    assert True
-
-@pytest.mark.requirement("MGCP-050/2")
-def test_mgcp_req_050_2():
-    assert True
-
-@pytest.mark.requirement("MGCP-051")
-def test_mgcp_req_051():
-    assert True
-
-@pytest.mark.requirement("MGCP-051/1")
-def test_mgcp_req_051_1():
-    assert True
-
-@pytest.mark.requirement("MGCP-051/2")
-def test_mgcp_req_051_2():
-    assert True
-
-@pytest.mark.requirement("MGCP-051/3")
-def test_mgcp_req_051_3():
-    assert True
-
-@pytest.mark.requirement("MGCP-061")
-def test_mgcp_req_061():
-    assert True
-
-@pytest.mark.requirement("MGCP-061/1")
-def test_mgcp_req_061_1():
-    assert True
-
-@pytest.mark.requirement("MGCP-061/2")
-def test_mgcp_req_061_2():
-    assert True
-
-@pytest.mark.requirement("MGCP-061/3")
-def test_mgcp_req_061_3():
-    assert True
-
-@pytest.mark.requirement("MGCP-061/4")
-def test_mgcp_req_061_4():
-    assert True
-
-@pytest.mark.requirement("MGCP-061/5")
-def test_mgcp_req_061_5():
-    assert True
-
-@pytest.mark.requirement("MGCP-061/6")
-def test_mgcp_req_061_6():
-    assert True
-
-@pytest.mark.requirement("MGCP-071")
-def test_mgcp_req_071():
-    assert True

@@ -26,13 +26,13 @@ class SpineMessage:
 
     @classmethod
     def from_data(cls, bin_msg):
-        first_byte = bin_msg[0:1]
+        # first_byte = bin_msg[0:1]
         
-        data = json.loads(bin_msg[1:].decode("utf8"))
+        data = json.loads(bin_msg.decode("utf8"))
         root_tag = list(data.keys())[0]
         msg = ROOT_TAG_2_TYPE[root_tag].from_data(data[root_tag])
 
-        return msg
+        return cls(msg)
 
     def get_data(self):
         if self._msg:

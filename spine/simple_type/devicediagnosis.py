@@ -5,7 +5,7 @@ from spine.base import SpineBase, spine_type
 from spine.type_registry import TypeRegistry
 
 if TYPE_CHECKING:
-
+    pass
 
 
 @spine_type('ns_p:LastErrorCodeType', is_value_type=True, no_attrib_name=False)

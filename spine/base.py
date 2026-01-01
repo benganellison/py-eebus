@@ -64,7 +64,7 @@ class SpineBase:
                 return []
             return getattr(self, self._MEMBER_INFO[0]["name"])
 
-        msg_data = []
+        msg_data = {}
         for member in self._MEMBER_INFO:
             value = getattr(self, member["name"])
             if value is not None:
@@ -76,7 +76,7 @@ class SpineBase:
                 else:
                     data_val = value.get_data() if hasattr(value, 'get_data') else value
                 
-                msg_data.append({xml_name: data_val})
+                msg_data[xml_name] = data_val
         
         return msg_data
 
